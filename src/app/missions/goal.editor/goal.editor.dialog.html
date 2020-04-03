@@ -1,0 +1,71 @@
+<h3>{{goalId > 0 ? 'Edit' : 'New'}} Mission Goal</h3>
+<form [formGroup]="goalForm">
+    <mat-form-field class="full-field">
+        <mat-label>Goal Type:</mat-label>
+        <mat-select formControlName="typeId">
+            <mat-option *ngFor="let goalType of goalTypes" [value]="goalType.typeId">
+                {{goalType.typeText}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="full-field" *ngIf="visibleFields.includes('file')">
+        <mat-label>Filename:</mat-label>
+        <input matInput id="fileName" placeholder="E.g. secret_hax.txt" formControlName="file" />
+    </mat-form-field>
+    <mat-form-field class="full-field" *ngIf="visibleFields.includes('path')">
+        <mat-label>Path:</mat-label>
+        <input matInput id="path" placeholder="E.g. 'bin' or 'home'" formControlName="path" />
+    </mat-form-field>
+    <mat-form-field class="full-field" *ngIf="visibleFields.includes('target')">
+        <mat-label>Target String:</mat-label>
+        <input matInput id="target" placeholder="E.g. 'test1'" formControlName="target" />
+    </mat-form-field>
+    <mat-form-field class="full-field" *ngIf="visibleFields.includes('delay')">
+        <mat-label>Delay:</mat-label>
+        <input matInput id="delay" placeholder="Time to wait in seconds" type="number" min="0" formControlName="delay" />
+    </mat-form-field>
+    <mat-form-field class="full-field" *ngIf="visibleFields.includes('targetNodeId')">
+        <mat-label>Target:</mat-label>
+        <mat-select formControlName="targetNodeId">
+            <mat-option *ngFor="let node of possibleNodes" [value]="node.nodeId">{{node.id}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="full-field" *ngIf="visibleFields.includes('keyword')">
+        <mat-label>Keyword:</mat-label>
+        <input matInput id="keyword" placeholder="Text expected to be added or removed from the file" formControlName="keyword" />
+    </mat-form-field>
+    <mat-checkbox formControlName="removal" *ngIf="visibleFields.includes('removal')"> Removal</mat-checkbox>
+    <mat-checkbox formControlName="caseSensitive" *ngIf="visibleFields.includes('caseSensitive')"> Case Sensitive?</mat-checkbox>
+    <mat-form-field class="full-field" *ngIf="visibleFields.includes('owner')">
+        <mat-label>Owner:</mat-label>
+        <input matInput id="owner" placeholder="E.g. John Smith" formControlName="owner" />
+    </mat-form-field>
+    <mat-form-field class="full-field" *ngIf="visibleFields.includes('degree')">
+        <mat-label>Degree:</mat-label>
+        <input matInput id="degree" placeholder="E.g. Masters in Digital Forensics" formControlName="degree" />
+    </mat-form-field>
+    <mat-form-field class="full-field" *ngIf="visibleFields.includes('uni')">
+        <mat-label>University Name:</mat-label>
+        <input matInput id="uni" placeholder="E.g. Oxford University" formControlName="uni" />
+    </mat-form-field>
+    <mat-form-field class="full-field" *ngIf="visibleFields.includes('gpa')">
+        <mat-label>GPA (Grade Point Average):</mat-label>
+        <input matInput id="gpa" type="number" placeholder="E.g. 3.0" min="0.0" formControlName="gpa" />
+    </mat-form-field>
+    <mat-form-field class="full-field" *ngIf="visibleFields.includes('mailServer')">
+        <mat-label>Mail Server:</mat-label>
+        <input matInput id="mailServer" placeholder="E.g. JMail" formControlName="mailServer" />
+    </mat-form-field>
+    <mat-form-field class="full-field" *ngIf="visibleFields.includes('recipient')">
+        <mat-label>Recipient:</mat-label>
+        <input matInput id="recipient" placeholder="E.g. John Smith" formControlName="recipient" />
+    </mat-form-field>
+    <mat-form-field class="full-field" *ngIf="visibleFields.includes('subject')">
+        <mat-label>Subject:</mat-label>
+        <input matInput id="subject" placeholder="E.g. Password Reset Request" formControlName="subject" />
+    </mat-form-field>
+</form>
+<mat-dialog-actions>
+    <button mat-button color="warn" (click)="cancel()">Cancel</button>
+    <button mat-button color="primary" (click)="saveGoal()">{{goalId > 0 ? 'Save' : 'Create'}}</button>
+</mat-dialog-actions>

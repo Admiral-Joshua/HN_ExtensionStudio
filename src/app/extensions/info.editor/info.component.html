@@ -1,0 +1,81 @@
+<style>
+    mat-form-field {
+        width: 100%;
+    }
+</style>
+<mat-card style="margin: 2em;">
+    <mat-card-header>
+        <mat-card-title>
+            <h2>Extension Info</h2>
+        </mat-card-title>
+        <mat-card-subtitle>
+            <p>Describe your extension: What's it called? What's it about?</p>
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <form [formGroup]="infoForm" (ngSubmit)="saveExtensionInfo()">
+            <mat-expansion-panel expanded="true">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Extension Information
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        Information that will be used and displayed in-game.
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <mat-form-field appearance="fill">
+                    <mat-label>Extension Name</mat-label>
+                    <input matInput placeholder="Test Extension 1" formControlName="extensionName" required minlength="5" />
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Language</mat-label>
+                    <mat-select formControlName="languageId" required>
+                        <mat-option *ngFor="let language of supportedLanguages" [value]="language.langId">
+                            {{language.Language}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-checkbox formControlName="allowSaves">Allow Saves?</mat-checkbox>
+                <mat-form-field appearance="fill">
+                    <mat-label>Description</mat-label>
+                    <textarea rows="5" matInput placeholder="Write an introduction or some information about your extension here..." formControlName="description" required></textarea>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Starting Music</mat-label>
+                    <mat-select required formControlName="startingMusicId">
+                        <mat-option *ngFor="let music of musicTracks" [value]="music.musicId">
+                            {{music.title}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-expansion-panel>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Workshop Information
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        Information that will be displayed on your extension's Workshop page.
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <mat-form-field appearance="fill" aria-label="Workshop Tags">
+                    <mat-chip-list #chipList>
+                        <mat-chip *ngFor="let tag of workshop_tags" selectable="false" removable="true" (removed)="removeTag(tag)" color="primary">
+                            {{tag}}
+                            <mat-icon matChipRemove>cancel</mat-icon>
+                        </mat-chip>
+                    </mat-chip-list>
+                    <input placeholder="Add tags..." [matChipInputSeparatorKeyCodes]="chipAddKeyCodes" [matChipInputFor]="chipList" (matChipInputTokenEnd)="addTag($event)">
+                </mat-form-field>
+                <mat-checkbox formControlName="wDescriptionIsSameAsExt">Workshop Description is the same as Extension's</mat-checkbox>
+                <mat-form-field>
+                    <mat-label>Workshop Description:</mat-label>
+                    <textarea rows="6" matInput placeholder="Start with something short and snappy to get people's attention.\nThen write more information, perhaps with some hints about what might happen during it..." formControlName="workshop_description"></textarea>
+                </mat-form-field>
+            </mat-expansion-panel>
+            <br/>
+            <button mat-raised-button color="primary" routerLink="/selector">Go Back</button>
+            <button mat-raised-button color="accent" style="float: right;" [disabled]="!infoForm.valid">{{extensionId > 0 ? 'Save' : 'Create'}}</button>
+        </form>
+    </mat-card-content>
+</mat-card>

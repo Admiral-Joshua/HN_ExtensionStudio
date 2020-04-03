@@ -1,0 +1,36 @@
+/* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+h2 {
+    margin: 10px 14px;
+}
+
+.mat-checkbox {
+    padding: 2px 5px;
+    margin: 2px 8px;
+}
+
+.full-field {
+    width: 99%;
+}
+
+.half-field {
+    width: 49.5%;
+}
+
+.third-field {
+    width: 33%;
+}
+
+.float-right {
+    float: right;
+}

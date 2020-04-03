@@ -1,0 +1,55 @@
+<h2>Nodes List</h2>
+
+<div class="button-row">
+    <button mat-raised-button color="primary" (click)="openEditor()">New</button>
+    <!--button mat-raised-button color="accent">Edit</button-->
+    <!--button mat-raised-button color="warn">Delete</button-->
+</div>
+<table mat-table [dataSource]="nodes" style="width: 100%;">
+    <!--class="mat-elevation-z8"-->
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+
+    <!-- IP column -->
+    <ng-container matColumnDef="ip">
+        <th mat-header-cell *matHeaderCellDef> IP </th>
+        <td mat-cell *matCellDef="let element"> {{element.ip || '#RANDOM_IP#'}} </td>
+    </ng-container>
+
+    <!-- Ports Column -->
+    <ng-container matColumnDef="ports">
+        <th mat-header-cell *matHeaderCellDef> Ports </th>
+        <td mat-cell *matCellDef="let element" style="width: 32%;">
+            <mat-chip-list aria-label="Port Selection">
+                <mat-chip *ngFor="let port of element.ports" color="primary" selected>{{port}}</mat-chip>
+            </mat-chip-list>
+        </td>
+    </ng-container>
+
+    <!-- portCount column -->
+    <ng-container matColumnDef="portCount">
+        <th mat-header-cell *matHeaderCellDef> Ports to Crack </th>
+        <td mat-cell *matCellDef="let element"> {{element.portsForCrack}} </td>
+    </ng-container>
+
+    <!-- fileCount column -->
+    <ng-container matColumnDef="fileCount">
+        <th mat-header-cell *matHeaderCellDef> Trace Time </th>
+        <td mat-cell *matCellDef="let element"> {{element.traceTime > 0 ? element.traceTime : 'NONE'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let element" style="width: 160px;">
+            <button mat-flat-button color="accent" (click)="openEditor(element)">Edit</button>
+            <button mat-flat-button color="warn">Delete</button>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

@@ -1,0 +1,61 @@
+.fill-bar {
+    display: inline-block;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: lightblue;
+    z-index: -100;
+}
+
+.music-item {
+    position: relative;
+    width: 100%;
+}
+
+.button-group {
+    float: right;
+}
+
+.button-group,
+button {
+    margin: 2px auto;
+}
+
+.page-filler {
+    width: 99vw;
+    overflow-x: hidden;
+}
+
+input.music-title {
+    font-size: 13pt;
+    font-family: Roboto;
+}
+
+input.read-write {
+    border: none;
+    background-color: transparent;
+    margin: 1px;
+    width: 70%;
+    height: 100%;
+}
+
+input.read-write:hover {
+    background-color: lightgray;
+    border: 1px solid black;
+    margin: 0;
+}
+
+input.read-write:active {
+    background-color: lightgray;
+    border: 1px solid black;
+    margin: 0;
+}
+
+input.read-write:disabled {
+    border: none;
+    background-color: transparent;
+    margin: 1px;
+    width: 70%;
+    height: 100%;
+}

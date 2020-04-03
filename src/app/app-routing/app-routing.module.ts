@@ -1,0 +1,48 @@
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes, Router } from '@angular/router';
+
+import { LandingComponent } from "../landing/landing.component";
+import { ExtensionSelectorComponent } from "../extensions/extensions.component";
+import { ExtensionInfoComponent } from '../extensions/info.editor/info.component';
+import { NodeMapComponent } from '../nodes/nodes.component';
+import { NodeEditorDialogComponent } from '../nodes/node.editor/node.editor.component';
+import { MusicManagerComponent } from '../musics/music.manager/music.manager.component';
+import { MissionListComponent } from '../missions/mission.list.component';
+
+const routes: Routes = [
+  {
+      path: '',
+      component: LandingComponent,
+  },
+  {
+    path: 'selector',
+    component: ExtensionSelectorComponent
+  },
+  {
+    path: "extInfo",
+    component: ExtensionInfoComponent
+  },
+  {
+    path: "nodes",
+    component: NodeMapComponent
+  },
+  {
+    path: "music",
+    component: MusicManagerComponent
+  },
+  {
+    path: "missions",
+    component: MissionListComponent
+  }
+];
+
+@NgModule({
+  declarations: [],
+  imports: [
+    RouterModule.forRoot(routes)
+  ],
+  exports: [
+    RouterModule
+  ]
+})
+export class AppRoutingModule { }

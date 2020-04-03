@@ -1,0 +1,25 @@
+<div class="extension-selector" style="margin: 10px;">
+    <h2>Your Extensions</h2>
+
+    <mat-list>
+        <mat-list-item matRipple *ngFor="let extension of extensions" (click)="SelectExtension(extension)">
+            <img matListAvatar src="assets/icons/hacknet.jpg" alt="...">
+            <h3 matLine> {{extension.extensionName}} </h3>
+            <p matLine>
+                <span> {{extension.Language}} </span>
+                <span class="demo-2"> -- {{extension.description}} </span>
+            </p>
+            <button mat-button color="warn" (click)="DeleteExtension(extension); $event.stopPropagation();">Delete</button>
+        </mat-list-item>
+        <br/>
+        <hr />
+        <mat-list-item matRipple (click)="CreateNewExtension()">
+            <img matListAvatar src="assets/icons/plus.png" alt="...">
+            <h3 matLine> Create New Extension </h3>
+            <p matLine>
+                <span>Create a brand new Hacknet Extension.</span>
+            </p>
+
+        </mat-list-item>
+    </mat-list>
+</div>

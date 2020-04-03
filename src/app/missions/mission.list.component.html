@@ -1,0 +1,71 @@
+<h2>Mission List</h2>
+<div class="button-row">
+    <button mat-raised-button color="primary" (click)="openEditor()">New</button>
+    <!-- TODO: Open Mission Editor -->
+</div>
+<table mat-table [dataSource]="missions" style="width: 100%;">
+
+    <!-- id Column -->
+    <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> id </th>
+        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+    </ng-container>
+
+    <!-- check column -->
+    <ng-container matColumnDef="check">
+        <th mat-header-cell *matHeaderCellDef> Active Check </th>
+        <td mat-cell *matCellDef="let element">
+            <mat-icon *ngIf="element.activeCheck">done</mat-icon>
+            <mat-icon *ngIf="!element.activeCheck">clear</mat-icon>
+        </td>
+    </ng-container>
+
+    <!-- silent column -->
+    <ng-container matColumnDef="silent">
+        <th mat-header-cell *matHeaderCellDef> Silent </th>
+        <td mat-cell *matCellDef="let element">
+            <mat-icon *ngIf="element.IsSilent">done</mat-icon>
+            <mat-icon *ngIf="!element.IsSilent">clear</mat-icon>
+        </td>
+    </ng-container>
+
+    <!-- Start Function Column -->
+    <ng-container matColumnDef="start">
+        <th mat-header-cell *matHeaderCellDef style="width: 20%;"> MissionStart </th>
+        <td mat-cell *matCellDef="let element">
+            <mat-chip selected color="accent" *ngIf="element.missionStart.length > 0">{{element.missionStart}}</mat-chip>
+        </td>
+    </ng-container>
+
+    <!-- End Function Column -->
+    <ng-container matColumnDef="end">
+        <th mat-header-cell *matHeaderCellDef style="width: 20%;"> MissionEnd </th>
+        <td mat-cell *matCellDef="let element">
+            <mat-chip selected color="accent" *ngIf="element.missionEnd.length > 0">{{element.missionEnd}}</mat-chip>
+        </td>
+    </ng-container>
+
+    <!-- Attachments Column -->
+    <ng-container matColumnDef="attachments">
+        <th mat-header-cell *matHeaderCellDef> Attachments </th>
+        <td mat-cell *matCellDef="let element">
+            <mat-chip-list>
+                <mat-chip selected color="accent" *ngIf="element.emailId > 0">
+                    <mat-icon>email</mat-icon> Email</mat-chip>
+                <mat-chip selected color="accent" *ngIf="element.postingId > 0">
+                    <mat-icon>attachment</mat-icon> Board Post</mat-chip>
+            </mat-chip-list>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let element" style="width: 140px;">
+            <button mat-button color="accent" (click)="openEditor(element.missionId)">Edit</button>
+            <button mat-button color="warn">Delete</button>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

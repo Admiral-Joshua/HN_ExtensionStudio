@@ -1,0 +1,270 @@
+import { Component, Inject, OnInit } from "@angular/core";
+import { HN_CompNode, HN_CompFile, HN_CompType, HN_Port } from 'src/app/models';
+import { NodesService } from '../nodes.service';
+
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import { FormGroup, FormControl } from '@angular/forms';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
+import {map, startWith} from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { MatSelectChange } from '@angular/material/select';
+import { PortsService } from '../ports.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
+class HN_CompIcon {
+    icon: string
+    name: string
+    src: string
+    
+    constructor(icon: string, name: string, src?: string) {
+        this.icon = icon;
+        this.name = name;
+        this.src = src || '';
+    }
+}
+
+@Component({
+    templateUrl: "./node.editor.component.html",
+    styleUrls: ["./node.editor.component.css"]
+})
+export class NodeEditorDialogComponent implements OnInit {
+    fileTemplates: HN_CompFile[] = [
+        new HN_CompFile('bin', 'SSHCrack.exe', '#SSH_CRACK#'),
+        new HN_CompFile('bin', 'FTPBounce.exe', '#FTP_CRACK#'),
+        new HN_CompFile('bin', 'WebServerWorm.exe', '#WEB_CRACK#'),
+        new HN_CompFile('bin', 'SMTPOverflow.exe', '#SMTP_CRACK#'),
+        new HN_CompFile('bin', 'SQLBufferOverflow.exe', '#SQL_CRACK#'),
+        new HN_CompFile('bin', 'HexClock.exe', '#HEXCLOCK_EXE#'),
+        new HN_CompFile('bin', 'Clock.exe', '#CLOCK_PROGRAM#'),
+        new HN_CompFile('bin', 'Decypher.exe', '#DECYPHER_PROGRAM#'),
+        new HN_CompFile('bin', 'DECHead.exe', '#DECHEAD_PROGRAM#'),
+        new HN_CompFile('bin', 'KBTPortTest.exe', '#MEDICAL_PROGRAM#'),
+        new HN_CompFile('bin', 'ThemeChanger.exe', '#THEMECHANGER_EXE#'),
+        new HN_CompFile('bin', 'eosDeviceScan.exe', '#EOS_SCANNER_EXE#'),
+        new HN_CompFile('bin', 'SecurityTracer.exe', '#SECURITYTRACER_PROGRAM#'),
+        new HN_CompFile('bin', 'TorrentStreamInjector.exe', '#TORRENT_EXE#'),
+        new HN_CompFile('bin', 'SSLTrojan.exe', '#SSL_EXE#'),
+        new HN_CompFile('bin', 'FTPSprint.exe', '#FTP_FAST_EXE#'),
+        new HN_CompFile('bin', 'SignalScramble.exe', '#SIGNAL_SCRAMBLER_EXE#'),
+        new HN_CompFile('bin', 'MemForensics.exe', '#MEM_FORENSICS_EXE#'),
+        new HN_CompFile('bin', 'MemDumpGenerator.exe', '#MEM_DUMP_GENERATOR#'),
+        new HN_CompFile('bin', 'PacificPortcrusher.exe', '#PACIFIC_EXE#'),
+        new HN_CompFile('bin', 'NetmapOrganizer.exe', '#NETMAP_ORGANIZER_EXE#'),
+        new HN_CompFile('bin', 'ComShell.exe', '#SHELL_CONTROLLER_EXE#'),
+        new HN_CompFile('bin', 'DNotes.exe', '#NOTES_DUMPER_EXE#'),
+        new HN_CompFile('bin', 'Tuneswap.exe', '#DLC_MUSIC_EXE#'),
+        new HN_CompFile('bin', 'Clockv2.exe', '#CLOCK_V2_EXE#')
+    ];
+
+    supportedIcons: HN_CompIcon[] = [
+        new HN_CompIcon('laptop', 'Laptop'),
+        new HN_CompIcon('chip', 'Chip'),
+        new HN_CompIcon('kellis', 'Kellis'),
+        new HN_CompIcon('tablet', 'Tablet'),
+        new HN_CompIcon('ePhone', 'ePhone'),
+        new HN_CompIcon('ePhone2', 'ePhone2'),
+        //new HN_CompIcon('', '------ DLC Only --------'),
+        new HN_CompIcon('Psylance', 'Psylance'),
+        new HN_CompIcon('PacificAir', 'Pacific Air'),
+        new HN_CompIcon('Alchemist', 'Alchemist'),
+        new HN_CompIcon('DLCLaptop', 'DLC Laptop'),
+        new HN_CompIcon('DLCPC1', 'DLC PC 1'),
+        new HN_CompIcon('DLCPC2', 'DLC PC 2'),
+        new HN_CompIcon('DLCServer', 'DLC Server')
+    ];
+
+    supportedTypes: HN_CompType[] = [
+        new HN_CompType(1, 'Corporate'),
+        new HN_CompType(2, 'Home'),
+        new HN_CompType(3, 'Server'),
+        new HN_CompType(4, 'Empty')
+    ];
+
+    allPorts: HN_Port[] = []
+    activePorts: HN_Port[] = []
+    filteredPorts: Observable<HN_Port[]>
+
+    portSearch = new FormControl('');
+
+    nodeId: number
+
+    files: HN_CompFile[] = []
+
+    nodeForm = new FormGroup({
+        id: new FormControl(''),
+        name: new FormControl(''),
+        ip: new FormControl(''),
+        typeId: new FormControl(0),
+        securityLevel: new FormControl(0),
+        allowsDefaultBootModule: new FormControl(false),
+        icon: new FormControl(''),
+        adminPass: new FormControl(''),
+        portsForCrack: new FormControl(0),
+        traceTime: new FormControl(-1),
+        tracker: new FormControl('')    
+    });
+
+    adminForm = new FormGroup({
+        adminTypeId: new FormControl(0),
+        resetPassword: new FormControl(false),
+        isSuper: new FormControl(false)
+    });
+
+    constructor(private snackbar: MatSnackBar,private service: NodesService, private portService: PortsService, @Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<NodeEditorDialogComponent>) {
+        this.nodeId = data.nodeId || 0;
+    }
+
+    addFile(event : MatSelectChange) {
+        if (event.value) {
+            this.files.push(event.value);
+        }
+    }
+
+    ngOnInit() {
+        this.service.getAllPorts().subscribe(ports => {
+            this.allPorts = ports;
+
+            // Prevent node info loading till ports are downloaded.
+            if (this.nodeId > 0) {
+                this.service.getNodeInfo(this.nodeId).subscribe(info => {
+                    this.nodeToForm(info);
+                });
+
+                this.portService.getCurrentPorts(this.nodeId).subscribe(ports => {
+                    this.activePorts = ports;
+                })
+            }
+        });
+
+        // Set-up autocomplete.
+        this.filteredPorts = this.portSearch.valueChanges
+        .pipe(
+            startWith(''),
+            map(value => this._filterPorts(value))
+        );
+    }
+
+    formToNode() : HN_CompNode {
+        let retVal = new HN_CompNode();
+
+        retVal.id = this.nodeForm.get('id').value;
+        retVal.name = this.nodeForm.get('name').value;
+        retVal.ip = this.nodeForm.get('ip').value;
+        retVal.securityLevel = this.nodeForm.get('securityLevel').value;
+        retVal.allowsDefaultBootModule = this.nodeForm.get('allowsDefaultBootModule').value;
+        retVal.icon = this.nodeForm.get('icon').value;
+        retVal.adminPass = this.nodeForm.get('adminPass').value;
+        retVal.portsForCrack = this.nodeForm.get('portsForCrack').value;
+        retVal.traceTime = this.nodeForm.get('traceTime').value;
+        retVal.tracker = this.nodeForm.get('tracker').value;
+        retVal.typeId = this.nodeForm.get('typeId').value;
+
+        // If we're creating this node, upload the files and ports as well
+        if (this.nodeId <= 0) {
+            retVal.files = [];
+            retVal.ports = this.activePorts;
+        }
+
+        return retVal;
+    }
+
+    nodeToForm(node: HN_CompNode) {
+        this.nodeForm.get('id').setValue(node.id);
+        this.nodeForm.get('name').setValue(node.name);
+        this.nodeForm.get('ip').setValue(node.ip);
+        this.nodeForm.get('securityLevel').setValue(node.securityLevel);
+        this.nodeForm.get('allowsDefaultBootModule').setValue(node.allowsDefaultBootModule);
+        this.nodeForm.get('icon').setValue(node.icon);
+        this.nodeForm.get('adminPass').setValue(node.adminPass);
+        this.nodeForm.get('portsForCrack').setValue(node.portsForCrack);
+        this.nodeForm.get('traceTime').setValue(node.traceTime);
+        this.nodeForm.get('tracker').setValue(node.tracker);
+        this.nodeForm.get('typeId').setValue(node.typeId);
+    }
+
+    cancel() {
+        this.dialogRef.close();
+    }
+
+    saveNode() {
+        let nodeInfo = this.formToNode();
+
+        if (this.nodeId > 0) {
+            this.service.updateNodeInfo(this.nodeId, nodeInfo).subscribe(info => {
+                this.dialogRef.close();
+            });
+        } else {
+            this.service.createNewNode(nodeInfo).subscribe(info => {
+                this.dialogRef.close();
+            });
+        }
+    }
+
+    removePort(port: HN_Port) {
+        // Perform update on DB.
+        if (this.nodeId > 0) {
+            this.portService.removePort(this.nodeId, port.portId).subscribe(() => {
+                // On Success - remove from GUI.
+                const index = this.activePorts.indexOf(port);
+
+                if (index >= 0) {
+                    this.activePorts.splice(index, 1);
+                }
+
+                // Notify user
+                this.snackbar.open('Port Removed', '', {
+                    duration: 1000
+                })
+            });
+        }
+    }
+
+    addPort(port: HN_Port) {
+        // Put it in the list.
+        this.activePorts.push(port);
+        
+        // Clear input
+        this.portSearch.setValue('', {emitEvent: false});
+
+        // Notify user
+        this.snackbar.open('Port Added', '', {
+            duration: 1000
+        })
+    }
+
+    selected(event: MatAutocompleteSelectedEvent): void {
+        let matchedPort = this._filterPorts(event.option.viewValue)[0];
+        
+        event.option.deselect();
+
+        // Perform update on DB.
+        if (this.nodeId > 0) {
+            this.portService.addPort(this.nodeId, matchedPort.portId).subscribe(() => {
+                this.addPort(matchedPort);
+            });
+        } else {
+            this.addPort(matchedPort);
+        }
+    }
+
+    displayNull() {
+        return null;
+    }
+
+    private _filterPorts(value: string): HN_Port[] {
+        const filterValue = value.toLowerCase();
+
+        // Remove ports we already have.
+        let newPorts = this.allPorts.filter(port => { 
+            for (var i = 0; i < this.activePorts.length; i++) {
+                if (this.activePorts[i].portId === port.portId) {
+                    return false;
+                }
+            }
+            return true;
+        });
+
+        return newPorts.filter(port => { return port.portType.toLowerCase().includes(value.toLowerCase())});
+    }
+}

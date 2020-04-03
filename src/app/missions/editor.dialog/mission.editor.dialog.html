@@ -1,0 +1,133 @@
+<mat-expansion-panel expanded>
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            Mission Info
+        </mat-panel-title>
+        <mat-panel-description>
+            Basic Information about the Mission and how the game will identify it
+        </mat-panel-description>
+    </mat-expansion-panel-header>
+    <form [formGroup]="missionForm">
+        <mat-form-field class="half-field">
+            <mat-label>
+                ID:
+            </mat-label>
+            <input matInput id="missionId" formControlName="id" placeholder="Short and snappy name for the game to identify this mission with" />
+        </mat-form-field>
+        <mat-checkbox formControlName="IsSilent">Is Silent?</mat-checkbox>
+        <mat-checkbox formControlName="activeCheck">Active Check</mat-checkbox>
+        <mat-checkbox formControlName="shouldIgnoreSenderVerification">Ignore Sender Verification</mat-checkbox>
+        <mat-form-field class="full-field">
+            <mat-label>
+                Mission Start
+            </mat-label>
+            <input matInput formControlName="missionStart" placeholder="Special Hacknet Functions to run at mission start..." />
+        </mat-form-field>
+        <mat-form-field class="full-field">
+            <mat-label>
+                Mission End
+            </mat-label>
+            <input matInput formControlName="missionEnd" placeholder="Special Hacknet Functions to run at mission end..." />
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Next Mission</mat-label>
+            <mat-select formControlName="nextMission" required>
+                <mat-option [value]="0">NONE</mat-option>
+                <mat-option *ngFor="let mission of nextMissionOptions" [value]="mission.missionId">
+                    {{mission.id}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <br/>
+    </form>
+</mat-expansion-panel>
+<mat-expansion-panel>
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            Mission Goals
+        </mat-panel-title>
+        <mat-panel-description>
+            Define what goals the player will have to complete in order to finish this mission.
+        </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <button mat-button color="primary" (click)="openGoalEditor()"><mat-icon>add</mat-icon> Add</button>
+
+    <mat-list>
+        <mat-list-item *ngFor="let goal of activeGoals; let i = index;">
+            <pre>  {{i+1}}   {{goal.typeText}}</pre>
+            <div style="float: right; display: block;"><button mat-button color="accent" (click)="openGoalEditor(goal.goalId) ">Edit</button> <button mat-button color="warn" (click)="deleteGoal(goal.goalId)">Delete</button></div>
+        </mat-list-item>
+    </mat-list>
+</mat-expansion-panel>
+<mat-expansion-panel>
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            Email
+        </mat-panel-title>
+        <mat-panel-description>
+            Email that the player will receive should they receive this mission.
+        </mat-panel-description>
+    </mat-expansion-panel-header>
+    <form [formGroup]="emailForm">
+        <mat-form-field class="full-field">
+            <mat-label>
+                Sender:
+            </mat-label>
+            <input matInput id="sender" formControlName="sender" placeholder="Whose this email from?" />
+        </mat-form-field>
+        <mat-form-field class="full-field">
+            <mat-label>
+                Subject:
+            </mat-label>
+            <input matInput id="sender" formControlName="subject" placeholder="What's the email about?" />
+        </mat-form-field>
+        <mat-form-field class="full-field">
+            <mat-label>
+                Body:
+            </mat-label>
+            <textarea rows="5" matInput id="sender" formControlName="body" placeholder="Content of the email"></textarea>
+        </mat-form-field>
+    </form>
+</mat-expansion-panel>
+<mat-expansion-panel>
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            Board Posting
+        </mat-panel-title>
+        <mat-panel-description>
+            Information that will be displayed on a mission board should this mission be presented on one.
+        </mat-panel-description>
+
+    </mat-expansion-panel-header>
+    <form [formGroup]="postingForm">
+        <mat-form-field class="full-field">
+            <mat-label>
+                Title
+            </mat-label>
+            <input matInput formControlName="title" id="title" placeholder="Short title displayed at top of posting." />
+        </mat-form-field>
+        <mat-form-field class="full-field">
+            <mat-label>
+                Content
+            </mat-label>
+            <textarea matInput formControlName="reqs" id="reqs" placeholder="Main Content of the Post"></textarea>
+        </mat-form-field>
+        <mat-form-field class="half-field">
+            <mat-label>
+                Requirements
+            </mat-label>
+            <input matInput formControlName="reqs" id="reqs" placeholder="Flags player must have to see/accept the mission" />
+        </mat-form-field>
+        <mat-form-field class="half-field">
+            <mat-label>
+                Required Rank:
+            </mat-label>
+            <input matInput formControlName="requiredRank" id="reqRank" placeholder="Minimum Rank for player to to see/accept the mission" type="number" min="0" />
+        </mat-form-field>
+    </form>
+</mat-expansion-panel>
+<mat-dialog-actions>
+    <button mat-button type="button" color="warn" (click)="cancel() ">Cancel</button>
+    <button mat-button class="float-right" type="button" color="primary" (click)="saveMission() ">{{missionId > 0 ? 'Save' : 'Create'}}</button>
+</mat-dialog-actions>
