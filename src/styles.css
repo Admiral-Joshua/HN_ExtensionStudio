@@ -34,3 +34,15 @@ h2 {
 .float-right {
     float: right;
 }
+
+.button-row {
+    margin: 12px 15px 4px;
+}
+
+.button-row button {
+    margin-right: 6px;
+}
+
+.border-bottom {
+    border-bottom: 1px solid lightgray;
+}

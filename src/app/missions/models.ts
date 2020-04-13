@@ -11,15 +11,9 @@ export class HN_Mission {
     postingId: number
 
     goals: HN_MissionGoal[]
-    email: HN_Email
 }
 
-export class HN_Email {
-    emailId: number
-    sender: string
-    subject: string
-    body: string
-}
+
 
 export class HN_BoardPost {
     postingId: number
@@ -54,4 +48,18 @@ export class HN_MissionGoal {
 export class HN_MGoalType {
     typeId: number
     typeText: string
+}
+
+export class HN_MissionBranch {
+    branchId: number
+    missionOne: number
+    missionTwo: number
+    missionName: string
+    
+    constructor(missionOne: number, missionTwo: number, missionName: string, branchId?: number) {
+        this.branchId = branchId || 0;
+        this.missionOne = missionOne;
+        this.missionTwo = missionTwo;
+        this.missionName = missionName || '';
+    }
 }

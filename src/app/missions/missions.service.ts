@@ -1,6 +1,7 @@
 import { Injectable, Inject } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
-import { HN_Email, HN_Mission, HN_MissionGoal, HN_MGoalType } from './models';
+import {HN_Mission, HN_MissionGoal, HN_MGoalType, HN_MissionBranch } from './models';
+import { HN_Email } from "./email.dialog/models";
 import { Observable } from 'rxjs';
 
 @Injectable()
@@ -23,6 +24,26 @@ export class MissionService {
 
     updateMission(missionId: number, missionData: HN_Mission) {
         return this.http.put<HN_Mission>(`${this.baseUrl}/missions/${missionId}`, missionData, {withCredentials: true});
+    }
+
+    linkEmail(missionId: number, emailId: number) {
+        return this.http.get(`${this.baseUrl}/missions/linkEmail?mission=${missionId}&email=${emailId}`, {withCredentials: true});
+    }
+
+    linkPosting(missionId: number, postingId: number) {
+        return this.http.get(`${this.baseUrl}/missions/linkPosting?mission=${missionId}&posting=${postingId}`, {withCredentials: true});
+    }
+
+    createBranch(branchReq: HN_MissionBranch): Observable<HN_MissionBranch> {
+        return this.http.post<HN_MissionBranch>(`${this.baseUrl}/missions/branch`, branchReq, {withCredentials: true});
+    }
+
+    deleteBranch(branchId: number) {
+        return this.http.delete(`${this.baseUrl}/missions/branch/${branchId}`, {withCredentials: true});
+    }
+
+    getBranches(missionId: number) : Observable<HN_MissionBranch[]> {
+        return this.http.get<HN_MissionBranch[]>(`${this.baseUrl}/missions/branch/list/${missionId}`, {withCredentials: true});
     }
 
     // GOALS API

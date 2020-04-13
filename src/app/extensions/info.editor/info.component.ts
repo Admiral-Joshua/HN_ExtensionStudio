@@ -1,5 +1,5 @@
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { ExtensionInfo, ExtensionLanguage } from '../models';
 import { ExtensionsService } from '../extensions.service';
 import { CookieService } from 'ngx-cookie-service';
@@ -7,13 +7,19 @@ import { FormGroup, FormControl } from '@angular/forms';
 
 import { MatChipInputEvent } from "@angular/material/chips";
 import {MatSnackBar} from '@angular/material/snack-bar';
-import { HN_MusicTrack } from 'src/app/models';
+import { HN_MusicTrack, HN_CompNode } from 'src/app/models';
 import { MusicService } from 'src/app/musics/music.service';
+import { HN_Mission } from 'src/app/missions/models';
+import { MissionService } from 'src/app/missions/missions.service';
+import { NodesService } from 'src/app/nodes/nodes.service';
+import { MatSelectionList } from '@angular/material/list';
 
 @Component({
     templateUrl: "./info.component.html"
 })
 export class ExtensionInfoComponent implements OnInit {
+
+    @ViewChild("visibleNodes") private visibleNodes: MatSelectionList
     public extensionId: number = 0
     supportedLanguages: ExtensionLanguage[]
     musicTracks: HN_MusicTrack[]
@@ -22,12 +28,15 @@ export class ExtensionInfoComponent implements OnInit {
 
     workshop_tags: string[] = []
 
+    possibleMissions: HN_Mission[] = []
+
     infoForm = new FormGroup({
         extensionName: new FormControl(''),
         languageId: new FormControl(''),
         allowSaves: new FormControl(false),
         description: new FormControl(''),
         startingMusicId: new FormControl(''),
+        startingMissionId: new FormControl(0),
 
         wDescriptionIsSameAsExt: new FormControl(false),
         workshop_description: new FormControl(''),
@@ -38,7 +47,10 @@ export class ExtensionInfoComponent implements OnInit {
         //workshop_id: new FormControl('')
     });
 
-    constructor(private service: ExtensionsService, private musicService: MusicService, private cookies: CookieService, private _snackbar: MatSnackBar) {
+    extensionNodes: HN_CompNode[] = [];
+    startingVisibleNodes: number[] = [];
+
+    constructor(private nodeService: NodesService, private missionService: MissionService, private service: ExtensionsService, private musicService: MusicService, private cookies: CookieService, private _snackbar: MatSnackBar) {
     }
 
     ngOnInit() {
@@ -46,6 +58,9 @@ export class ExtensionInfoComponent implements OnInit {
         let cookieExists = this.cookies.check('extId');
         if (cookieExists) {
             this.extensionId = parseInt(this.cookies.get('extId'));
+
+            // Load a list of computers available for 
+            this.refreshNodeList();
 
             // Load existing extension info (if available)
             this.loadExtensionInfo();
@@ -59,6 +74,11 @@ export class ExtensionInfoComponent implements OnInit {
             this.musicTracks = tracks;
         });
 
+        this.missionService.getMissionList().subscribe(missions => {
+            this.possibleMissions = missions;
+        });
+        
+        
         // Subscribe to events on workshop_description checkbox
         this.infoForm.get('wDescriptionIsSameAsExt').valueChanges.subscribe(val => {
             if (val) {
@@ -69,6 +89,12 @@ export class ExtensionInfoComponent implements OnInit {
                 this.infoForm.get('workshop_description').enable();
             }
         })
+    }
+
+    refreshNodeList() {
+        this.nodeService.getAllNodes(this.extensionId).subscribe(nodes => {
+            this.extensionNodes = nodes;
+        });
     }
 
     loadExtensionInfo() {
@@ -99,21 +125,31 @@ export class ExtensionInfoComponent implements OnInit {
     }
 
     infoToForm(info: ExtensionInfo) {
-        this.infoForm.get('extensionName').setValue(info.extensionName);
-        this.infoForm.get('languageId').setValue(info.languageId);
-        this.infoForm.get('allowSaves').setValue(info.allowSaves);
-        this.infoForm.get('description').setValue(info.description);
-        this.infoForm.get('startingMusicId').setValue(info.startingMusic);
+        this.infoForm.patchValue({
+            extensionName: info.extensionName,
+            languageId: info.languageId,
+            allowSaves: info.allowSaves,
+            description: info.description,
+            startingMusicId: info.startingMusic,
+            wDescriptionIsSameAsExt: info.workshop_description === info.description,
+            workshop_description: info.workshop_description,
+            workshop_language: info.workshop_language,
+            workshop_visibility: info.workshop_visibility,
+            workshop_tags: info.workshop_tags,
+            workshop_img: info.workshop_img,
+            startingMissionId: info.startingMissionId
+        });
 
-        this.infoForm.get('wDescriptionIsSameAsExt').setValue(info.workshop_description === info.description);
-
-        this.infoForm.get('workshop_description').setValue(info.workshop_description);
-        this.infoForm.get('workshop_language').setValue(info.workshop_language);
-        this.infoForm.get('workshop_visibility').setValue(info.workshop_visibility);
-        this.infoForm.get('workshop_tags').setValue(info.workshop_tags);
-        this.infoForm.get('workshop_img').setValue(info.workshop_img);
-
+        // Convert CSV tags to list of tags for chip display, filter out any empty tags.
         this.workshop_tags = (info.workshop_tags || '').split(",").filter(el => {return el.length != 0});
+
+        // Select all nodes that are currently visible at startup.
+        this.startingVisibleNodes = info.startingNodes;
+        
+    }
+
+    selectionChanged() {
+        console.log(this.visibleNodes.selectedOptions.selected)
     }
 
     formToInfo() : ExtensionInfo {
@@ -127,6 +163,7 @@ export class ExtensionInfoComponent implements OnInit {
         info.allowSaves = this.infoForm.get('allowSaves').value;
         info.description = this.infoForm.get('description').value;
         info.startingMusic = parseInt(this.infoForm.get('startingMusicId').value);
+        info.startingMissionId = parseInt(this.infoForm.get('startingMissionId').value);
 
         // If workshop description should be the same as the extension's.
         if (this.infoForm.get('wDescriptionIsSameAsExt').value) {
@@ -135,6 +172,7 @@ export class ExtensionInfoComponent implements OnInit {
         }
 
         info.workshop_tags = this.workshop_tags.join(',');
+        info.startingNodes = this.startingVisibleNodes;
 
         return info;
     }

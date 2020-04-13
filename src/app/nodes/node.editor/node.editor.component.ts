@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from "@angular/core";
 import { HN_CompNode, HN_CompFile, HN_CompType, HN_Port } from 'src/app/models';
 import { NodesService } from '../nodes.service';
 
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialogRef, MatDialog} from '@angular/material/dialog';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
@@ -11,6 +11,7 @@ import { Observable } from 'rxjs';
 import { MatSelectChange } from '@angular/material/select';
 import { PortsService } from '../ports.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { FileEditorDialogComponent } from '../file.editor/file.editor.component';
 
 class HN_CompIcon {
     icon: string
@@ -29,33 +30,6 @@ class HN_CompIcon {
     styleUrls: ["./node.editor.component.css"]
 })
 export class NodeEditorDialogComponent implements OnInit {
-    fileTemplates: HN_CompFile[] = [
-        new HN_CompFile('bin', 'SSHCrack.exe', '#SSH_CRACK#'),
-        new HN_CompFile('bin', 'FTPBounce.exe', '#FTP_CRACK#'),
-        new HN_CompFile('bin', 'WebServerWorm.exe', '#WEB_CRACK#'),
-        new HN_CompFile('bin', 'SMTPOverflow.exe', '#SMTP_CRACK#'),
-        new HN_CompFile('bin', 'SQLBufferOverflow.exe', '#SQL_CRACK#'),
-        new HN_CompFile('bin', 'HexClock.exe', '#HEXCLOCK_EXE#'),
-        new HN_CompFile('bin', 'Clock.exe', '#CLOCK_PROGRAM#'),
-        new HN_CompFile('bin', 'Decypher.exe', '#DECYPHER_PROGRAM#'),
-        new HN_CompFile('bin', 'DECHead.exe', '#DECHEAD_PROGRAM#'),
-        new HN_CompFile('bin', 'KBTPortTest.exe', '#MEDICAL_PROGRAM#'),
-        new HN_CompFile('bin', 'ThemeChanger.exe', '#THEMECHANGER_EXE#'),
-        new HN_CompFile('bin', 'eosDeviceScan.exe', '#EOS_SCANNER_EXE#'),
-        new HN_CompFile('bin', 'SecurityTracer.exe', '#SECURITYTRACER_PROGRAM#'),
-        new HN_CompFile('bin', 'TorrentStreamInjector.exe', '#TORRENT_EXE#'),
-        new HN_CompFile('bin', 'SSLTrojan.exe', '#SSL_EXE#'),
-        new HN_CompFile('bin', 'FTPSprint.exe', '#FTP_FAST_EXE#'),
-        new HN_CompFile('bin', 'SignalScramble.exe', '#SIGNAL_SCRAMBLER_EXE#'),
-        new HN_CompFile('bin', 'MemForensics.exe', '#MEM_FORENSICS_EXE#'),
-        new HN_CompFile('bin', 'MemDumpGenerator.exe', '#MEM_DUMP_GENERATOR#'),
-        new HN_CompFile('bin', 'PacificPortcrusher.exe', '#PACIFIC_EXE#'),
-        new HN_CompFile('bin', 'NetmapOrganizer.exe', '#NETMAP_ORGANIZER_EXE#'),
-        new HN_CompFile('bin', 'ComShell.exe', '#SHELL_CONTROLLER_EXE#'),
-        new HN_CompFile('bin', 'DNotes.exe', '#NOTES_DUMPER_EXE#'),
-        new HN_CompFile('bin', 'Tuneswap.exe', '#DLC_MUSIC_EXE#'),
-        new HN_CompFile('bin', 'Clockv2.exe', '#CLOCK_V2_EXE#')
-    ];
 
     supportedIcons: HN_CompIcon[] = [
         new HN_CompIcon('laptop', 'Laptop'),
@@ -102,7 +76,7 @@ export class NodeEditorDialogComponent implements OnInit {
         adminPass: new FormControl(''),
         portsForCrack: new FormControl(0),
         traceTime: new FormControl(-1),
-        tracker: new FormControl('')    
+        tracker: new FormControl(false)    
     });
 
     adminForm = new FormGroup({
@@ -111,7 +85,7 @@ export class NodeEditorDialogComponent implements OnInit {
         isSuper: new FormControl(false)
     });
 
-    constructor(private snackbar: MatSnackBar,private service: NodesService, private portService: PortsService, @Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<NodeEditorDialogComponent>) {
+    constructor(private dialog: MatDialog, private snackbar: MatSnackBar,private service: NodesService, private portService: PortsService, @Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<NodeEditorDialogComponent>) {
         this.nodeId = data.nodeId || 0;
     }
 
@@ -133,9 +107,11 @@ export class NodeEditorDialogComponent implements OnInit {
 
                 this.portService.getCurrentPorts(this.nodeId).subscribe(ports => {
                     this.activePorts = ports;
-                })
+                });
             }
         });
+
+        this.refreshFileList();
 
         // Set-up autocomplete.
         this.filteredPorts = this.portSearch.valueChanges
@@ -143,6 +119,42 @@ export class NodeEditorDialogComponent implements OnInit {
             startWith(''),
             map(value => this._filterPorts(value))
         );
+    }
+
+    refreshFileList() {
+        if (this.nodeId > 0) {
+            this.service.getFilesList(this.nodeId).subscribe(files => {
+                this.files = files;
+            });
+        }
+    }
+
+    openFileEditor(fileId?: number) {
+        let data: any = {};
+
+        if (fileId) {
+            data.fileId = fileId;
+        }
+
+        let dialogRef = this.dialog.open(FileEditorDialogComponent, {
+            data: data
+        });
+
+        dialogRef.afterClosed().subscribe((fileId) => {
+            if (fileId && this.nodeId > 0) {
+                this.service.mapFile(fileId, this.nodeId).subscribe(() => {
+                    this.refreshFileList();
+                });
+            } else {
+                this.refreshFileList();
+            }
+        });
+    }
+
+    deleteFile(fileId: number) {
+        this.service.deleteFile(fileId).subscribe(() => {
+            this.refreshFileList();
+        });
     }
 
     formToNode() : HN_CompNode {

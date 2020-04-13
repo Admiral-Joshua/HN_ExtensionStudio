@@ -2,6 +2,7 @@ import { Injectable, Inject } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from 'rxjs';
 import { ExtensionInfo, ExtensionLanguage } from './models';
+import { HN_CompNode } from '../models';
 
 @Injectable()
 export class ExtensionsService {
@@ -30,6 +31,17 @@ export class ExtensionsService {
 
     getAvailableLanguages() {
         return this.http.get<ExtensionLanguage[]>(`${this.baseUrl}/extensions/languages`);
+    }
+
+    getStartingNodes() {
+        return this.http.get<HN_CompNode[]>(`${this.baseUrl}/extensions/startingNodes/list`, {withCredentials: true});
+    }
+
+    enableVisibleAtStartup(nodeId: number) {
+        return this.http.get(`${this.baseUrl}/extensions/startingNodes/visible?node=${nodeId}`, {withCredentials: true});
+    }
+    disableVisibleAtStartup(nodeId: number) {
+        return this.http.get(`${this.baseUrl}/extensions/startingNodes/invisible?node=${nodeId}`, {withCredentials: true});
     }
 
 }

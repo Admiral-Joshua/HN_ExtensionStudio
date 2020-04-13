@@ -1,11 +1,12 @@
 import { Component, OnInit, Inject, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MissionService } from '../missions.service';
-import { HN_Mission, HN_MissionGoal } from '../models';
+import { HN_Mission, HN_MissionGoal, HN_MissionBranch } from '../models';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from "@angular/material/dialog";
 import { GoalEditorDialogComponent } from '../goal.editor/goal.editor.dialog';
 import { DeleteConfirmationComponent } from 'src/app/dialogs/deleteConfirmDialog/delete.confirmation.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSelectChange } from '@angular/material/select';
 
 @Component({
     templateUrl: "mission.editor.dialog.html"
@@ -30,16 +31,13 @@ export class MissionEditorDialogComponent implements OnInit {
         body: new FormControl('')
     })
 
-    postingForm = new FormGroup({
-        title: new FormControl(''),
-        reqs: new FormControl(''),
-        content: new FormControl(''),
-        requiredRank: new FormControl(0)
-    })
 
     activeGoals: HN_MissionGoal[] = []
 
     nextMissionOptions: HN_Mission[] = [];
+
+    branchOptions: HN_Mission[] = [];
+    missionBranches: HN_MissionBranch[] = [];
 
     constructor(private snackbar: MatSnackBar, private changeDetectorRefs: ChangeDetectorRef, private dialog: MatDialog, private service: MissionService, private dialogRef: MatDialogRef<MissionEditorDialogComponent>, @Inject(MAT_DIALOG_DATA) private data: any) {
         if (data.missionId) {
@@ -50,6 +48,20 @@ export class MissionEditorDialogComponent implements OnInit {
     ngOnInit() {
         this.service.getMissionList(this.missionId).subscribe(missionList => {
             this.nextMissionOptions = missionList;
+        });
+        this.service.getMissionList(this.missionId).subscribe(missionList => {
+            this.branchOptions = missionList;
+
+            this.service.getBranches(this.missionId).subscribe(branches => {
+                branches.forEach(item => {
+                    let index = this.branchOptions.findIndex(option => option.missionId === item.missionTwo);
+                    if (index > -1) {
+                        this.branchOptions.splice(index, 1);
+                    }
+                });
+
+                this.missionBranches = branches;
+            })
         });
 
         if (this.missionId > 0) {
@@ -64,6 +76,37 @@ export class MissionEditorDialogComponent implements OnInit {
         this.service.getMissionGoals(this.missionId).subscribe(goals => {
             this.activeGoals = goals;
         });
+    }
+
+    addToBranches(e: MatSelectChange) {
+        let mission = this.branchOptions.find(item => item.missionId == e.value);
+        let idx = this.branchOptions.findIndex(item => item.missionId == e.value);
+
+        if (this.missionId > 0) {
+            let branch = new HN_MissionBranch(this.missionId, mission.missionId, mission.id);
+
+            this.service.createBranch(branch).subscribe(branch => {
+                let item = this.branchOptions.splice(idx, 1)[0];
+                this.missionBranches.push(branch);
+            });
+        }
+    }
+
+    removeFromBranches(idx: number, branch: HN_MissionBranch) {
+        if (this.missionId > 0 && branch.branchId > 0) {
+            this.service.deleteBranch(branch.branchId).subscribe(() => {
+                // SUCCESS - remove from GUI
+                let item = this.missionBranches.splice(idx, 1)[0];
+
+                let mission = this.nextMissionOptions.find(miss => {
+                    return miss.missionId == item.missionTwo
+                });
+
+                if (mission) {
+                    this.branchOptions.push(mission);
+                }
+            });
+        }
     }
 
     formToMission(): HN_Mission {

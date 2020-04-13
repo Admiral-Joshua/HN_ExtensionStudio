@@ -63,69 +63,26 @@
 <mat-expansion-panel>
     <mat-expansion-panel-header>
         <mat-panel-title>
-            Email
+            Branches
         </mat-panel-title>
         <mat-panel-description>
-            Email that the player will receive should they receive this mission.
+            Other possible missions & outcomes based on actions the player takes.
         </mat-panel-description>
     </mat-expansion-panel-header>
-    <form [formGroup]="emailForm">
-        <mat-form-field class="full-field">
-            <mat-label>
-                Sender:
-            </mat-label>
-            <input matInput id="sender" formControlName="sender" placeholder="Whose this email from?" />
-        </mat-form-field>
-        <mat-form-field class="full-field">
-            <mat-label>
-                Subject:
-            </mat-label>
-            <input matInput id="sender" formControlName="subject" placeholder="What's the email about?" />
-        </mat-form-field>
-        <mat-form-field class="full-field">
-            <mat-label>
-                Body:
-            </mat-label>
-            <textarea rows="5" matInput id="sender" formControlName="body" placeholder="Content of the email"></textarea>
-        </mat-form-field>
-    </form>
-</mat-expansion-panel>
-<mat-expansion-panel>
-    <mat-expansion-panel-header>
-        <mat-panel-title>
-            Board Posting
-        </mat-panel-title>
-        <mat-panel-description>
-            Information that will be displayed on a mission board should this mission be presented on one.
-        </mat-panel-description>
 
-    </mat-expansion-panel-header>
-    <form [formGroup]="postingForm">
-        <mat-form-field class="full-field">
-            <mat-label>
-                Title
-            </mat-label>
-            <input matInput formControlName="title" id="title" placeholder="Short title displayed at top of posting." />
-        </mat-form-field>
-        <mat-form-field class="full-field">
-            <mat-label>
-                Content
-            </mat-label>
-            <textarea matInput formControlName="reqs" id="reqs" placeholder="Main Content of the Post"></textarea>
-        </mat-form-field>
-        <mat-form-field class="half-field">
-            <mat-label>
-                Requirements
-            </mat-label>
-            <input matInput formControlName="reqs" id="reqs" placeholder="Flags player must have to see/accept the mission" />
-        </mat-form-field>
-        <mat-form-field class="half-field">
-            <mat-label>
-                Required Rank:
-            </mat-label>
-            <input matInput formControlName="requiredRank" id="reqRank" placeholder="Minimum Rank for player to to see/accept the mission" type="number" min="0" />
-        </mat-form-field>
-    </form>
+    <mat-form-field class="half-field">
+        <mat-label>
+            Add Mission
+        </mat-label>
+        <mat-select (selectionChange)="addToBranches($event)">
+            <mat-option *ngFor="let mission of branchOptions" [value]="mission.missionId">{{mission.id}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-list>
+        <mat-list-item *ngFor="let branch of missionBranches; let i = index">{{branch.missionName}}<button (click)="removeFromBranches(i, branch)" mat-button color="warn">X</button></mat-list-item>
+    </mat-list>
+
 </mat-expansion-panel>
 <mat-dialog-actions>
     <button mat-button type="button" color="warn" (click)="cancel() ">Cancel</button>

@@ -32,9 +32,10 @@ export class HN_CompNode {
     traceTime: number
     files: HN_CompFile[]
     ports: HN_Port[]
-    tracker: string
+    tracker: boolean
 
     adminInfoId: number // TODO: Proper Admin Handling
+    visibleAtStartup: boolean
 }
 
 export class HN_Port {
@@ -49,9 +50,10 @@ export class HN_CompFile {
     name: string
     contents: string
 
-    constructor(path: string, name: string, contents?: string) {
+    constructor(path: string, name: string, contents?: string, fileId?: number) {
         this.path = path;
         this.name = name;
         this.contents = contents || '';
+        this.fileId = fileId;
     }
 }

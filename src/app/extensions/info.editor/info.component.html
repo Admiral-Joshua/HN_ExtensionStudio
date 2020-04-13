@@ -48,6 +48,30 @@
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
+                <mat-form-field>
+                    <mat-label>
+                        Starting Mission
+                    </mat-label>
+                    <mat-select formControlName="startingMissionId">
+                        <mat-option *ngFor="let mission of possibleMissions" [value]="mission.missionId">{{mission.id}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-expansion-panel>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Starting Nodes
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        Describe which computers are going to be visible at the beginning of the extension
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <mat-selection-list style="max-height: 150px; overflow-y: auto;" #visibleNodes [(ngModel)]="startingVisibleNodes" [ngModelOptions]="{standalone: true}">
+                    <mat-list-option *ngFor="let node of extensionNodes" [value]="node.nodeId">
+                        {{node.id}}
+                    </mat-list-option>
+                </mat-selection-list>
+
             </mat-expansion-panel>
             <mat-expansion-panel>
                 <mat-expansion-panel-header>

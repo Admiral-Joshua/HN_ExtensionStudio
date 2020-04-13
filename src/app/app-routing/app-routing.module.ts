@@ -8,6 +8,7 @@ import { NodeMapComponent } from '../nodes/nodes.component';
 import { NodeEditorDialogComponent } from '../nodes/node.editor/node.editor.component';
 import { MusicManagerComponent } from '../musics/music.manager/music.manager.component';
 import { MissionListComponent } from '../missions/mission.list.component';
+import { ThemeListComponent } from '../themes/theme.list.component';
 
 const routes: Routes = [
   {
@@ -33,6 +34,10 @@ const routes: Routes = [
   {
     path: "missions",
     component: MissionListComponent
+  },
+  {
+    path: "themes",
+    component: ThemeListComponent
   }
 ];
 

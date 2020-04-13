@@ -1,0 +1,31 @@
+<form [formGroup]="postForm">
+    <mat-form-field class="full-field">
+        <mat-label>
+            Title
+        </mat-label>
+        <input matInput formControlName="title" id="title" placeholder="Short title displayed at top of posting." required />
+    </mat-form-field>
+    <mat-form-field class="full-field">
+        <mat-label>
+            Content
+        </mat-label>
+        <textarea rows="6" matInput formControlName="content" id="content" placeholder="Main Content of the Post" required></textarea>
+    </mat-form-field>
+    <mat-form-field class="half-field">
+        <mat-label>
+            Requirements
+        </mat-label>
+        <input matInput formControlName="reqs" id="reqs" placeholder="Flags player must have to see/accept the mission" />
+    </mat-form-field>
+    <mat-form-field class="half-field">
+        <mat-label>
+            Required Rank:
+        </mat-label>
+        <input matInput formControlName="requiredRank" id="reqRank" placeholder="Minimum Rank for player to to see/accept the mission" type="number" min="0" />
+    </mat-form-field>
+</form>
+<mat-dialog-actions>
+    <button mat-button (click)="close()" color="warn">Cancel</button>
+    <button mat-button (click)="savePosting()" color="primary">{{postingId > 0 ? 'Save' : 'Create'}}</button>
+    <button mat-button (click)="deletePosting()" color="warn" title="Delete this posting and Remove it from the Mission">Delete</button>
+</mat-dialog-actions>

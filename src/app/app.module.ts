@@ -52,11 +52,19 @@ import { MissionService } from './missions/missions.service';
 import { MissionEditorDialogComponent } from './missions/editor.dialog/mission.editor.dialog';
 import { MissionListComponent } from './missions/mission.list.component';
 import { GoalEditorDialogComponent } from './missions/goal.editor/goal.editor.dialog';
+import { EmailDialogComponent } from './missions/email.dialog/email.dialog.component';
+import { EmailService } from './missions/email.dialog/email.service';
+import { ThemeListComponent } from './themes/theme.list.component';
+import { ThemesService } from './themes/themes.service';
+import { ThemeEditorComponent } from './themes/editor/theme.editor.component';
+import { PostingDialogComponent } from './missions/posting.dialog/posting.dialog.component';
+import { BoardPostingService } from './missions/posting.dialog/posting.service';
+import { FileEditorDialogComponent } from "./nodes/file.editor/file.editor.component";
 
 
 export function getAuthToken() {
   //return localStorage.getItem("auth");
-  return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODYwMTI3MTgsInVzZXJJZCI6NSwiaWF0IjoxNTg1OTI2MzE4fQ.235OMXP1ZHTBX7m1yUJ7m7wGsRYyDs3gS8LRRvOYc7M";
+  return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODY4NjY1NjAsInVzZXJJZCI6NSwiaWF0IjoxNTg2NzgwMTYwfQ.m0Ams2MwVxikps8TPugAQTb5cLT5qnnITCjQEt0HEhY";
 }
 
 @NgModule({
@@ -72,7 +80,12 @@ export function getAuthToken() {
     MissionEditorDialogComponent,
     MusicManagerComponent,
     MusicUploadDialogComponent,
-    GoalEditorDialogComponent
+    GoalEditorDialogComponent,
+    EmailDialogComponent,
+    ThemeListComponent,
+    ThemeEditorComponent,
+    PostingDialogComponent,
+    FileEditorDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -113,14 +126,21 @@ export function getAuthToken() {
     NodesService,
     CookieService,
     PortsService,
-    MissionService
+    MissionService,
+    EmailService,
+    ThemesService,
+    BoardPostingService
   ],
   bootstrap: [AppComponent],
   entryComponents: [DeleteConfirmationComponent,
     NodeEditorDialogComponent,
     MusicUploadDialogComponent,
     MissionEditorDialogComponent,
-    GoalEditorDialogComponent]
+    GoalEditorDialogComponent,
+    EmailDialogComponent,
+    ThemeEditorComponent,
+    PostingDialogComponent,
+    FileEditorDialogComponent]
 })
 export class AppModule { }
 

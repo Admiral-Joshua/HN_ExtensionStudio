@@ -1,0 +1,106 @@
+<mat-dialog-content>
+    <mat-expansion-panel expanded>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Email Info
+            </mat-panel-title>
+            <mat-panel-description>
+                Information about who the email is from and what it will contain
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+        <form [formGroup]="emailForm">
+            <mat-form-field class="full-field">
+                <mat-label>
+                    Sender:
+                </mat-label>
+                <input matInput id="sender" formControlName="sender" placeholder="Whose this email from?" />
+            </mat-form-field>
+            <mat-form-field class="full-field">
+                <mat-label>
+                    Subject:
+                </mat-label>
+                <input matInput id="sender" formControlName="subject" placeholder="What's the email about?" />
+            </mat-form-field>
+            <mat-form-field class="full-field">
+                <mat-label>
+                    Body:
+                </mat-label>
+                <textarea rows="8" matInput id="sender" formControlName="body" placeholder="Content of the email"></textarea>
+            </mat-form-field>
+        </form>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Attachments
+            </mat-panel-title>
+            <mat-panel-description>
+                Configure what attachments should be present at the bottom of this email.
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <h4>Existing Attachments</h4>
+        <p matRipple class="border-bottom" style="letter-spacing: 1.2em; color: gray; height: 40px; width: 100%; text-align: center;" *ngIf="emailAttachments.length < 1">NONE</p>
+        <div matRipple class="full-field border-bottom" *ngFor="let attachment of emailAttachments; let i = index">
+            <pre><b>{{i+1}}</b>      <em>{{resolveTypeText(attachment.typeId)}}</em></pre>
+            <div class="btn-group float-right">
+                <button mat-button color="accent">Edit</button>
+                <button mat-button color="warn" (click)="removeAttachment(attachment)">Delete</button>
+            </div>
+        </div>
+
+
+        <form [formGroup]="attachmentForm">
+            <mat-form-field class="full-field">
+                <mat-label>
+                    Attachment Type
+                </mat-label>
+                <mat-select formControlName="attachmentType" (selectionChange)="updateVisibleFields()" required>
+                    <mat-option *ngFor="let type of attachmentTypes" [value]="type.typeId">{{type.typeText}}</mat-option>
+                </mat-select>
+                <mat-hint>
+                    To add new one, select an attachment type and additional fields will display below.
+                </mat-hint>
+            </mat-form-field>
+            <mat-form-field *ngIf="visibleFields.includes('title')" class="full-field">
+                <mat-label>
+                    Title
+                </mat-label>
+                <input matInput name="title" formControlName="title" placeholder="Short text next to note in email">
+            </mat-form-field>
+            <mat-form-field *ngIf="visibleFields.includes('content')" class="full-field">
+                <mat-label>
+                    Content
+                </mat-label>
+                <textarea matInput formControlName="content" rows="4" placeholder="Text that the note will display in-game"></textarea>
+            </mat-form-field>
+            <mat-form-field *ngIf="visibleFields.includes('comp')" class="half-field">
+                <mat-label>
+                    Computer
+                </mat-label>
+                <mat-select formControlName="comp">
+                    <mat-option *ngFor="let node of possibleNodes" [value]="node.id">{{node.id}}</mat-option>
+                </mat-select>
+            </mat-form-field><br/>
+            <mat-form-field *ngIf="visibleFields.includes('user')" class="half-field">
+                <mat-label>
+                    Username
+                </mat-label>
+                <input matInput placeholder="Username" formControlName="user" />
+            </mat-form-field><br/>
+            <mat-form-field *ngIf="visibleFields.includes('pass')" class="half-field">
+                <mat-label>
+                    Password
+                </mat-label>
+                <input matInput placeholder="Password" formControlName="pass" />
+            </mat-form-field>
+        </form>
+        <button mat-button color="primary" (click)="addAttachment()" [disabled]="!attachmentForm.valid">Add</button>
+
+    </mat-expansion-panel>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button color="warn" (click)="close()">Cancel</button>
+    <button mat-button color="primary" (click)="saveEmail()">Save</button>
+    <button mat-button color="warn" (click)="deleteEmail()">Delete</button>
+</mat-dialog-actions>

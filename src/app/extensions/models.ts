@@ -1,3 +1,5 @@
+import { HN_CompNode } from '../models'
+
 /*
 "extensionId": 1,
 "extensionName": "Test Extension 1",
@@ -29,6 +31,7 @@ export class ExtensionInfo {
     workshop_tags: string
     workshop_img: string
     workshop_id: string
+    startingNodes: number[]
 
     Language: string
 }
