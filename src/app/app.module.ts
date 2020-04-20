@@ -60,6 +60,11 @@ import { ThemeEditorComponent } from './themes/editor/theme.editor.component';
 import { PostingDialogComponent } from './missions/posting.dialog/posting.dialog.component';
 import { BoardPostingService } from './missions/posting.dialog/posting.service';
 import { FileEditorDialogComponent } from "./nodes/file.editor/file.editor.component";
+import { ActionsService } from './actions/actions.service';
+import { ActionSetListComponent } from './actions/actionset.list.component';
+import { HNFileSelectorComponent } from './elems/file-selector/file-selector.component';
+import { ActionsListComponent } from './actions/action.viewer/action.list.component';
+import { ActionEditorComponent } from './actions/action.editor/action.edtor.component';
 
 
 export function getAuthToken() {
@@ -85,7 +90,11 @@ export function getAuthToken() {
     ThemeListComponent,
     ThemeEditorComponent,
     PostingDialogComponent,
-    FileEditorDialogComponent
+    FileEditorDialogComponent,
+    HNFileSelectorComponent,
+    ActionSetListComponent,
+    ActionsListComponent,
+    ActionEditorComponent
   ],
   imports: [
     BrowserModule,
@@ -129,7 +138,8 @@ export function getAuthToken() {
     MissionService,
     EmailService,
     ThemesService,
-    BoardPostingService
+    BoardPostingService,
+    ActionsService
   ],
   bootstrap: [AppComponent],
   entryComponents: [DeleteConfirmationComponent,
@@ -140,7 +150,9 @@ export function getAuthToken() {
     EmailDialogComponent,
     ThemeEditorComponent,
     PostingDialogComponent,
-    FileEditorDialogComponent]
+    FileEditorDialogComponent,
+    ActionsListComponent,
+    ActionEditorComponent]
 })
 export class AppModule { }
 

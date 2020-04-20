@@ -1,0 +1,70 @@
+<h2>{{actionId > 0 ? 'Edit Action' : 'Create New Action'}}</h2>
+<form [formGroup]="actionForm">
+    <mat-form-field class="full-field">
+        <mat-label>
+            Action Type:
+        </mat-label>
+        <mat-select placeholder="Type of action to perform" formControlName="typeId">
+            <mat-option *ngFor="let type of actionTypes" [value]="type.typeId">{{type.typeText}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <!-- OPTIONAL FIELDS - SWITCHED ON OR OFF DEPENDING ON SELECTED TYPE -->
+    <mat-form-field *ngIf="visibleFields.includes('actionSet')" class="full-field">
+        <mat-label>
+            Action Set to Load:
+        </mat-label>
+        <mat-select formControlName="loadActionSetId">
+            <mat-option *ngFor="let actionSet of possibleActionSets" [value]="actionSet.actionSetId">{{actionSet.name}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="visibleFields.includes('mission')" class="full-field">
+        <mat-label>
+            Mission to Load:
+        </mat-label>
+        <mat-select formControlName="loadMissionId">
+            <mat-option *ngFor="let mission of possibleMissions" [value]="mission.missionId">{{mission.id}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="visibleFields.includes('theme')" class="full-field">
+        <mat-label>
+            Theme:
+        </mat-label>
+        <mat-select formControlName="switchThemeId">
+            <mat-option *ngFor="let theme of possibleThemes" [value]="theme.themeId">{{theme.id}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <hn-file-selector *ngIf="visibleFields.includes('file')" (fileSelected)="selectFile($event)"></hn-file-selector>
+
+    <mat-form-field *ngIf="visibleFields.includes('comp')">
+        <mat-label>
+            Target Computer:
+        </mat-label>
+        <mat-select formControlName="targetCompId">
+            <mat-option *ngFor="let node of possibleNodes" [value]="node.nodeId">{{node.id}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="visibleFields.includes('function')" class="half-field">
+        <mat-label>
+            Function Type:
+        </mat-label>
+        <mat-select formControlName="functionId">
+            <mat-option *ngFor="let function of possibleFunctions" [value]="function.functionId">{{function.funcDisplayName}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field *ngIf="visibleFields.includes('function')" class="half-field">
+        <mat-label>
+            Function Value:
+        </mat-label>
+        <input matInput formControlName="functionValue" placeholder="E.g. 7" />
+    </mat-form-field>
+</form>
+
+<mat-dialog-actions>
+    <button mat-button color="warn" (click)="close()">Cancel</button>
+    <button mat-button color="primary">{{actionId > 0 ? 'Save' : 'Create'}}</button>
+</mat-dialog-actions>

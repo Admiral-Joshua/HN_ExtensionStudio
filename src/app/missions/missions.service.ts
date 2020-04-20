@@ -1,6 +1,6 @@
 import { Injectable, Inject } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
-import {HN_Mission, HN_MissionGoal, HN_MGoalType, HN_MissionBranch } from './models';
+import {HN_Mission, HN_MissionGoal, HN_MGoalType, HN_MissionBranch, HN_MissionFunction } from './models';
 import { HN_Email } from "./email.dialog/models";
 import { Observable } from 'rxjs';
 
@@ -44,6 +44,10 @@ export class MissionService {
 
     getBranches(missionId: number) : Observable<HN_MissionBranch[]> {
         return this.http.get<HN_MissionBranch[]>(`${this.baseUrl}/missions/branch/list/${missionId}`, {withCredentials: true});
+    }
+
+    getFunctionsList() : Observable<HN_MissionFunction[]> {
+        return this.http.get<HN_MissionFunction[]>(`${this.baseUrl}/missions/functions/list`, {withCredentials: true});
     }
 
     // GOALS API

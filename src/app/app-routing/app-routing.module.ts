@@ -9,6 +9,7 @@ import { NodeEditorDialogComponent } from '../nodes/node.editor/node.editor.comp
 import { MusicManagerComponent } from '../musics/music.manager/music.manager.component';
 import { MissionListComponent } from '../missions/mission.list.component';
 import { ThemeListComponent } from '../themes/theme.list.component';
+import { ActionSetListComponent } from '../actions/actionset.list.component';
 
 const routes: Routes = [
   {
@@ -38,6 +39,10 @@ const routes: Routes = [
   {
     path: "themes",
     component: ThemeListComponent
+  },
+  {
+    path: "actions",
+    component: ActionSetListComponent
   }
 ];
 

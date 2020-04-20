@@ -1,0 +1,46 @@
+<h2>{{actionSetId > 0 ? 'Editing' : 'Create new'}} Action Set {{actionSetId > 0 ? ': ' + actionSetInfo.name : ''}}</h2>
+
+<mat-expansion-panel expanded>
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            Action Set Info
+        </mat-panel-title>
+        <mat-panel-description>
+            Information to describe this action set
+        </mat-panel-description>
+    </mat-expansion-panel-header>
+    <form [formGroup]="infoForm">
+        <mat-form-field class="full-field">
+            <mat-label>
+                Name
+            </mat-label>
+            <input matInput type="text" name="name" formControlName="name" placeholder="name" />
+        </mat-form-field>
+    </form>
+</mat-expansion-panel>
+<mat-expansion-panel>
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            Actions
+        </mat-panel-title>
+        <mat-panel-description>
+            What actions will be performed within this action set?
+        </mat-panel-description>
+    </mat-expansion-panel-header>
+    <div class="btn-group">
+        <button mat-flat-button color="primary" (click)="openEditor()">Add</button>
+    </div>
+
+    <div matRipple *ngFor="let action of actions; let i = index">
+        <p>{{i + 1}} {{action.typeText}}</p>
+        <div class="btn-group float-right">
+            <button mat-button color="accent">Edit</button>
+            <button mat-button color="warn" (click)="deleteAction(action)">Delete</button>
+        </div>
+    </div>
+</mat-expansion-panel>
+
+<mat-dialog-actions>
+    <button mat-button color="warn" (click)="close()">Cancel</button>
+    <button mat-button color="primary" (click)="saveActionSet()">{{actionSetId > 0 ? 'Save' : 'Create'}}</button>
+</mat-dialog-actions>

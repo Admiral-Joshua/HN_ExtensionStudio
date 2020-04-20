@@ -63,3 +63,9 @@ export class HN_MissionBranch {
         this.missionName = missionName || '';
     }
 }
+
+export class HN_MissionFunction {
+    functionId: number
+    funcDisplayName: string
+
+}
