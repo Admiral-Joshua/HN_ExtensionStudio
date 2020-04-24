@@ -1,13 +1,34 @@
 <mat-card class="card-container" style="margin:2em;">
     <mat-card-header>
-        <mat-card-title> Extension Studio </mat-card-title>
+        <mat-card-title> Hacknet: Extension Studio </mat-card-title>
     </mat-card-header>
     <mat-card-content>
         <div style="margin: 4px 20px;">
-            <p>The easy and fast way to create a Hacknet Extension now. Courtesy of the Web!</p>
+            <p>The Extension Studio is a quick and easy way to get started with your Hacknet Extensions.<br/>Designed from the ground up to utilize a RESTful API and a strong relational database, to provide you with an easy start-up.<br/> With linking support
+                between <b>Missions</b>, <b>Emails</b>, <b>Board Postings</b>, <b>Actions</b>, <b>Computers</b> and their security and much <b>more!</b><br/>Whilst we don't have any intentions of <i>completely</i>replacing good ol' fashioned coding (though
+                it's in theory possible) we hope to make your life easier a bit easier with getting your extension started.
+                <br/><br/>Site Status: <b style="color: red;">Current Unavailable</b> -> Sorry, but we're still working on some things right now, so please sit tight!</p>
         </div>
     </mat-card-content>
     <mat-card-actions align="end">
-        <button mat-raised-button color="primary" routerLink="/selector">Get Started</button>
+        <button mat-raised-button disabled>Get Started</button>
+        <!--routerLink="/selector"-->
     </mat-card-actions>
 </mat-card>
+<mat-card class="card-container" style="margin:2em;">
+    <mat-card-header>
+        <mat-card-title>
+            Think you can do better than us?
+        </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div style="margin: 4px 20px;">
+            <p>Sadly we're still working on our UI editor but we're excited to tell you about our server back-end.<br/>Whilst perhaps not as exciting for some we've really made an effort to utilize OpenAPI v3.<br/>This provides us with a framework that we
+                can publicly make available for anyone to develop a user interface for! If you're not familiar with RESTful API services then we can't really help you <b>just</b> yet!<br/><br/>But if you are, and want to get started, check out the docs
+                here!</p>
+        </div>
+    </mat-card-content>
+    <mat-card-actions align="end">
+        <button mat-raised-button color="primary" routerLink="/docs">Go To Docs</button>
+    </mat-card-actions>
+</mat-card>"

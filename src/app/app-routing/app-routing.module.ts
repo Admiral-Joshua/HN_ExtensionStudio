@@ -10,13 +10,22 @@ import { MusicManagerComponent } from '../musics/music.manager/music.manager.com
 import { MissionListComponent } from '../missions/mission.list.component';
 import { ThemeListComponent } from '../themes/theme.list.component';
 import { ActionSetListComponent } from '../actions/actionset.list.component';
+import { DocumentationComponent } from '../documentation.component/docs.component';
 
 const routes: Routes = [
   {
-      path: '',
-      component: LandingComponent,
+    path: 'home',
+    component: LandingComponent
   },
   {
+    path: 'docs',
+    component: DocumentationComponent
+  },
+  {
+    path: '**',
+    redirectTo: '/home'
+  }
+  /*{
     path: 'selector',
     component: ExtensionSelectorComponent
   },
@@ -43,7 +52,7 @@ const routes: Routes = [
   {
     path: "actions",
     component: ActionSetListComponent
-  }
+  }*/
 ];
 
 @NgModule({

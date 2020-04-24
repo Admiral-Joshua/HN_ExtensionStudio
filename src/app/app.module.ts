@@ -65,6 +65,7 @@ import { ActionSetListComponent } from './actions/actionset.list.component';
 import { HNFileSelectorComponent } from './elems/file-selector/file-selector.component';
 import { ActionsListComponent } from './actions/action.viewer/action.list.component';
 import { ActionEditorComponent } from './actions/action.editor/action.edtor.component';
+import { DocumentationComponent } from './documentation.component/docs.component';
 
 
 export function getAuthToken() {
@@ -94,7 +95,8 @@ export function getAuthToken() {
     HNFileSelectorComponent,
     ActionSetListComponent,
     ActionsListComponent,
-    ActionEditorComponent
+    ActionEditorComponent,
+    DocumentationComponent
   ],
   imports: [
     BrowserModule,
