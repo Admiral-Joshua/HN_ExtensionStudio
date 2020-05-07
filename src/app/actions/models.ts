@@ -1,7 +1,7 @@
 export class HN_ActionSet {
     actionSetId: number
     name: string
-    count: number
+    actions: HN_Action[] = []
 
     constructor(name: string) {
         this.name = name;

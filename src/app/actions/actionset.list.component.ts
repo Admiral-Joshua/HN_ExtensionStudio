@@ -1,4 +1,4 @@
-import { Component } from "@angular/core"
+import { Component, OnInit } from "@angular/core"
 import { HN_ActionSet } from './models'
 import { ActionsService } from './actions.service'
 import { MatDialog } from '@angular/material/dialog'
@@ -8,14 +8,18 @@ import { ActionsListComponent } from './action.viewer/action.list.component'
 @Component({
     templateUrl: "./actionset.list.component.html"
 })
-export class ActionSetListComponent {
+export class ActionSetListComponent implements OnInit {
     columns: string[] = ["name", "actionCount"]
 
     actionSets: HN_ActionSet[]
 
     constructor(private dialog: MatDialog, private service: ActionsService) {}
 
-    fetchActionSummary(actionSetId: number) {
+    ngOnInit() {
+        this.fetchActionSummary();
+    }
+
+    fetchActionSummary() {
         this.service.fetchActionSets().subscribe(summary => {
             this.actionSets = summary;
         })
@@ -23,10 +27,14 @@ export class ActionSetListComponent {
 
     openEditor(actionSet?: HN_ActionSet) {
 
-        this.dialog.open(ActionsListComponent, {
+        let dialogRef = this.dialog.open(ActionsListComponent, {
             data: actionSet,
             width: "90%"
         })
+
+        dialogRef.afterClosed().subscribe(() => {
+            this.fetchActionSummary();
+        });
     }
 
 }

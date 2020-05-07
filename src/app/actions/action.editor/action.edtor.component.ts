@@ -113,13 +113,23 @@ export class ActionEditorComponent implements OnInit {
     formToAction() : HN_Action {
         let retVal = new HN_Action();
 
-        
+        Object.assign(retVal, this.actionForm.value);
+        retVal.actionId = this.actionId;
 
         return retVal;
     }
     
     saveAction() {
-
+        let actionInfo = this.formToAction();
+        if (this.actionId > 0) {
+            this.service.updateAction(this.actionId, actionInfo).subscribe((res) => {
+                this.dialogRef.close(res);
+            });
+        } else {
+            this.service.createAction(actionInfo).subscribe(res => {
+                this.dialogRef.close(res);
+            })
+        }
     }
 
     close() {

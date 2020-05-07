@@ -69,7 +69,7 @@ import { ActionEditorComponent } from './actions/action.editor/action.edtor.comp
 
 export function getAuthToken() {
   //return localStorage.getItem("auth");
-  return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODY4NjY1NjAsInVzZXJJZCI6NSwiaWF0IjoxNTg2NzgwMTYwfQ.m0Ams2MwVxikps8TPugAQTb5cLT5qnnITCjQEt0HEhY";
+  return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODgzNzA2MDMsInVzZXJJZCI6NSwiaWF0IjoxNTg4Mjg0MjAzfQ.kwQYZxcbLH3e3Zi0RSH2f6ezyDX8i3eF-R4QKNhOieU";
 }
 
 @NgModule({

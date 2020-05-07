@@ -52,14 +52,46 @@ export class ActionsListComponent implements OnInit {
             data.actionId = actionId;
         }
 
-        this.dialog.open(ActionEditorComponent, {
+        let dialogRef = this.dialog.open(ActionEditorComponent, {
             data: data,
             width: "85%"
+        });
+
+        dialogRef.afterClosed().subscribe(res => {
+            // If we got a new or updated action back...
+            if (res) {
+                let index = this.actions.findIndex(action => action.actionId = res.actionId);
+
+                if (index > -1) {
+                    this.actions.splice(index, 1, res);
+                } else {
+                    this.actions.push(res);
+                }
+            }
         })
     }
 
-    saveActionSet() {
+    formToActionSet() : HN_ActionSet {
+        let retVal = new HN_ActionSet(this.actionSetInfo.name);
 
+        retVal.name = this.infoForm.get('name').value;
+        retVal.actions = this.actions;
+
+        return retVal;
+    }
+
+    saveActionSet() {
+        let actionSetInfo = this.formToActionSet();
+
+        if (this.actionSetId > 0) {
+            this.service.updateActionSet(this.actionSetId, actionSetInfo).subscribe(res => {
+                this.close();
+            });
+        } else {
+            this.service.createActionSet(actionSetInfo).subscribe(res => {
+                this.close();
+            });
+        }
     }
 
     deleteAction(action: HN_Action) {

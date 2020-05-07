@@ -66,5 +66,5 @@
 
 <mat-dialog-actions>
     <button mat-button color="warn" (click)="close()">Cancel</button>
-    <button mat-button color="primary">{{actionId > 0 ? 'Save' : 'Create'}}</button>
+    <button mat-button color="primary" (click)="saveAction()">{{actionId > 0 ? 'Save' : 'Create'}}</button>
 </mat-dialog-actions>
