@@ -3,7 +3,10 @@
         <h2 style="margin: 5px auto; text-align: center;">HN: Extension Studio</h2>
 
         <mat-action-list>
-            <button mat-list-item routerLink="/selector" routerLinkActive="is-active">Select an Extension</button>
+            <!--button mat-list-item routerLink="/selector" routerLinkActive="is-active">Select an Extension</button-->
+            <button mat-list-item routerLink="/home" routerLinkActive="is-active"
+                [routerLinkActiveOptions]="{exact: true}">Home</button>
+            <button mat-list-item routerLink="/selector" routerLinkActive="is-active">Select An Extension</button>
         </mat-action-list>
         <div *ngIf="isExtensionSelected()">
             <h4 style="margin: 12px auto 2px; text-align: center;">Current Extension</h4>
@@ -17,6 +20,11 @@
                 <button mat-list-item routerLink="/themes" routerLinkActive="is-active">Custom Themes</button>
             </mat-action-list>
         </div>
+        <mat-action-list>
+            <h4 style="margin: 12px auto 2px; text-align: center;">For Developers</h4>
+            <button mat-list-item routerLink="/docs" routerLinkActive="is-active">Build Your Own (API
+                Documentation)</button>
+        </mat-action-list>
     </mat-sidenav>
 
     <mat-sidenav-content style="background: white;">

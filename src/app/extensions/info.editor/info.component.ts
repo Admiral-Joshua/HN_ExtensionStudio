@@ -1,4 +1,4 @@
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { ExtensionInfo, ExtensionLanguage } from '../models';
 import { ExtensionsService } from '../extensions.service';
@@ -6,7 +6,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { FormGroup, FormControl } from '@angular/forms';
 
 import { MatChipInputEvent } from "@angular/material/chips";
-import {MatSnackBar} from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { HN_MusicTrack, HN_CompNode } from 'src/app/models';
 import { MusicService } from 'src/app/musics/music.service';
 import { HN_Mission } from 'src/app/missions/models';
@@ -77,8 +77,8 @@ export class ExtensionInfoComponent implements OnInit {
         this.missionService.getMissionList().subscribe(missions => {
             this.possibleMissions = missions;
         });
-        
-        
+
+
         // Subscribe to events on workshop_description checkbox
         this.infoForm.get('wDescriptionIsSameAsExt').valueChanges.subscribe(val => {
             if (val) {
@@ -141,18 +141,18 @@ export class ExtensionInfoComponent implements OnInit {
         });
 
         // Convert CSV tags to list of tags for chip display, filter out any empty tags.
-        this.workshop_tags = (info.workshop_tags || '').split(",").filter(el => {return el.length != 0});
+        this.workshop_tags = (info.workshop_tags || '').split(",").filter(el => { return el.length != 0 });
 
         // Select all nodes that are currently visible at startup.
         this.startingVisibleNodes = info.startingNodes;
-        
+
     }
 
     selectionChanged() {
         console.log(this.visibleNodes.selectedOptions.selected)
     }
 
-    formToInfo() : ExtensionInfo {
+    formToInfo(): ExtensionInfo {
         let info = new ExtensionInfo();
 
         if (this.extensionId > 0) {
@@ -172,7 +172,7 @@ export class ExtensionInfoComponent implements OnInit {
         }
 
         info.workshop_tags = this.workshop_tags.join(',');
-        info.startingNodes = this.startingVisibleNodes;
+        info.startingNodes = this.startingVisibleNodes || [];
 
         return info;
     }
@@ -194,9 +194,9 @@ export class ExtensionInfoComponent implements OnInit {
 
     removeTag(tag: string): void {
         const index = this.workshop_tags.indexOf(tag);
-    
+
         if (index >= 0) {
-          this.workshop_tags.splice(index, 1);
+            this.workshop_tags.splice(index, 1);
         }
     }
 }

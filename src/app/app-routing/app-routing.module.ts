@@ -10,11 +10,26 @@ import { MusicManagerComponent } from '../musics/music.manager/music.manager.com
 import { MissionListComponent } from '../missions/mission.list.component';
 import { ThemeListComponent } from '../themes/theme.list.component';
 import { ActionSetListComponent } from '../actions/actionset.list.component';
+import { LoginComponent } from '../auth/login/login.component';
+import { RegisterComponent } from '../auth/register/register.component';
+import { DocumentationComponent } from '../docs.component/docs.component';
 
 const routes: Routes = [
   {
-      path: '',
-      component: LandingComponent,
+    path: 'home',
+    component: LandingComponent,
+  },
+  {
+    path: 'docs',
+    component: DocumentationComponent
+  },
+  {
+    path: 'login',
+    component: LoginComponent
+  },
+  {
+    path: 'register',
+    component: RegisterComponent
   },
   {
     path: 'selector',
@@ -43,6 +58,10 @@ const routes: Routes = [
   {
     path: "actions",
     component: ActionSetListComponent
+  },
+  {
+    path: "**",
+    redirectTo: '/home'
   }
 ];
 

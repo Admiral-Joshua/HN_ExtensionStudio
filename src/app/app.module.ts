@@ -23,10 +23,10 @@ import { MatTreeModule } from "@angular/material/tree";
 import { MatCardModule } from "@angular/material/card";
 import { MatTableModule } from "@angular/material/table";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
-import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { JwtModule } from "@auth0/angular-jwt";
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { CookieService } from 'ngx-cookie-service';
 
@@ -35,7 +35,7 @@ import { LandingComponent } from './landing/landing.component';
 import { ExtensionSelectorComponent } from './extensions/extensions.component';
 
 /* DIALOG COMPONENTS */
-import { DeleteConfirmationComponent} from "./dialogs/deleteConfirmDialog/delete.confirmation.component";
+import { DeleteConfirmationComponent } from "./dialogs/deleteConfirmDialog/delete.confirmation.component";
 
 /* SERVICES */
 import { ExtensionsService } from './extensions/extensions.service';
@@ -65,11 +65,17 @@ import { ActionSetListComponent } from './actions/actionset.list.component';
 import { HNFileSelectorComponent } from './elems/file-selector/file-selector.component';
 import { ActionsListComponent } from './actions/action.viewer/action.list.component';
 import { ActionEditorComponent } from './actions/action.editor/action.edtor.component';
+import { LoginComponent } from './auth/login/login.component';
+import { AuthService } from './auth/auth.service';
+import { RegisterComponent } from './auth/register/register.component';
+import { AuthInterceptor } from './app-routing/auth-interceptor';
+
+import { DocumentationComponent } from './docs.component/docs.component';
 
 
 export function getAuthToken() {
-  //return localStorage.getItem("auth");
-  return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODgzNzA2MDMsInVzZXJJZCI6NSwiaWF0IjoxNTg4Mjg0MjAzfQ.kwQYZxcbLH3e3Zi0RSH2f6ezyDX8i3eF-R4QKNhOieU";
+  return localStorage.getItem("auth");
+  //return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODgzNzA2MDMsInVzZXJJZCI6NSwiaWF0IjoxNTg4Mjg0MjAzfQ.kwQYZxcbLH3e3Zi0RSH2f6ezyDX8i3eF-R4QKNhOieU";
 }
 
 @NgModule({
@@ -94,7 +100,10 @@ export function getAuthToken() {
     HNFileSelectorComponent,
     ActionSetListComponent,
     ActionsListComponent,
-    ActionEditorComponent
+    ActionEditorComponent,
+    DocumentationComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -105,7 +114,7 @@ export function getAuthToken() {
     JwtModule.forRoot({
       config: {
         tokenGetter: getAuthToken,
-        whitelistedDomains: ["dev.lunasphere.co.uk"]
+        whitelistedDomains: ["hn.lunasphere.co.uk", "dev.lunasphere.co.uk"]
       }
     }),
     AppRoutingModule,
@@ -129,7 +138,8 @@ export function getAuthToken() {
     MatSnackBarModule
   ],
   providers: [
-    {provide: "BASE_API_URL", useValue: environment.apiUrl },
+    { provide: "BASE_API_URL", useValue: environment.apiUrl },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     ExtensionsService,
     MusicService,
     NodesService,
@@ -139,7 +149,8 @@ export function getAuthToken() {
     EmailService,
     ThemesService,
     BoardPostingService,
-    ActionsService
+    ActionsService,
+    AuthService
   ],
   bootstrap: [AppComponent],
   entryComponents: [DeleteConfirmationComponent,

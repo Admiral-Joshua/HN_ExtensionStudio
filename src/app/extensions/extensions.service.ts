@@ -7,41 +7,41 @@ import { HN_CompNode } from '../models';
 @Injectable()
 export class ExtensionsService {
 
-    constructor(private http: HttpClient, @Inject("BASE_API_URL") private baseUrl: string) {}
+    constructor(private http: HttpClient, @Inject("BASE_API_URL") private baseUrl: string) { }
 
-    listMyExtensions() : Observable<ExtensionInfo[]> {
-        return this.http.get<ExtensionInfo[]>(`${this.baseUrl}/extensions/list`);
+    listMyExtensions(): Observable<ExtensionInfo[]> {
+        return this.http.get<ExtensionInfo[]>(`${this.baseUrl}/extensions/list`, { withCredentials: true });
     }
 
-    fetchExtensionInfo(extensionId: number) : Observable<ExtensionInfo> {
-        return this.http.get<ExtensionInfo>(`${this.baseUrl}/extensions/${extensionId}`);
+    fetchExtensionInfo(extensionId: number): Observable<ExtensionInfo> {
+        return this.http.get<ExtensionInfo>(`${this.baseUrl}/extensions/${extensionId}`, { withCredentials: true });
     }
 
-    createExtension(info: ExtensionInfo) : Observable<ExtensionInfo> {
-        return this.http.post<ExtensionInfo>(`${this.baseUrl}/extensions/new`, info);
+    createExtension(info: ExtensionInfo): Observable<ExtensionInfo> {
+        return this.http.post<ExtensionInfo>(`${this.baseUrl}/extensions/new`, info, { withCredentials: true });
     }
 
-    updateExtension(info: ExtensionInfo) : Observable<ExtensionInfo> {
-        return this.http.put<ExtensionInfo>(`${this.baseUrl}/extensions/${info.extensionId}`, info);
+    updateExtension(info: ExtensionInfo): Observable<ExtensionInfo> {
+        return this.http.put<ExtensionInfo>(`${this.baseUrl}/extensions/${info.extensionId}`, info, { withCredentials: true });
     }
 
     deleteExtension(extensionId: number) {
-        return this.http.delete(`${this.baseUrl}/extensions/${extensionId}`);
+        return this.http.delete(`${this.baseUrl}/extensions/${extensionId}`, { withCredentials: true });
     }
 
     getAvailableLanguages() {
-        return this.http.get<ExtensionLanguage[]>(`${this.baseUrl}/extensions/languages`);
+        return this.http.get<ExtensionLanguage[]>(`${this.baseUrl}/extensions/languages`, { withCredentials: true });
     }
 
     getStartingNodes() {
-        return this.http.get<HN_CompNode[]>(`${this.baseUrl}/extensions/startingNodes/list`, {withCredentials: true});
+        return this.http.get<HN_CompNode[]>(`${this.baseUrl}/extensions/startingNodes/list`, { withCredentials: true });
     }
 
     enableVisibleAtStartup(nodeId: number) {
-        return this.http.get(`${this.baseUrl}/extensions/startingNodes/visible?node=${nodeId}`, {withCredentials: true});
+        return this.http.get(`${this.baseUrl}/extensions/startingNodes/visible?node=${nodeId}`, { withCredentials: true });
     }
     disableVisibleAtStartup(nodeId: number) {
-        return this.http.get(`${this.baseUrl}/extensions/startingNodes/invisible?node=${nodeId}`, {withCredentials: true});
+        return this.http.get(`${this.baseUrl}/extensions/startingNodes/invisible?node=${nodeId}`, { withCredentials: true });
     }
 
 }

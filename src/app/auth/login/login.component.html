@@ -1,0 +1,35 @@
+<mat-card style="width: 90%; height: auto; margin: 12px auto;">
+    <mat-card-title>
+        Login
+    </mat-card-title>
+    <mat-card-subtitle>
+        Enter your account details below to create a brand new extension or edit an existing one.
+    </mat-card-subtitle>
+    <mat-card-content>
+        <form [formGroup]="loginForm">
+            <mat-form-field class="full-field">
+                <mat-label>
+                    Username
+                </mat-label>
+                <input matInput type="text" placeholder="E.g. John_Doe" formControlName="username" />
+            </mat-form-field>
+            <mat-form-field class="full-field">
+                <mat-label>
+                    Password
+                </mat-label>
+                <input matInput type="password" placeholder="Something secure here..." formControlName="password" />
+            </mat-form-field>
+        </form>
+        <em style="color: red;">{{this.errMsg}}</em>
+    </mat-card-content>
+
+    <mat-card-actions>
+        <button mat-flat-button color="accent">Go Home</button>
+
+        <button mat-flat-button color="primary" (click)="login()">Login</button>
+    </mat-card-actions>
+
+    <mat-card-footer>
+        <p style="margin: 9px 15px;">Don't have an account? Create one <a routerLink="/register">Here</a></p>
+    </mat-card-footer>
+</mat-card>

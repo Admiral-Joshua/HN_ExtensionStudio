@@ -1,0 +1,56 @@
+<mat-card style="width: 90%; height: auto; margin: 12px auto;">
+    <mat-card-header>Create an Account</mat-card-header>
+    <br />
+    <mat-card-subtitle>Creating an account allows you to manage your own extensions and protects them from allowing
+        other people to edit them.
+        To create an account, enter details below and click "Register"
+    </mat-card-subtitle>
+    <mat-card-content>
+        <form [formGroup]="registerForm">
+            <mat-form-field class="full-field">
+                <mat-label>
+                    Username
+                </mat-label>
+                <input matInput type="text" placeholder="E.g. John_Doe" formControlName="username" />
+                <mat-hint>
+                    Can have spaces and underscores, and all the Jazz!
+                </mat-hint>
+            </mat-form-field>
+            <mat-form-field class="full-field">
+                <mat-label>
+                    Email Address
+                </mat-label>
+                <input matInput type="email" placeholder="test@example.com" formControlName="email" />
+                <mat-hint>
+                    We promise not to spam you, this is just for notificiations in the future!
+                </mat-hint>
+            </mat-form-field>
+            <mat-form-field class="full-field">
+                <mat-label>
+                    Password
+                </mat-label>
+                <input matInput type="password" placeholder="Something super secure..." minlength="8"
+                    formControlName="password" />
+                <mat-hint>
+                    At least 8 chars, one uppercase, one lower, and one special!
+                </mat-hint>
+            </mat-form-field>
+            <mat-form-field class=" full-field">
+                <mat-label>
+                    Confirm Password
+                </mat-label>
+                <input matInput type="password" placeholder="Same again, just to make sure... "
+                    formControlName="passConfirm" />
+            </mat-form-field>
+        </form>
+        <em style="color: red;">{{errMsg}}</em>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-button color="accent" routerLink="">Go Home</button>
+        <button mat-button color="primary" (click)="register()">Register</button>
+    </mat-card-actions>
+
+    <mat-card-footer>
+        <p style="margin: 9px 15px;">Already have an account? Login <a routerLink="/login">Here</a></p>
+    </mat-card-footer>
+</mat-card>

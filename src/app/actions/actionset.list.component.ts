@@ -9,11 +9,11 @@ import { ActionsListComponent } from './action.viewer/action.list.component'
     templateUrl: "./actionset.list.component.html"
 })
 export class ActionSetListComponent implements OnInit {
-    columns: string[] = ["name", "actionCount"]
+    columns: string[] = ["name", "actionCount", "actions"]
 
     actionSets: HN_ActionSet[]
 
-    constructor(private dialog: MatDialog, private service: ActionsService) {}
+    constructor(private dialog: MatDialog, private service: ActionsService) { }
 
     ngOnInit() {
         this.fetchActionSummary();

@@ -23,16 +23,16 @@ export class GoalEditorDialogComponent implements OnInit {
     goalForm = new FormGroup({
         typeId: new FormControl(0),
 
-        targetNodeId: new FormControl(0),
+        targetNodeId: new FormControl(),
         file: new FormControl(''),
         path: new FormControl(''),
         target: new FormControl(''),
-        delay: new FormControl(0),
+        delay: new FormControl(),
 
         keyword: new FormControl(''),
 
-        removal: new FormControl(false),
-        caseSensitive: new FormControl(false),
+        removal: new FormControl(),
+        caseSensitive: new FormControl(),
 
         owner: new FormControl(''),
 
@@ -84,22 +84,22 @@ export class GoalEditorDialogComponent implements OnInit {
     goalToForm(goal: HN_MissionGoal) {
 
         this.goalForm.patchValue({
-            caseSensitive : goal.caseSensitive,
-            degree : goal.degree,
-            delay : goal.delay,
-            file : goal.file,
-            gpa : goal.gpa,
-            keyword : goal.keyword,
-            mailServer : goal.mailServer,
-            owner : goal.owner,
-            path : goal.path,
-            recipient : goal.recipient,
-            removal : goal.removal,
-            subject : goal.subject,
-            target : goal.target,
-            targetNodeId : goal.targetNodeId,
-            typeId : goal.typeId,
-            uni : goal.uni
+            caseSensitive: goal.caseSensitive,
+            degree: goal.degree,
+            delay: goal.delay,
+            file: goal.file,
+            gpa: goal.gpa,
+            keyword: goal.keyword,
+            mailServer: goal.mailServer,
+            owner: goal.owner,
+            path: goal.path,
+            recipient: goal.recipient,
+            removal: goal.removal,
+            subject: goal.subject,
+            target: goal.target,
+            targetNodeId: goal.targetNodeId,
+            typeId: goal.typeId,
+            uni: goal.uni
         });
     }
 
@@ -189,7 +189,7 @@ export class GoalEditorDialogComponent implements OnInit {
 
     saveGoal() {
         let goalInfo = this.formToGoal();
-        
+
         if (this.goalId > 0) {
             // Update existing goal
             this.service.updateGoal(this.goalId, goalInfo).subscribe(info => {
