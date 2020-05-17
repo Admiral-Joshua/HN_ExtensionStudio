@@ -56,21 +56,25 @@ import { EmailDialogComponent } from './missions/email.dialog/email.dialog.compo
 import { EmailService } from './missions/email.dialog/email.service';
 import { ThemeListComponent } from './themes/theme.list.component';
 import { ThemesService } from './themes/themes.service';
-import { ThemeEditorComponent } from './themes/editor/theme.editor.component';
 import { PostingDialogComponent } from './missions/posting.dialog/posting.dialog.component';
 import { BoardPostingService } from './missions/posting.dialog/posting.service';
 import { FileEditorDialogComponent } from "./nodes/file.editor/file.editor.component";
 import { ActionsService } from './actions/actions.service';
 import { ActionSetListComponent } from './actions/actionset.list.component';
 import { HNFileSelectorComponent } from './elems/file-selector/file-selector.component';
-import { ActionsListComponent } from './actions/action.viewer/action.list.component';
-import { ActionEditorComponent } from './actions/action.editor/action.edtor.component';
 import { LoginComponent } from './auth/login/login.component';
 import { AuthService } from './auth/auth.service';
 import { RegisterComponent } from './auth/register/register.component';
 import { AuthInterceptor } from './app-routing/auth-interceptor';
 
 import { DocumentationComponent } from './docs.component/docs.component';
+import { ActionSetEditorComponent } from './actions/actionset.editor/actionset.editor.component';
+import { FunctionBuilderComponent } from './elems/function-builder/function.builder.component';
+import { ActionEditorComponent } from './actions/action.editor/action.editor.component';
+import { NodeSelector } from './elems/node-selector/node.selector.component';
+import { ThemeSelectorComponent } from './elems/theme-selector/theme.selector.component';
+
+import { ThemeEditorComponent } from "./themes/base.editor/theme.editor.component";
 
 
 export function getAuthToken() {
@@ -83,6 +87,7 @@ export function getAuthToken() {
     AppComponent,
     DeleteConfirmationComponent,
     LandingComponent,
+    FunctionBuilderComponent,
     ExtensionInfoComponent,
     ExtensionSelectorComponent,
     NodeMapComponent,
@@ -99,11 +104,13 @@ export function getAuthToken() {
     FileEditorDialogComponent,
     HNFileSelectorComponent,
     ActionSetListComponent,
-    ActionsListComponent,
+    ActionSetEditorComponent,
     ActionEditorComponent,
     DocumentationComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    NodeSelector,
+    ThemeSelectorComponent
   ],
   imports: [
     BrowserModule,
@@ -162,8 +169,7 @@ export function getAuthToken() {
     ThemeEditorComponent,
     PostingDialogComponent,
     FileEditorDialogComponent,
-    ActionsListComponent,
-    ActionEditorComponent]
+    ActionSetEditorComponent]
 })
 export class AppModule { }
 

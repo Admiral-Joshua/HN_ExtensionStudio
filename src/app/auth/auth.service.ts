@@ -16,4 +16,8 @@ export class AuthService {
     register(user: UserAccount): Observable<UserAccount> {
         return this.http.post<UserAccount>(`${this.baseUrl}/auth/register`, user);
     }
+
+    verify(token: string) {
+        return this.http.post(`${this.baseUrl}/auth/verify`, { token: token });
+    }
 }

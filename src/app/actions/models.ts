@@ -1,10 +1,28 @@
 export class HN_ActionSet {
     actionSetId: number
     name: string
-    actions: HN_Action[] = []
+    //actions: HN_Action[] = []
+    conditions: HN_ActionCondition[]
 
     constructor(name: string) {
         this.name = name;
+    }
+}
+
+export class HN_ActionCondition {
+    conditionId: number
+    typeId: number
+    typeText: string
+    needsMissionComplete: boolean = false
+    requiredFlags: string = ''
+    targetNodeId: number
+    actions: HN_Action[]
+    actionSetId: number
+
+    constructor(typeId?: number, typeText?: string) {
+        this.typeId = typeId || 0;
+        this.typeText = typeText || '';
+        this.actions = [];
     }
 }
 
@@ -22,6 +40,7 @@ export class HN_Action {
     targetCompId: number
     functionId: number
     functionValue: string
+    conditionId: number
 }
 
 export class IRCMessage {
@@ -39,4 +58,7 @@ export class IRCUser {
 export class HN_ActionType {
     typeId: number
     typeText: string
+}
+
+export class HN_ConditionType extends HN_ActionType {
 }

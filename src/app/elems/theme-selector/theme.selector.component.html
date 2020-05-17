@@ -1,0 +1,6 @@
+<mat-form-field class="full-field">
+    <mat-label>Select a Theme</mat-label>
+    <mat-select [value]="themeId" (selectionChange)="change($event)">
+        <mat-option *ngFor="let theme of possibleThemes" [value]="theme.themeId">{{theme.name}}</mat-option>
+    </mat-select>
+</mat-form-field>

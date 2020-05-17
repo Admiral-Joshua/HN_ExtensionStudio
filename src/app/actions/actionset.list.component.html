@@ -1,4 +1,4 @@
-<h2>Action Sets</h2>
+<h2>Conditional Action Sets</h2>
 
 <div class="button-row">
     <button mat-raised-button color="primary" (click)="openEditor()">New</button>
@@ -22,9 +22,9 @@
 
     <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>Actions</th>
-        <td mat-cell *matCellDef="let element" style="width: 160px;">
-            <button mat-flat-button color="accent" (click)="openEditor(element)">Edit</button>
-            <button mat-flat-button color="warn">Delete</button>
+        <td mat-cell *matCellDef="let element" style="width: 165px;">
+            <button mat-button color="accent" (click)="openEditor(element)"> Edit </button> &nbsp;
+            <button mat-button color="warn" (click)="deleteActionSet(element)"> Delete </button>
         </td>
     </ng-container>
 

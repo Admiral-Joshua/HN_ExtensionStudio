@@ -1,43 +1,44 @@
 export class HN_Theme {
     themeId: number
-    id: string
-
+    id: string = ''
+    layoutId: number = 4
     LayoutName: string
     BackgroundImagePath: string
-    
-    defaultHighlightColor: string
-    defaultTopBarColor: string
-    moduleColorSolidDefault: string
-    moduleColorStrong: string
-    moduleColorBacking: string
-    exeModuleTopBar: string
-    exeModuleTitleText: string
-    warningColor: string
-    subtleTextColor: string
-    darkBackgroundColor: string
-    indentBackgroundColor: string
-    outlineColor: string
-    lockedColor: string
-    brightLockedColor: string
-    brightUnlockedColor: string
-    unlockedColor: string
-    lightGray: string
-    shellColor: string
-    shellButtonColor: string
-    semiTransText: string
-    terminalTextColor: string
-    topBarTextColor: string
-    superLightWhite: string
-    connectedNodeHighlight: string
-    netmapToolTipColor: string
-    netmapToolTipBackground: string
-    topBarIconsColor: string
-    thisComputerNode: string
-    scanlinesColor: string
 
-    constructor(layout?: string) {
-        this.LayoutName = layout || 'HacknetBlue';
-    }
+    defaultHighlightColor: string = '#FF293F'
+    defaultTopBarColor: string = '#4A070E'
+
+    moduleColorSolidDefault: string = '#00CC84'
+    moduleColorStrong: string = '#0E2819'
+    moduleColorBacking: string = '#050706'
+
+    exeModuleTopBar: string = '#82411B'
+    exeModuleTitleText: string = '#9B5525'
+
+    warningColor: string = '#FF0000'
+    subtleTextColor: string = '#5A5A5A'
+    darkBackgroundColor: string = '#080808'
+    indentBackgroundColor: string = '#0C0C0C'
+    outlineColor: string = '#444444'
+
+    lockedColor: string = '#411010'
+    brightLockedColor: string = '#A00000'
+    brightUnlockedColor: string = '#00A000'
+    unlockedColor: string = '#274124'
+
+    lightGray: string = '#274124'
+    shellColor: string = '#DEC918'
+    shellButtonColor: string = '#69BC18'
+    semiTransText: string = '#787878'
+    terminalTextColor: string = '#D5F5FF'
+    topBarTextColor: string = '#7E7E7E'
+    superLightWhite: string = '#020202'
+    connectedNodeHighlight: string = '#DE0000'
+    netmapToolTipColor: string = '#D5F5FF'
+    netmapToolTipBackground: string = '#000000'
+    topBarIconsColor: string = '#FFFFFF'
+    thisComputerNode: string = '#5FDC53'
+    scanlinesColor: string = '#FFFFFF'
 }
 
 export class HN_Layout {

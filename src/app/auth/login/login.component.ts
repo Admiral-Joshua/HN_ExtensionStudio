@@ -17,17 +17,29 @@ export class LoginComponent {
     })
 
     constructor(private service: AuthService, private router: Router) {
-        if (this.isAuthenticated()) {
-            this.router.navigate(['home'])
-        }
+        this.isAuthenticated(() => {
+            this.router.navigate(['home']);
+        }, () => {
+            console.log("Login Credentials appear to have expired. Clearing for re-entry...")
+        })
     }
 
     clearError() {
         this.errMsg = "";
     }
 
-    isAuthenticated() {
-        return localStorage.getItem('auth') !== null;
+    isAuthenticated(success: Function, failure?: Function) {
+        let token = localStorage.getItem('auth');
+        if (token !== null) {
+            this.service.verify(token).subscribe(
+                () => {
+                    success();
+                },
+                () => {
+                    localStorage.removeItem("auth");
+                }
+            )
+        }
     }
 
     login() {

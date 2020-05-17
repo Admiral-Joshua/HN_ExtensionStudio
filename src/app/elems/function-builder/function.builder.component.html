@@ -1,0 +1,16 @@
+<mat-form-field class="half-field">
+    <mat-label>
+        Function Name
+    </mat-label>
+    <mat-select [value]="funcId" (selectionChange)="changeFunction($event)">
+        <mat-option *ngFor="let function of possibleFunctions" [value]="function.functionId">
+            {{function.funcDisplayName}}
+        </mat-option>
+    </mat-select>
+</mat-form-field>
+<mat-form-field class="half-field">
+    <mat-label>
+        Function Value
+    </mat-label>
+    <input matInput type="text" placeholder="E.g. 5" [value]="funcVal" (change)="changeValue($event)" />
+</mat-form-field>

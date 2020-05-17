@@ -2,8 +2,8 @@ import { Component, OnInit } from "@angular/core"
 import { HN_ActionSet } from './models'
 import { ActionsService } from './actions.service'
 import { MatDialog } from '@angular/material/dialog'
-import { ActionEditorComponent } from './action.editor/action.edtor.component'
-import { ActionsListComponent } from './action.viewer/action.list.component'
+import { ActionSetEditorComponent } from './actionset.editor/actionset.editor.component'
+import { DeleteConfirmationComponent } from '../dialogs/deleteConfirmDialog/delete.confirmation.component'
 
 @Component({
     templateUrl: "./actionset.list.component.html"
@@ -16,24 +16,40 @@ export class ActionSetListComponent implements OnInit {
     constructor(private dialog: MatDialog, private service: ActionsService) { }
 
     ngOnInit() {
-        this.fetchActionSummary();
+        this.loadActionSetList();
     }
 
-    fetchActionSummary() {
+    loadActionSetList() {
         this.service.fetchActionSets().subscribe(summary => {
             this.actionSets = summary;
         })
     }
 
+    deleteActionSet(actionSet: HN_ActionSet) {
+        let dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+            data: {
+                title: "Delete Conditional Action Set",
+                msg: 'This will delete all conditions and actions under this conditional action set. Are you sure you\'d like to do this?'
+            }
+        });
+        dialogRef.afterClosed().subscribe(res => {
+            if (res) {
+                this.service.deleteActionSet(actionSet.actionSetId).subscribe(() => {
+                    this.loadActionSetList();
+                })
+            }
+        })
+    }
+
     openEditor(actionSet?: HN_ActionSet) {
 
-        let dialogRef = this.dialog.open(ActionsListComponent, {
+        let dialogRef = this.dialog.open(ActionSetEditorComponent, {
             data: actionSet,
             width: "90%"
         })
 
         dialogRef.afterClosed().subscribe(() => {
-            this.fetchActionSummary();
+            this.loadActionSetList();
         });
     }
 

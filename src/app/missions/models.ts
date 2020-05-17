@@ -55,7 +55,7 @@ export class HN_MissionBranch {
     missionOne: number
     missionTwo: number
     missionName: string
-    
+
     constructor(missionOne: number, missionTwo: number, missionName: string, branchId?: number) {
         this.branchId = branchId || 0;
         this.missionOne = missionOne;
@@ -67,5 +67,4 @@ export class HN_MissionBranch {
 export class HN_MissionFunction {
     functionId: number
     funcDisplayName: string
-
 }

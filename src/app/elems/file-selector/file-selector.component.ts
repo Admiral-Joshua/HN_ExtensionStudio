@@ -1,4 +1,4 @@
-import { Component, Output, OnInit } from "@angular/core";
+import { Component, Output, OnInit, Input } from "@angular/core";
 import { EventEmitter } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { HN_CompNode, HN_CompFile } from 'src/app/models';
@@ -7,19 +7,29 @@ import { CookieService } from 'ngx-cookie-service';
 import { MatSelectChange } from '@angular/material/select';
 
 @Component({
-    selector: "hn-file-selector",
+    selector: "file-selector",
     templateUrl: "./file-selector.component.html"
 })
 export class HNFileSelectorComponent implements OnInit {
+    @Input() fileSource: FileSelectorSource = FileSelectorSource.TARGET
 
     possibleNodes: HN_CompNode[] = []
     possibleFiles: HN_CompFile[] = []
 
-    @Output() fileSelected: EventEmitter<string> = new EventEmitter();
+    private _nodeId: number;
+    @Input() set nodeId(nodeId: number) {
+        this._nodeId = nodeId;
+        this.refreshFiles();
+    }
 
-    nodeId = new FormControl(0)
-    fileId = new FormControl(0)
-    
+    @Input() fileId: number = 0
+    @Output() fileIdChange: EventEmitter<number> = new EventEmitter()
+    change(e: MatSelectChange) {
+        this.fileId = e.value;
+        this.fileIdChange.emit(e.value);
+    }
+
+
     constructor(private nodeService: NodesService, private cookies: CookieService) {
     }
 
@@ -27,21 +37,24 @@ export class HNFileSelectorComponent implements OnInit {
         this.nodeService.getAllNodes(parseInt(this.cookies.get('extId'))).subscribe(nodes => {
             this.possibleNodes = nodes;
         })
-    }
 
-    nodeSelection(e: MatSelectChange) {
-        if (e.value > 0) {
-            // Retrieve list of files for this computer
-            this.nodeService.getFilesList(e.value).subscribe(files => {
+        if (this.fileSource === FileSelectorSource.ALL) {
+            this.nodeService.getAllFiles().subscribe(files => {
                 this.possibleFiles = files;
-            })
-        }
-    }
-    
-    fileSelection(e: MatSelectChange) {
-        if (e.value > 0) {
-            this.fileSelected.emit(e.value);
+            });
         }
     }
 
+    refreshFiles() {
+        if (this._nodeId > 0 && this.fileSource === FileSelectorSource.TARGET) {
+            this.nodeService.getFilesList(this._nodeId).subscribe(files => {
+                this.possibleFiles = files;
+            });
+        }
+    }
+}
+
+export enum FileSelectorSource {
+    TARGET = 0,
+    ALL = 1
 }

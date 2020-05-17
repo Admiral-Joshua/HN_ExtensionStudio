@@ -1,0 +1,120 @@
+<mat-card>
+    <mat-card-title>
+        Information
+    </mat-card-title>
+    <mat-card-subtitle>
+        Define some information we can use to identify this action set from others later.
+    </mat-card-subtitle>
+    <mat-card-content>
+        <form [formGroup]="actionInfoForm">
+            <mat-form-field class="full-field">
+                <mat-label>
+                    Action Set Name:
+                </mat-label>
+                <input matInput type="text" formControlName="name" placeholder="E.g. Player defeat" required
+                    minlength="4" />
+                <mat-hint>
+                    This is a short and friendly name we'll use for dropdown menu's in other parts of the application.
+                </mat-hint>
+            </mat-form-field>
+        </form>
+    </mat-card-content>
+</mat-card>
+
+<mat-card>
+    <mat-card-title>
+        Actions
+    </mat-card-title>
+    <mat-card-subtitle>
+        A list of actions and conditions that this action set outlines.
+    </mat-card-subtitle>
+    <mat-card-content *ngIf="actionSetId === 0">
+        Can't edit actions until this action set is saved. Click the save button below.
+    </mat-card-content>
+    <mat-card-content *ngIf="actionSetId > 0">
+        <mat-expansion-panel *ngFor="let condition of conditions">
+            <!-- EXPANSION PANEL CONTAINING A LIST OF ACTIONS FOR EACH CONDITION -->
+            <mat-expansion-panel-header>
+                <!-- ngRepeat for each condition-->
+                <mat-panel-title>
+                    {{condition.typeText}}
+                </mat-panel-title>
+                <mat-panel-description>
+                    <mat-chip-list>
+                        <mat-chip *ngIf="condition.requiredFlags">{{condition.requiredFlags}}</mat-chip>
+                    </mat-chip-list>
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <mat-form-field class="third-field">
+                <mat-label>
+                    Required Flags
+                </mat-label>
+                <input matInput type="text" placeholder="joe1,ryan2" [(ngModel)]="condition.requiredFlags" />
+                <mat-hint>
+                    These actions won't be performed until these flags are set on the player.
+                </mat-hint>
+            </mat-form-field>
+
+            <mat-checkbox>Needs Mission Complete?</mat-checkbox>
+
+            <mat-divider></mat-divider>
+
+            <mat-action-list>
+                <button mat-list-item *ngFor="let action of condition.actions"
+                    (click)="openActionEditor(condition.conditionId, action.actionId)"> {{action.typeText}}
+                    <mat-chip-list>
+                        <mat-chip *ngIf="action.functionId > 0">{{action.functionValue}}
+                        </mat-chip>
+                    </mat-chip-list></button>
+                <button mat-list-item *ngIf="condition.actions.length < 1">
+                    <p class="mat-subheading">None</p>
+                </button>
+            </mat-action-list>
+
+            <br />
+
+            <mat-form-field class="full-field">
+                <mat-label>
+                    Add Action
+                </mat-label>
+                <mat-select [formControl]="actionTypeSelector" (selectionChange)="createAction(condition.conditionId)">
+                    <mat-option *ngFor="let type of actionTypes" [value]="type.typeId">{{type.typeText}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+
+            <mat-action-row>
+                <button mat-button color="warn" (click)="deleteCondition(condition)">Delete</button>
+            </mat-action-row>
+        </mat-expansion-panel>
+
+        <br />
+        <mat-card>
+            <mat-card-subtitle>
+                Add Condition
+            </mat-card-subtitle>
+            <mat-card-content>
+                <mat-form-field class="full-field">
+                    <mat-label>
+                        Condition Type
+                    </mat-label>
+                    <mat-select [formControl]="conditionTypeSelector" (selectionChange)="addCondition()"
+                        aria-placeholder="Condition Type">
+                        <mat-option *ngFor="let type of conditionTypes" [value]="type.typeId">{{type.typeText}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-card-content>
+        </mat-card>
+
+
+        <!--button mat-button color="primary" (click)="addCondition()">Add</button-->
+    </mat-card-content>
+
+</mat-card>
+
+<mat-dialog-actions>
+    <button mat-button color="accent" (click)="close()">Close</button>
+    <button mat-button color="primary" [disabled]="!actionInfoForm.valid" (click)="saveActionSet()">Save</button>
+</mat-dialog-actions>

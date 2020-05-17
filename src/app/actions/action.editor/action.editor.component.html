@@ -1,70 +1,30 @@
-<h2>{{actionId > 0 ? 'Edit Action' : 'Create New Action'}}</h2>
-<form [formGroup]="actionForm">
-    <mat-form-field class="full-field">
+<h1 mat-dialog-title>Configure Action</h1>
+<div mat-dialog-content>
+    <function-builder [(funcId)]="actionData.functionId" [(funcVal)]="actionData.functionValue"
+        *ngIf="visibleFields.includes('function')"></function-builder>
+    <node-selector [(nodeId)]="actionData.targetCompId" *ngIf="visibleFields.includes('targetNode')"></node-selector>
+    <mat-form-field class="full-field" *ngIf="visibleFields.includes('newIP')">
         <mat-label>
-            Action Type:
+            New IP:
         </mat-label>
-        <mat-select placeholder="Type of action to perform" formControlName="typeId">
-            <mat-option *ngFor="let type of actionTypes" [value]="type.typeId">{{type.typeText}}</mat-option>
-        </mat-select>
+        <input matInput type="text" [(ngModel)]="actionData.functionValue" placeholder="#RANDOM_IP#" />
     </mat-form-field>
+    <file-selector [fileSource]="fileSelectorSource" [nodeId]="actionData.targetCompId" [(fileId)]="actionData.fileId"
+        *ngIf="visibleFields.includes('fileSelector')"></file-selector>
+    <theme-selector *ngIf="visibleFields.includes('theme')" [(themeId)]="actionData.switchThemeId"></theme-selector>
+</div>
+<div mat-dialog-actions>
+    <button mat-button color="warn" (click)="close()">Cancel</button>
+    <button mat-button color="primary" (click)="save()">OK</button>
+</div>
 
-    <!-- OPTIONAL FIELDS - SWITCHED ON OR OFF DEPENDING ON SELECTED TYPE -->
-    <mat-form-field *ngIf="visibleFields.includes('actionSet')" class="full-field">
+<!--mat-form-field class="half-width" *ngIf="visibleFields.includes('functionName')">
         <mat-label>
-            Action Set to Load:
-        </mat-label>
-        <mat-select formControlName="loadActionSetId">
-            <mat-option *ngFor="let actionSet of possibleActionSets" [value]="actionSet.actionSetId">{{actionSet.name}}</mat-option>
-        </mat-select>
-    </mat-form-field>
-
-    <mat-form-field *ngIf="visibleFields.includes('mission')" class="full-field">
-        <mat-label>
-            Mission to Load:
-        </mat-label>
-        <mat-select formControlName="loadMissionId">
-            <mat-option *ngFor="let mission of possibleMissions" [value]="mission.missionId">{{mission.id}}</mat-option>
-        </mat-select>
-    </mat-form-field>
-
-    <mat-form-field *ngIf="visibleFields.includes('theme')" class="full-field">
-        <mat-label>
-            Theme:
-        </mat-label>
-        <mat-select formControlName="switchThemeId">
-            <mat-option *ngFor="let theme of possibleThemes" [value]="theme.themeId">{{theme.id}}</mat-option>
-        </mat-select>
-    </mat-form-field>
-
-    <hn-file-selector *ngIf="visibleFields.includes('file')" (fileSelected)="selectFile($event)"></hn-file-selector>
-
-    <mat-form-field *ngIf="visibleFields.includes('comp')">
-        <mat-label>
-            Target Computer:
-        </mat-label>
-        <mat-select formControlName="targetCompId">
-            <mat-option *ngFor="let node of possibleNodes" [value]="node.nodeId">{{node.id}}</mat-option>
-        </mat-select>
-    </mat-form-field>
-
-    <mat-form-field *ngIf="visibleFields.includes('function')" class="half-field">
-        <mat-label>
-            Function Type:
+            Function Name
         </mat-label>
         <mat-select formControlName="functionId">
-            <mat-option *ngFor="let function of possibleFunctions" [value]="function.functionId">{{function.funcDisplayName}}</mat-option>
+            <mat-option *ngFor="let function of possibleFunctions" [value]="function.functionId">
+                {{function.functionName}}</mat-option>
         </mat-select>
-    </mat-form-field>
-    <mat-form-field *ngIf="visibleFields.includes('function')" class="half-field">
-        <mat-label>
-            Function Value:
-        </mat-label>
-        <input matInput formControlName="functionValue" placeholder="E.g. 7" />
-    </mat-form-field>
-</form>
 
-<mat-dialog-actions>
-    <button mat-button color="warn" (click)="close()">Cancel</button>
-    <button mat-button color="primary" (click)="saveAction()">{{actionId > 0 ? 'Save' : 'Create'}}</button>
-</mat-dialog-actions>
+    </mat-form-field-->

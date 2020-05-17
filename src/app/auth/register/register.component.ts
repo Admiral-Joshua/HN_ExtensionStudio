@@ -2,6 +2,8 @@ import { Component } from "@angular/core";
 import { FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
 import { UserAccount } from '../auth.models';
 import { AuthService } from '../auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 const passwordMatch: ValidatorFn = (fg: FormGroup) => {
     const pword = fg.get('password').value;
@@ -25,7 +27,7 @@ export class RegisterComponent {
         email: new FormControl('', Validators.pattern(/[A-z]{4,}\@[A-z]{4,}(?:\.com|\.co\.uk|\.org|\.de)/))
     }, { validators: passwordMatch })
 
-    constructor(private service: AuthService) { }
+    constructor(private service: AuthService, private snackbar: MatSnackBar, private router: Router) { }
 
     register() {
         // Double-check form is valid.
@@ -33,7 +35,11 @@ export class RegisterComponent {
             let user = new UserAccount(this.registerForm.get('username').value, this.registerForm.get('password').value, this.registerForm.get('email').value);
 
             this.service.register(user).subscribe(res => {
-                console.log(res);
+                this.snackbar.open('Account Created Successfully!', '', {
+                    duration: 1200
+                }).afterDismissed().subscribe(() => {
+                    this.router.navigate(['/login']);
+                });
             });
         } else {
             if (this.registerForm.get('username').invalid) {

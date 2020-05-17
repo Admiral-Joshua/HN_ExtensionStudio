@@ -3,7 +3,8 @@ import { HN_Theme } from './models';
 import { ThemesService } from './themes.service';
 import { CookieService } from 'ngx-cookie-service';
 import { MatDialog } from '@angular/material/dialog';
-import { ThemeEditorComponent } from './editor/theme.editor.component';
+import { ThemeEditorComponent } from './base.editor/theme.editor.component';
+import { DeleteConfirmationComponent } from '../dialogs/deleteConfirmDialog/delete.confirmation.component';
 
 @Component({
     templateUrl: "./theme.list.component.html"
@@ -11,16 +12,33 @@ import { ThemeEditorComponent } from './editor/theme.editor.component';
 export class ThemeListComponent implements OnInit {
     themes: HN_Theme[]
 
-    constructor(private service: ThemesService, private dialog: MatDialog) {}
+    constructor(private service: ThemesService, private dialog: MatDialog) { }
 
     ngOnInit() {
         this.fetchThemes();
-        this.openEditor();
+        //this.openEditor();
     }
 
     fetchThemes() {
         this.service.fetchThemeList().subscribe(themes => {
             this.themes = themes;
+        })
+    }
+
+    deleteTheme(themeId: number) {
+        let dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+            data: {
+                'type': "Theme",
+                'msg': "Are you sure you want to delete this theme?<br/>Once deleted you will not be able to get it back again."
+            }
+        })
+
+        dialogRef.afterClosed().subscribe(res => {
+            if (res) {
+                this.service.deleteTheme(themeId).subscribe(() => {
+                    this.fetchThemes();
+                });
+            }
         })
     }
 
@@ -31,11 +49,14 @@ export class ThemeListComponent implements OnInit {
             data.themeId = themeId;
         }
 
-        this.dialog.open(ThemeEditorComponent, {
+        let dialogRef = this.dialog.open(ThemeEditorComponent, {
             data: data,
-            width: "95%",
-            height: "95%"
+            width: "95%"
         });
+
+        dialogRef.afterClosed().subscribe(() => {
+            this.fetchThemes();
+        })
     }
-    
+
 }
