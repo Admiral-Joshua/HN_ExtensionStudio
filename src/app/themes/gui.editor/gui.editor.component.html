@@ -1,116 +1,205 @@
 <mat-drawer-container>
-    <mat-drawer #themeDrawer mode="over" hasBackdrop="false">
-        <h3>
-            <fa-icon [icon]="editIcon"></fa-icon> Theme Settings
-        </h3>
+  <mat-drawer #themeDrawer mode="over" hasBackdrop="false">
+    <h3>
+      <fa-icon [icon]="editIcon"></fa-icon>
+      Theme Settings
+    </h3>
 
-        <button mat-flat-button (click)="themeDrawer.close()">
-            <fa-icon [icon]="closeIcon"></fa-icon> Close
-        </button>
-    </mat-drawer>
-    <mat-drawer-content>
-        <div class="game-window">
-            <div class="hn-grid hn-top-bar">
-                <fa-icon class="hn-icon text-white" [icon]="closeIcon"></fa-icon>
-                <fa-icon class="hn-icon text-white" [icon]="settingsIcon"></fa-icon>
-                <fa-icon class="hn-icon text-white" [icon]="saveIcon"></fa-icon>
-                <div style="font-size: .7em; font-style: italic;"> 60</div>
-                <fa-icon class="fa-lg hn-icon text-white" [icon]="emailIcon"></fa-icon>
-            </div>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Basic Configuration
+        </mat-panel-title>
+        <mat-panel-description>
+          A simple set of sliders and tools to help you get started.
+        </mat-panel-description>
+      </mat-expansion-panel-header>
 
-            <div class="hn-grid hn-module process-manager">
-                <div class="hn-grid module-title">RAM </div>
-                <div class="hn-grid module-body">
+      <mat-form-field class="full-field">
+        <mat-label>
+          Highlight Color
+        </mat-label>
+        <input matInput type="color" [(ngModel)]="themeData.defaultHighlightColor" />
+        <mat-hint>Color shown to the side of buttons, panels, etc.</mat-hint>
+      </mat-form-field>
 
-                    <div class="hn-module app-status">
-                        <div class="module-title">notes</div>
-                        <div class="module-body">test notes app</div>
-                        <div class="module-actions">
-                            <div class="btn-group">
-                                <div class="hn-button hn-button-xsm hn-button-active">
-                                    <div class="hn-button-prepend"></div>
-                                    <div class="hn-button-text">Add Note</div>
-                                </div>
-                                <div class="hn-button hn-button-xsm hn-button-danger">
-                                    <div class="hn-button-prepend"></div>
-                                    <div class="hn-button-text">Close</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="hn-module app-status">
-                        <div class="module-title">app:PortHack<span style="float:right;">IP:210.23.192.113</span></div>
-                        <div class="module-body">test notes app</div>
-                        <div class="module-actions"></div>
-                    </div>
+      <mat-form-field class="full-field">
+        <mat-label>
+          Topbar Color
+        </mat-label>
+        <input matInput type="color" [(ngModel)]="themeData.defaultTopBarColor" />
+        <mat-hint>Color shown at the very top of the screen.</mat-hint>
+      </mat-form-field>
+
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Module Colors
+        </mat-panel-title>
+        <mat-panel-description>
+          Colors shown on each of the modules (Terminal, Display, etc.)
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <mat-form-field class="third-field">
+        <mat-label>
+          Solid Color
+        </mat-label>
+        <input matInput type="color" [(ngModel)]="themeData.moduleColorSolidDefault" />
+        <mat-hint>Outline/text colour shown at the top.</mat-hint>
+      </mat-form-field>
+      <mat-form-field class="third-field">
+        <mat-label>
+          Strong Color
+        </mat-label>
+        <input matInput type="color" [(ngModel)]="themeData.moduleColorStrong" />
+        <mat-hint>Background colour of top bar.</mat-hint>
+      </mat-form-field>
+      <mat-form-field class="third-field">
+        <mat-label>
+          Backing Color
+        </mat-label>
+        <input matInput type="color" [(ngModel)]="themeData.moduleColorBacking" />
+        <mat-hint>Background color of whole module.</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field class="half-field">
+        <mat-label>
+          Outline Color
+        </mat-label>
+        <input matInput type="color" [(ngModel)]="themeData.outlineColor" />
+        <mat-hint>
+          Color used for the outlines of each module and more.
+        </mat-hint>
+      </mat-form-field>
+      <mat-form-field class="half-field">
+        <mat-label>
+          Terminal Text Color
+        </mat-label>
+        <input matInput type="color" [(ngModel)]="themeData.terminalTextColor" />
+        <mat-hint>
+          Color used on the terminal's text.
+        </mat-hint>
+      </mat-form-field>
+    </mat-expansion-panel>
+
+
+    <mat-card>
+      <button mat-flat-button (click)="themeDrawer.close()">
+        <fa-icon [icon]="closeIcon"></fa-icon>
+        Close
+      </button>
+      <button style="float: right;" mat-flat-button (click)="saveTheme()"
+        color="accent">{{themeId > 0 ? 'Save Theme' : 'Create Theme'}}</button>
+    </mat-card>
+  </mat-drawer>
+  <mat-drawer-content>
+    <div class="game-window">
+      <div class="hn-grid hn-top-bar" [ngStyle]="{'background-color': themeData.defaultTopBarColor}">
+        <fa-icon class="hn-icon text-white" [icon]="closeIcon"></fa-icon>
+        <fa-icon class="hn-icon text-white" [icon]="settingsIcon"></fa-icon>
+        <fa-icon class="hn-icon text-white" [icon]="saveIcon"></fa-icon>
+        <div style="font-size: .7em; font-style: italic;"> 60</div>
+        <fa-icon class="fa-lg hn-icon text-white" [icon]="emailIcon"></fa-icon>
+      </div>
+
+      <div class="hn-grid hn-module process-manager" [ngStyle]="{'background-color': themeData.moduleColorBacking}">
+        <div class="hn-grid module-title" [ngStyle]="{'background-color': themeData.moduleColorStrong}">RAM</div>
+        <div class="hn-grid module-body">
+
+          <div class="hn-module app-status">
+            <div class="module-title">notes</div>
+            <div class="module-body">test notes app</div>
+            <div class="module-actions">
+              <div class="btn-group">
+                <div class="hn-button hn-button-xsm hn-button-active">
+                  <div class="hn-button-prepend" [ngStyle]="{'background-color': themeData.defaultHighlightColor}">
+                  </div>
+                  <div class="hn-button-text">Add Note</div>
                 </div>
-            </div>
-
-            <div class="hn-grid hn-module hn-display">
-                <div class="hn-grid module-title">DISPLAY</div>
-                <div class="module-body">
-                    <div class="hn-display-container">
-                        <div class="hn-node-info">
-                            <img class="hn-comp-icon" src="/assets/themes/res/Sec0Computer.png" />
-                            <div class="hn-node-details">
-                                <h3 style="font-weight: normal; font-size: 1.5em;">Connected to</h3>
-                                <h2 style="font-size: 2.0em;">Test-Battlestation</h2>
-                                <h6 style="font-size: 1.1em;">@ 210.23.192.113</h6>
-                            </div>
-                        </div>
-                        <div class="hn-node-admin-pane">You are the Administrator of this system</div>
-                        <div class="hn-node-actions">
-                            <div class="hn-button hn-button-disabled">
-                                <div class="hn-button-prepend"></div>
-                                <div class="hn-button-text">Login</div>
-                            </div>
-                            <div class="hn-button hn-button-active">
-                                <div class="hn-button-prepend"></div>
-                                <div class="hn-button-text">Probe system</div>
-                            </div>
-                            <div class="hn-button hn-button-active">
-                                <div class="hn-button-prepend"></div>
-                                <div class="hn-button-text">View Filesystem</div>
-                            </div>
-                            <div class="hn-button hn-button-active">
-                                <div class="hn-button-prepend"></div>
-                                <div class="hn-button-text">View Logs</div>
-                            </div>
-                            <div class="hn-button hn-button-active">
-                                <div class="hn-button-prepend"></div>
-                                <div class="hn-button-text">Scan Network</div>
-                            </div>
-                        </div>
-                        <div class="hn-node-actions bottom-align">
-                            <div class="hn-button hn-button-sm hn-button-danger align-bottom">
-                                <div class="hn-button-prepend"></div>
-                                <div class="hn-button-text">Disconnect</div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="hn-button hn-button-xsm hn-button-danger">
+                  <div class="hn-button-prepend"></div>
+                  <div class="hn-button-text">Close</div>
                 </div>
+              </div>
             </div>
+          </div>
+          <div class="hn-module app-status">
+            <div class="module-title">app:PortHack<span style="float:right;">IP:210.23.192.113</span></div>
+            <div class="module-body">test notes app</div>
+            <div class="module-actions"></div>
+          </div>
+        </div>
+      </div>
 
-            <div class="hn-grid hn-module hn-netmap">
-                <div class="hn-grid module-title">netMap v1.7</div>
-                <div class="module-body">
-                    <!--img src="/assets/themes/res/NodeCircle.png" class="hn-nmap-node node1" />
-                    <img src="/assets/themes/res/NodeCircle.png" class="hn-nmap-node node2" />
-                    <img src="/assets/themes/res/NodeCircle.png" class="hn-nmap-node node3" /-->
-
-                    <div class="hn-nmap-node node1"></div>
-                    <div class="hn-nmap-node node2"></div>
-                    <div class="hn-nmap-node node3"></div>
-
-                    <div class="hn-nmap-node mynode"></div>
-                </div>
+      <div class="hn-grid hn-module hn-display" [ngStyle]="{'background-color': themeData.moduleColorBacking}">
+        <div class="hn-grid module-title" [ngStyle]="{'background-color': themeData.moduleColorStrong}">DISPLAY</div>
+        <div class="module-body">
+          <div class="hn-display-container">
+            <div class="hn-node-info">
+              <img class="hn-comp-icon" src="/assets/themes/res/Sec0Computer.png" />
+              <div class="hn-node-details">
+                <h3 style="font-weight: normal; font-size: 1.5em;">Connected to</h3>
+                <h2 style="font-size: 2.0em;">Test-Battlestation</h2>
+                <h6 style="font-size: 1.1em;">@ 210.23.192.113</h6>
+              </div>
             </div>
+            <div class="hn-node-admin-pane" [ngStyle]="{'background-color': themeData.defaultHighlightColor}">You are
+              the Administrator of this system</div>
+            <div class="hn-node-actions">
+              <div class="hn-button hn-button-disabled">
+                <div class="hn-button-prepend"></div>
+                <div class="hn-button-text">Login</div>
+              </div>
+              <div class="hn-button hn-button-active">
+                <div class="hn-button-prepend" [ngStyle]="{'background-color': themeData.defaultHighlightColor}"></div>
+                <div class="hn-button-text">Probe system</div>
+              </div>
+              <div class="hn-button hn-button-active">
+                <div class="hn-button-prepend" [ngStyle]="{'background-color': themeData.defaultHighlightColor}"></div>
+                <div class="hn-button-text">View Filesystem</div>
+              </div>
+              <div class="hn-button hn-button-active">
+                <div class="hn-button-prepend" [ngStyle]="{'background-color': themeData.defaultHighlightColor}"></div>
+                <div class="hn-button-text">View Logs</div>
+              </div>
+              <div class="hn-button hn-button-active">
+                <div class="hn-button-prepend" [ngStyle]="{'background-color': themeData.defaultHighlightColor}"></div>
+                <div class="hn-button-text">Scan Network</div>
+              </div>
+            </div>
+            <div class="hn-node-actions bottom-align">
+              <div class="hn-button hn-button-sm hn-button-danger align-bottom">
+                <div class="hn-button-prepend"></div>
+                <div class="hn-button-text">Disconnect</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hn-grid hn-module hn-netmap" [ngStyle]="{'background-color': themeData.moduleColorBacking}">
+        <div class="hn-grid module-title" [ngStyle]="{'background-color': themeData.moduleColorStrong}">netMap v1.7
+        </div>
+        <div class="module-body">
+          <!--img src="/assets/themes/res/NodeCircle.png" class="hn-nmap-node node1" />
+          <img src="/assets/themes/res/NodeCircle.png" class="hn-nmap-node node2" />
+          <img src="/assets/themes/res/NodeCircle.png" class="hn-nmap-node node3" /-->
+
+          <div class="hn-nmap-node node1"></div>
+          <div class="hn-nmap-node node2"></div>
+          <div class="hn-nmap-node node3"></div>
+
+          <div class="hn-nmap-node mynode"></div>
+        </div>
+      </div>
 
 
-            <div class="hn-grid hn-module hn-terminal">
-                <div class="hn-grid module-title">TERMINAL</div>
-                <div class="module-body">
-                    <pre>root@localhost> echo hello world
+      <div class="hn-grid hn-module hn-terminal" [ngStyle]="{'background-color': themeData.moduleColorBacking}">
+        <div class="hn-grid module-title" [ngStyle]="{'background-color': themeData.moduleColorStrong}">TERMINAL</div>
+        <div class="module-body" [ngStyle]="{'color': themeData.terminalTextColor}">
+          <pre [ngStyle]="{'color': themeData.terminalTextColor}">root@localhost> echo hello world
 hello world
 
 root@localhost> connect 210.23.192.113
@@ -123,13 +212,13 @@ Porthack Initialised -- Running...
 
 --Porthack Complete---
                     </pre>
-                </div>
-            </div>
         </div>
+      </div>
+    </div>
 
-        <button style="position: absolute; bottom: 5px; left: 5px;" mat-fab color="accent" title="Customise"
-            (click)="themeDrawer.toggle()">
-            <fa-icon class="fa-2x" [icon]="editIcon"></fa-icon>
-        </button>
-    </mat-drawer-content>
+    <button style="position: absolute; bottom: 5px; left: 5px;" mat-fab color="accent" title="Customise"
+      (click)="themeDrawer.toggle()">
+      <fa-icon class="fa-2x" [icon]="editIcon"></fa-icon>
+    </button>
+  </mat-drawer-content>
 </mat-drawer-container>
