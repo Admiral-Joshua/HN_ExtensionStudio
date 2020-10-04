@@ -1,0 +1,160 @@
+.mat-drawer {
+    min-width: 300px !important;
+}
+
+.game-window {
+    --hn-panel-bg-primary: 0, 60, 120;
+    --hn-panel-bg-accent: 180, 100, 10;
+
+    --hn-panel-text-primary: #fff;
+    --hn-panel-text-secondary: 200, 200, 200;
+
+    /*width: 1280px;
+    height: 720px;*/
+    width: 1920px;
+    height: 1080px;
+
+    display: grid;
+
+    grid-template-columns: 19% 49% 32%;
+    grid-template-rows: 24px 63% 33%;
+
+    background-image: url("/assets/themes/hacknet_dlc_purple.png");
+    background-size: cover;
+
+    color: white;
+}
+
+.text-white {
+    color: white;
+}
+
+.text-white svg path {
+    fill: #fff;
+}
+
+.hn-top-bar {
+    grid-column-start: 1;
+    grid-column-end: 4;
+
+    grid-row-start: 1;
+    grid-row-end: 1;
+
+    grid-template-columns: 18px 18px 18px 95.5% 25px;
+
+    background-color: rgb(var(--hn-panel-bg-accent));
+}
+
+.hn-icon {
+    text-align: center;
+}
+
+.hn-grid {
+    border: 1px solid grey;
+    display: grid;
+}
+
+.hn-module {
+    font-size: .9em;
+    align-content: flex-start;
+
+    --panel-bg-color: 0, 0, 0, .25;
+    background-color: rgba(var(--panel-bg-color));
+}
+
+.hn-module > .module-title {
+    color: rgba(200, 200, 200, 0.7);
+    background-color: rgba(var(--hn-panel-bg-primary), 0.6);
+}
+
+.hn-module > .module-body {
+    position: relative;
+    margin: 2px 6px;
+}
+
+.hn-module.process-manager {
+    grid-column-start: 1;
+    grid-column-end: 2;
+
+    grid-row-start: 2;
+    grid-row-end: 4;
+}
+
+.app-status > .module-title {
+    background-color: rgba(var(--hn-panel-bg-accent), 0.7);
+}
+
+.hn-module.hn-display {
+    grid-column-start: 2;
+    grid-column-end: 3;
+
+    grid-row-start: 2;
+    grid-row-start: 2;
+}
+
+.hn-module.hn-netmap {
+    grid-column-start: 2;
+    grid-column-end: 3;
+
+    grid-row-start: 3;
+    grid-row-end: 3;
+}
+
+.hn-module.hn-terminal {
+    grid-column-start: 3;
+    grid-column-end: 4;
+
+    grid-row-start: 2;
+    grid-row-end: 4;
+}
+
+.hn-nmap-node {
+    width: 15px;
+    height: 15px;
+    position: absolute;
+
+    --hn-node-main: 180, 180, 180;
+    --hn-node-highlight: 220, 220, 220;
+    --hn-node-shadow: 100, 100, 100;
+
+    --hn-node-mine: 50, 200, 120;
+    --hn-node-mine-shadow: 25, 100, 60;
+
+
+    border-radius: 25px;
+    color: rgb(var(--hn-node-main));
+    box-shadow: 0px 0px 5px 10px rgb(var(--hn-node-shadow));
+    border: 8px solid rgb(var(--hn-node-highlight));
+}
+
+.node1 {
+    top: 50px;
+    left: 150px;
+}
+
+.node1 {
+    top: 50px;
+    left: 150px;
+}
+
+.node2 {
+    top: 90px;
+    left: 350px;
+}
+
+.node3 {
+    top: 120px;
+    left: 280px;
+}
+
+.mynode {
+    top: 200px;
+    left: 120px;
+
+    border-color: rgb(var(--hn-node-mine));
+    box-shadow: 0px 0px 5px 10px rgb(var(--hn-node-mine-shadow));
+}
+
+.process-manager > .module-body {
+    margin: 2px 0px;
+}

@@ -5,6 +5,7 @@ import { MusicService } from '../music.service';
 import { MusicUploadDialogComponent } from './upload-dialog/music.upload.dialog';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmationComponent } from 'src/app/dialogs/deleteConfirmDialog/delete.confirmation.component';
+import { MatSliderChange } from '@angular/material/slider';
 
 @Component({
     templateUrl: "./music.manager.component.html",
@@ -14,11 +15,19 @@ export class MusicManagerComponent implements OnInit, OnDestroy {
     displayedColumns: string[] = ['title']
     musicList: HN_MusicTrack[] = []
 
+    player = new Audio();
+
+    playerProgress: number = 0;
+
     //player = new Audio();
 
-    constructor(private cookie: CookieService, private service: MusicService, @Inject("BASE_API_URL") private apiUrl: string, private dialog: MatDialog) {}
-    
+    constructor(private cookie: CookieService, private service: MusicService, @Inject("BASE_API_URL") private apiUrl: string, private dialog: MatDialog) { }
+
     ngOnInit() {
+        this.player.ontimeupdate = () => {
+            this.playerProgress = this.player.currentTime;
+        }
+
         this.fetchMusicList();
     }
 
@@ -28,10 +37,21 @@ export class MusicManagerComponent implements OnInit, OnDestroy {
         }*/
     }
 
+    loadTrack(track: HN_MusicTrack) {
+        this.service.playTrack(track.musicId).subscribe(data => {
+            this.player.src = window.URL.createObjectURL(data);
+            this.player.play();
+        });
+    }
+
     fetchMusicList() {
         this.service.listMyMusic().subscribe(tracks => {
             this.musicList = tracks;
         })
+    }
+
+    seekTo(e: MatSliderChange) {
+        this.player.currentTime = e.value;
     }
 
     getProgress(track: HN_MusicTrack) {
@@ -51,42 +71,9 @@ export class MusicManagerComponent implements OnInit, OnDestroy {
         });
     }
 
-    pause(track: HN_MusicTrack) {
-        if (track.player) {
-            if (!track.player.paused) {
-                track.player.pause();
-            }
-        }
+    restartTrack(track: HN_MusicTrack) {
+        this.player.currentTime = 0;
     }
-
-    pauseAll(exclude?: HN_MusicTrack) {
-        this.musicList.forEach(music => {
-            if (!exclude || music.musicId !== exclude.musicId) {
-                this.pause(music);
-            }
-        })
-    }
-
-    playMusic(track: HN_MusicTrack) {
-        // Pause any currently playing tracks.
-        this.pauseAll(track);
-        // Do we already have this track loaded?
-        if (track.player) {
-            // Toggle play/pause
-            if (track.player.paused) {
-                track.player.play();
-            } else {
-                track.player.pause();
-            }
-        } else {
-            this.service.playTrack(track.musicId).subscribe(data => {
-                track.player = new Audio();
-                track.player.src = window.URL.createObjectURL(data);
-                track.player.play();
-            });
-        }
-    }
-
 
     uploadNewTrack() {
         let dialogRef = this.dialog.open(MusicUploadDialogComponent);

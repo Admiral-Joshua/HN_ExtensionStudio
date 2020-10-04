@@ -24,8 +24,11 @@
     <ng-container matColumnDef="ports">
         <th mat-header-cell *matHeaderCellDef> Ports </th>
         <td mat-cell *matCellDef="let element" style="width: 32%;">
-            <mat-chip-list aria-label="Port Selection">
-                <mat-chip *ngFor="let port of element.ports" color="primary" selected>{{port}}</mat-chip>
+            <mat-hint *ngIf="element.ports.length < 1">None</mat-hint>
+            <mat-chip-list aria-label="Port Selection" *ngIf="element.ports.length > 0">
+                <mat-chip *ngFor="let port of element.ports" color="primary" selected>
+                    {{port}}
+                </mat-chip>
             </mat-chip-list>
         </td>
     </ng-container>
@@ -46,7 +49,7 @@
         <th mat-header-cell *matHeaderCellDef>Actions</th>
         <td mat-cell *matCellDef="let element" style="width: 160px;">
             <button mat-button color="accent" (click)="openEditor(element)">Edit</button>
-            <button mat-button color="warn">Delete</button>
+            <button mat-button color="warn" (click)="deleteNode(element.nodeId)">Delete</button>
         </td>
     </ng-container>
 

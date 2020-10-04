@@ -1,6 +1,6 @@
 import { Injectable, Inject } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
-import { HN_CompNode, HN_Port, HN_CompFile } from '../models';
+import { HN_CompNode, HN_Port, HN_CompFile, HN_FileTemplate } from '../models';
 import { Observable } from 'rxjs';
 
 @Injectable()
@@ -32,6 +32,10 @@ export class NodesService {
     }
 
     // Files API
+    getTemplateList(): Observable<HN_FileTemplate[]> {
+        return this.http.get<HN_FileTemplate[]>(`${this.baseUrl}/nodes/files/templates/list`, { withCredentials: true });
+    }
+
     getFilesList(nodeId: number): Observable<HN_CompFile[]> {
         return this.http.get<HN_CompFile[]>(`${this.baseUrl}/nodes/files/list/${nodeId}`, { withCredentials: true });
     }

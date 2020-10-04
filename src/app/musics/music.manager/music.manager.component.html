@@ -1,22 +1,39 @@
 <div class="page-filler">
     <h2>Music Manager</h2>
     <div class="button-row" style="margin: 6px 14px;">
-        <button mat-raised-button color="primary" (click)="uploadNewTrack()"><mat-icon>cloud_upload</mat-icon>  Upload </button>
+        <button mat-raised-button color="primary" (click)="uploadNewTrack()">
+            <mat-icon>cloud_upload</mat-icon> Upload
+        </button>
         <!--button mat-raised-button color="accent">Edit</button-->
         <!--button mat-raised-button color="warn">Delete</button-->
     </div>
     <mat-action-list style="width: 99%; overflow: hidden;">
-        <div matRipple *ngFor="let music of musicList" class="music-item">
+        <div matRipple *ngFor="let music of musicList" class="music-item" (click)="loadTrack(music)">
 
-            <div class="fill-bar" [ngStyle]="{'width': getProgress(music)}"></div>
-
-            <mat-icon>music_note</mat-icon> <input class="music-title read-write" [(ngModel)]="music.title" [disabled]="music.ownerId === 0" (blur)="renameTrack(music)">
+            <mat-icon>music_note</mat-icon> <input class="music-title read-write" [(ngModel)]="music.title"
+                [disabled]="music.ownerId === 0" (blur)="renameTrack(music)">
 
             <div class="button-group">
-                <button mat-button color="primary" (click)="playMusic(music)"> <mat-icon *ngIf="music.player ? music.player.paused : true">play_arrow</mat-icon> <mat-icon *ngIf="music.player ? !music.player.paused : false">pause</mat-icon>{{(music.player ? music.player.paused : true) ? 'Play' : 'Pause'}}</button>
-                <!-- pause -->
-                <button mat-button color="warn" *ngIf="music.ownerId > 0" (click)="deleteTrack(music.musicId)"> <mat-icon>delete</mat-icon> Delete </button>
+                <button mat-button color="warn" *ngIf="music.ownerId > 0" (click)="deleteTrack(music.musicId)">
+                    <mat-icon>delete</mat-icon> Delete
+                </button>
             </div>
         </div>
     </mat-action-list>
+</div>
+
+<div style="width: 96%; margin: 5px 20px; padding: 0;">
+    <mat-slider class="time-slider" min="0" [max]="player?.duration" step="1" [value]="player?.currentTime"
+        (input)="seekTo($event)" [disabled]="player?.error"></mat-slider>
+    <div class="player-controls" style="text-align: center;">
+        <button mat-fab *ngIf="player.paused" (click)="player.play()">
+            <mat-icon mat-list-icon>play_arrow</mat-icon>
+        </button>
+        <button mat-fab *ngIf="!player.paused" (click)="player.pause()" style="white-space: nowrap;">
+            <mat-icon mat-list-icon>pause</mat-icon>
+        </button>
+        <!--button mat-fab>
+            <mat-icon>refresh</mat-icon>
+        </button-->
+    </div>
 </div>

@@ -5,10 +5,11 @@ import { CookieService } from 'ngx-cookie-service';
 import { MatDialog } from '@angular/material/dialog';
 import { NodeEditorDialogComponent } from './node.editor/node.editor.component';
 import { MusicUploadDialogComponent } from '../musics/music.manager/upload-dialog/music.upload.dialog';
+import { DeleteConfirmationComponent } from '../dialogs/deleteConfirmDialog/delete.confirmation.component';
 
 @Component({
     templateUrl: "./nodes.component.html",
-    styleUrls: ["./nodes.component.css"]  
+    styleUrls: ["./nodes.component.css"]
 })
 export class NodeMapComponent implements OnInit {
     displayedColumns: string[] = ['name', 'ip', 'ports', 'portCount', 'fileCount', 'actions'];
@@ -42,6 +43,23 @@ export class NodeMapComponent implements OnInit {
         // When the dialog is closed, refresh the table.
         dialogRef.afterClosed().subscribe(() => {
             this.fetchNodeList();
+        });
+    }
+
+    deleteNode(nodeId: number) {
+        let dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+            data: {
+                'type': "NodeId",
+                'msg': "Are you sure you want to delete this node? This will also delete all files contained within this node?"
+            }
+        })
+
+        dialogRef.afterClosed().subscribe((res) => {
+            if (res) {
+                this.service.deleteNode(nodeId).subscribe(() => {
+                    this.fetchNodeList();
+                });
+            }
         });
     }
 }

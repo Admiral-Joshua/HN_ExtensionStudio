@@ -1,19 +1,21 @@
-<h1 mat-dialog-title>{{nodeId > 0 ? 'Editing' : 'Create New'}} {{nodeForm.get('name').value.length > 0 ? nodeForm.get('name').value : 'Computer'}}</h1>
+<h1 mat-dialog-title>{{nodeId > 0 ? 'Editing' : 'Create New'}}
+    {{nodeForm.get('name').value.length > 0 ? nodeForm.get('name').value : 'Computer'}}</h1>
 <div mat-dialog-content>
-    <mat-expansion-panel expanded>
-        <mat-expansion-panel-header>
-            <mat-panel-title>
-                Basics and Security
-            </mat-panel-title>
-            <mat-panel-description>
-                Define what this computer is, and it's level of security.
-            </mat-panel-description>
-        </mat-expansion-panel-header>
+    <form [formGroup]="nodeForm">
+        <mat-expansion-panel expanded>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Basics and Definition
+                </mat-panel-title>
+                <mat-panel-description>
+                    Define what this computer is, and where to find it.
+                </mat-panel-description>
+            </mat-expansion-panel-header>
 
-        <form [formGroup]="nodeForm">
             <mat-form-field class="half-field">
                 <mat-label>ID:</mat-label>
-                <input matInput placeholder="Short and snappy. E.g. dave-pc-01" formControlName="id" required minlength="3" />
+                <input matInput placeholder="Short and snappy. E.g. dave-pc-01" formControlName="id" required
+                    minlength="3" />
             </mat-form-field>
             <mat-form-field class="half-field">
                 <mat-label>Display Name:</mat-label>
@@ -21,91 +23,153 @@
             </mat-form-field>
             <div class="full-field">
                 <div class="half-field">
-                    <mat-checkbox class="half-field" formControlName="allowsDefaultBootModule">Allows Default Boot Module</mat-checkbox>
+                    <mat-checkbox
+                        matTooltip="If this computer has a daemon, allow it to show first before the standard computer info display in-game."
+                        class="half-field" formControlName="allowsDefaultBootModule">Allows Default Boot
+                        Module</mat-checkbox>
                 </div>
                 <div class="half-field">
-                    <mat-checkbox class="half-field" formControlName="tracker">Has Tracker</mat-checkbox>
+                    <mat-checkbox
+                        matTooltip="Enabling this means that, if the player doesn't clear the logs properly they'll be hacked back by this node."
+                        class="half-field" formControlName="tracker">Has Tracker</mat-checkbox>
                 </div>
             </div>
             <mat-form-field class="third-field">
                 <mat-label>IP Address:</mat-label>
-                <input matInput placeholder="#RANDOM_IP#" formControlName="ip" pattern="(?:[0-9]{1,3}\.){3}[0-9]{1,3}" />
+                <input matInput placeholder="#RANDOM_IP#" formControlName="ip"
+                    pattern="(?:[0-9]{1,3}\.){3}[0-9]{1,3}" />
             </mat-form-field>
             <mat-form-field class="third-field">
                 <mat-label>Icon:</mat-label>
                 <mat-select formControlName="icon">
-                    <mat-option *ngFor="let icon of supportedIcons" [value]="icon.icon" required>{{icon.name}}</mat-option>
+                    <mat-option *ngFor="let icon of supportedIcons" [value]="icon.icon" required>{{icon.name}}
+                    </mat-option>
                 </mat-select>
             </mat-form-field>
             <mat-form-field class="third-field">
                 <mat-label>Computer Type:</mat-label>
                 <mat-select formControlName="typeId">
-                    <mat-option *ngFor="let type of supportedTypes" [value]="type.typeId" required>{{type.typeText}}</mat-option>
+                    <mat-option *ngFor="let type of supportedTypes" [value]="type.typeId" required>{{type.typeText}}
+                    </mat-option>
+                    <mat-hint>
+                        Determines what sort of files the game should auto-generate around this computer.
+                    </mat-hint>
                 </mat-select>
             </mat-form-field>
-            <mat-form-field class="full-field">
+            <mat-form-field class="third-field">
                 <mat-label>Admin Password:</mat-label>
-                <input matInput placeholder="xxxPass5w0rd!xxx" formControlName="adminPass" minlength="4" maxlength="24" />
+                <input matInput placeholder="xxxPass5w0rd!xxx" formControlName="adminPass" minlength="4"
+                    maxlength="24" />
             </mat-form-field>
             <mat-form-field class="third-field">
                 <mat-label>Security Level:</mat-label>
-                <input matInput placeholder="How secure is this computer?" formControlName="securityLevel" type="number" min="0" max="7" />
-            </mat-form-field>
-            <mat-form-field class="third-field">
-                <mat-label>Ports for Crack:</mat-label>
-                <input matInput placeholder="OPTIONAL: Overrides security level" formControlName="portsForCrack" type="number" min="0" max="9999" />
+                <input matInput placeholder="How secure is this computer?" formControlName="securityLevel" type="number"
+                    min="0" max="7" />
             </mat-form-field>
             <mat-form-field class="third-field">
                 <mat-label>Trace Time (in seconds)</mat-label>
-                <input matInput placeholder="Time the player has to get in and out of this node." formControlName="traceTime" type="number" min="-1" />
+                <input matInput placeholder="Time the player has to get in and out of this node."
+                    formControlName="traceTime" type="number" min="-1" />
+                <mat-hint>How long the player has to get in and out before the dreaded BSOD.</mat-hint>
             </mat-form-field>
-        </form>
-    </mat-expansion-panel>
-    <mat-expansion-panel>
-        <mat-expansion-panel-header>
-            <mat-panel-title>
-                Ports
-            </mat-panel-title>
-            <mat-panel-description>
-                Define what ports should be active on this node.
-            </mat-panel-description>
-        </mat-expansion-panel-header>
-        <mat-form-field class="full-field">
-            <mat-chip-list #chipList aria-label="Active Ports">
-                <mat-chip *ngFor="let port of activePorts" selectable="false" removable="true" (removed)="removePort(port)" selected>
-                    {{port.portType}}
-                    <mat-icon matChipRemove>cancel</mat-icon>
-                </mat-chip>
-                <input matInput name="portSearch" placeholder="Add Port..." [formControl]="portSearch" [matAutocomplete]="auto" [matChipInputFor]="chipList">
-            </mat-chip-list>
-            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)" [displayWith]="displayNull">
-                <mat-option *ngFor="let port of filteredPorts | async" [value]="port.portType">
-                    {{port.portType}}
-                </mat-option>
-            </mat-autocomplete>
-        </mat-form-field>
-    </mat-expansion-panel>
-    <mat-expansion-panel>
-        <mat-expansion-panel-header>
-            <mat-panel-title>
-                Files
-            </mat-panel-title>
-            <mat-panel-description>
-                Define what files should be listed on this node.
-            </mat-panel-description>
-        </mat-expansion-panel-header>
-        <button mat-button color="primary" (click)="openFileEditor()">New</button>
-        <mat-action-list>
-            <div matRipple *ngFor="let file of files">
-                /{{file.path}}/{{file.name}}
-                <div class="float-right">
-                    <button mat-button color="accent" (click)="openFileEditor(file.fileId)">Edit</button>
-                    <button mat-button color="warn" (click)="deleteFile(file.fileId)">Delete</button>
-                </div>
-            </div>
-        </mat-action-list>
-    </mat-expansion-panel>
 
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Security
+                </mat-panel-title>
+                <mat-panel-description>
+                    Configure ports, firewall and proxy security for this computer.
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <h4>Port Configuration</h4>
+            <mat-form-field class="full-field">
+                <mat-chip-list #chipList aria-label="Active Ports">
+                    <mat-chip *ngFor="let port of activePorts" selectable="false" removable="true"
+                        (removed)="removePort(port)" selected>
+                        {{port.portType}}
+                        <mat-icon matChipRemove>cancel</mat-icon>
+                    </mat-chip>
+                    <input matInput name="portSearch" placeholder="Add Port..." [formControl]="portSearch"
+                        [matAutocomplete]="auto" [matChipInputFor]="chipList">
+                </mat-chip-list>
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)"
+                    placeholder="Start typing a port type. E.g. SSH" [displayWith]="displayNull">
+                    <mat-option *ngFor="let port of filteredPorts | async" [value]="port.portType">
+                        {{port.portType}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+            <mat-form-field class="half-field">
+                <mat-label>Ports for Crack:</mat-label>
+                <input matInput placeholder="OPTIONAL: Overrides security level" formControlName="portsForCrack"
+                    type="number" min="0" max="9999" />
+                <mat-hint>
+                    Number of ports needed to be able to successfully run PortHack
+                </mat-hint>
+            </mat-form-field>
+            <h4>Firewall Configuration</h4>
+            <mat-checkbox formControlName="firewallEnabled">Enable Firewall </mat-checkbox><br /><br />
+            <mat-form-field class="third-field">
+                <mat-label>
+                    Firewall Level:
+                </mat-label>
+                <input matInput formControlName="fwall_Level" placeholder="-1 for no firewall at all." type="number"
+                    min="-1" />
+                <mat-hint>
+                    Determines difficulty of firewall, how long it takes to solve.
+                </mat-hint>
+            </mat-form-field>
+            <mat-form-field class="third-field">
+                <mat-label>
+                    Firewall Solution
+                </mat-label>
+                <input matInput formControlName="fwall_solution" placeholder="E.g. 'h4ckn3t'" type="text" />
+                <mat-hint>
+                    What text needs to be found to solve the firewall?
+                </mat-hint>
+            </mat-form-field>
+            <mat-form-field class="third-field">
+                <mat-label>
+                    Firewall Additional Time:
+                </mat-label>
+                <input matInput formControlName="fwall_additional" placeholder="E.g. 2.0" type="number" />
+                <mat-hint>
+                    Additional time needed added to the runtime of Hacknet's firewall solver.
+                </mat-hint>
+            </mat-form-field>
+            <h4>Proxy Configuration</h4>
+            <mat-checkbox formControlName="proxyEnabled">Enable Proxy </mat-checkbox><br /><br />
+            <mat-form-field class="half-field">
+                <mat-label>
+                    Proxy Time
+                </mat-label>
+                <input matInput formControlName="proxyTime" type="number" placeholder="E.g. 5.0" />
+                <mat-hint>Seconds multiplier, determines how long a proxy takes to break through.</mat-hint>
+            </mat-form-field>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Files
+                </mat-panel-title>
+                <mat-panel-description>
+                    Define what files should be listed on this node.
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <button mat-button color="primary" (click)="openFileEditor()">New</button>
+            <mat-action-list>
+                <div matRipple *ngFor="let file of files">
+                    /{{file.path}}/{{file.name}}
+                    <div class="float-right">
+                        <button mat-button color="accent" (click)="openFileEditor(file.fileId)">Edit</button>
+                        <button mat-button color="warn" (click)="deleteFile(file.fileId)">Delete</button>
+                    </div>
+                </div>
+            </mat-action-list>
+        </mat-expansion-panel>
+    </form>
 </div>
 <mat-dialog-actions>
     <button mat-button color="warn" (click)="cancel()">Cancel</button>

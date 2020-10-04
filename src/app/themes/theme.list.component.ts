@@ -5,6 +5,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { MatDialog } from '@angular/material/dialog';
 import { ThemeEditorComponent } from './base.editor/theme.editor.component';
 import { DeleteConfirmationComponent } from '../dialogs/deleteConfirmDialog/delete.confirmation.component';
+import { ThemeGuiEditorComponent } from './gui.editor/gui.editor.component';
 
 @Component({
     templateUrl: "./theme.list.component.html"
@@ -22,7 +23,7 @@ export class ThemeListComponent implements OnInit {
     fetchThemes() {
         this.service.fetchThemeList().subscribe(themes => {
             this.themes = themes;
-        })
+        });
     }
 
     deleteTheme(themeId: number) {
@@ -49,9 +50,10 @@ export class ThemeListComponent implements OnInit {
             data.themeId = themeId;
         }
 
-        let dialogRef = this.dialog.open(ThemeEditorComponent, {
+        let dialogRef = this.dialog.open(ThemeGuiEditorComponent, {
             data: data,
-            width: "95%"
+            //width: "95%",
+            //height: "80%"
         });
 
         dialogRef.afterClosed().subscribe(() => {

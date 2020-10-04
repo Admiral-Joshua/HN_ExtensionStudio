@@ -2,11 +2,11 @@ import { Component, Inject, OnInit } from "@angular/core";
 import { HN_CompNode, HN_CompFile, HN_CompType, HN_Port } from 'src/app/models';
 import { NodesService } from '../nodes.service';
 
-import {MAT_DIALOG_DATA, MatDialogRef, MatDialog} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
-import {map, startWith} from 'rxjs/operators';
+import { map, startWith } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { MatSelectChange } from '@angular/material/select';
 import { PortsService } from '../ports.service';
@@ -17,7 +17,7 @@ class HN_CompIcon {
     icon: string
     name: string
     src: string
-    
+
     constructor(icon: string, name: string, src?: string) {
         this.icon = icon;
         this.name = name;
@@ -76,7 +76,13 @@ export class NodeEditorDialogComponent implements OnInit {
         adminPass: new FormControl(''),
         portsForCrack: new FormControl(0),
         traceTime: new FormControl(-1),
-        tracker: new FormControl(false)    
+        tracker: new FormControl(false),
+        firewallEnabled: new FormControl(false),
+        fwall_Level: new FormControl(-1),
+        fwall_solution: new FormControl(''),
+        fwall_additional: new FormControl(0),
+        proxyEnabled: new FormControl(false),
+        proxyTime: new FormControl(0)
     });
 
     adminForm = new FormGroup({
@@ -85,17 +91,40 @@ export class NodeEditorDialogComponent implements OnInit {
         isSuper: new FormControl(false)
     });
 
-    constructor(private dialog: MatDialog, private snackbar: MatSnackBar,private service: NodesService, private portService: PortsService, @Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<NodeEditorDialogComponent>) {
+    constructor(private dialog: MatDialog, private snackbar: MatSnackBar, private service: NodesService, private portService: PortsService, @Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<NodeEditorDialogComponent>) {
         this.nodeId = data.nodeId || 0;
     }
 
-    addFile(event : MatSelectChange) {
+    addFile(event: MatSelectChange) {
         if (event.value) {
             this.files.push(event.value);
         }
     }
 
+    toggleFirewallControls() {
+        if (this.nodeForm.get('firewallEnabled').value) {
+            this.nodeForm.get('fwall_Level').enable();
+            this.nodeForm.get('fwall_solution').enable();
+            this.nodeForm.get('fwall_additional').enable();
+        } else {
+            this.nodeForm.get('fwall_Level').disable();
+            this.nodeForm.get('fwall_solution').disable();
+            this.nodeForm.get('fwall_additional').disable();
+        }
+    }
+
+    toggleProxyControls() {
+        if (this.nodeForm.get('proxyEnabled').value) {
+            this.nodeForm.get('proxyTime').enable();
+        } else {
+            this.nodeForm.get('proxyTime').disable();
+        }
+    }
+
     ngOnInit() {
+        this.nodeForm.get('firewallEnabled').valueChanges.subscribe(() => { this.toggleFirewallControls() });
+        this.nodeForm.get('proxyEnabled').valueChanges.subscribe(() => { this.toggleProxyControls() });
+
         this.service.getAllPorts().subscribe(ports => {
             this.allPorts = ports;
 
@@ -115,10 +144,13 @@ export class NodeEditorDialogComponent implements OnInit {
 
         // Set-up autocomplete.
         this.filteredPorts = this.portSearch.valueChanges
-        .pipe(
-            startWith(''),
-            map(value => this._filterPorts(value))
-        );
+            .pipe(
+                startWith(''),
+                map(value => this._filterPorts(value))
+            );
+
+        this.toggleFirewallControls();
+        this.toggleProxyControls();
     }
 
     refreshFileList() {
@@ -146,7 +178,9 @@ export class NodeEditorDialogComponent implements OnInit {
                     this.refreshFileList();
                 });
             } else {
-                this.refreshFileList();
+                this.service.getFile(fileId).subscribe(data => {
+                    this.files.push(data);
+                });
             }
         });
     }
@@ -157,7 +191,7 @@ export class NodeEditorDialogComponent implements OnInit {
         });
     }
 
-    formToNode() : HN_CompNode {
+    formToNode(): HN_CompNode {
         let retVal = new HN_CompNode();
 
         retVal.id = this.nodeForm.get('id').value;
@@ -171,6 +205,10 @@ export class NodeEditorDialogComponent implements OnInit {
         retVal.traceTime = this.nodeForm.get('traceTime').value;
         retVal.tracker = this.nodeForm.get('tracker').value;
         retVal.typeId = this.nodeForm.get('typeId').value;
+        retVal.fwall_Level = this.nodeForm.get('firewallEnabled').value ? this.nodeForm.get('fwall_Level').value : -1;
+        retVal.fwall_solution = this.nodeForm.get('firewallEnabled').value ? this.nodeForm.get('fwall_solution').value : '';
+        retVal.fwall_additional = this.nodeForm.get('firewallEnabled').value ? this.nodeForm.get('fwall_additional').value : 0;
+        retVal.proxyTime = this.nodeForm.get('proxyEnabled').value ? this.nodeForm.get('proxyTime').value : -1;
 
         // If we're creating this node, upload the files and ports as well
         if (this.nodeId <= 0) {
@@ -182,17 +220,28 @@ export class NodeEditorDialogComponent implements OnInit {
     }
 
     nodeToForm(node: HN_CompNode) {
-        this.nodeForm.get('id').setValue(node.id);
-        this.nodeForm.get('name').setValue(node.name);
-        this.nodeForm.get('ip').setValue(node.ip);
-        this.nodeForm.get('securityLevel').setValue(node.securityLevel);
-        this.nodeForm.get('allowsDefaultBootModule').setValue(node.allowsDefaultBootModule);
-        this.nodeForm.get('icon').setValue(node.icon);
-        this.nodeForm.get('adminPass').setValue(node.adminPass);
-        this.nodeForm.get('portsForCrack').setValue(node.portsForCrack);
-        this.nodeForm.get('traceTime').setValue(node.traceTime);
-        this.nodeForm.get('tracker').setValue(node.tracker);
-        this.nodeForm.get('typeId').setValue(node.typeId);
+        this.nodeForm.patchValue({
+            id: node.id,
+            name: node.name,
+            ip: node.ip,
+            securityLevel: node.securityLevel,
+            allowsDefaultBootModule: node.allowsDefaultBootModule,
+            icon: node.icon,
+            adminPass: node.adminPass,
+            portsForCrack: node.portsForCrack,
+            traceTime: node.traceTime,
+            tracker: node.tracker,
+            typeId: node.typeId,
+            fwall_Level: node.fwall_Level,
+            fwall_solution: node.fwall_solution,
+            fwall_additional: node.fwall_additional,
+            firewallEnabled: node.fwall_Level > -1,
+            proxyEnabled: node.proxyTime > -1,
+            proxyTime: node.proxyTime
+        });
+
+        this.toggleFirewallControls();
+        this.toggleProxyControls();
     }
 
     cancel() {
@@ -235,9 +284,9 @@ export class NodeEditorDialogComponent implements OnInit {
     addPort(port: HN_Port) {
         // Put it in the list.
         this.activePorts.push(port);
-        
+
         // Clear input
-        this.portSearch.setValue('', {emitEvent: false});
+        this.portSearch.setValue('', { emitEvent: false });
 
         // Notify user
         this.snackbar.open('Port Added', '', {
@@ -247,7 +296,7 @@ export class NodeEditorDialogComponent implements OnInit {
 
     selected(event: MatAutocompleteSelectedEvent): void {
         let matchedPort = this._filterPorts(event.option.viewValue)[0];
-        
+
         event.option.deselect();
 
         // Perform update on DB.
@@ -268,7 +317,7 @@ export class NodeEditorDialogComponent implements OnInit {
         const filterValue = value.toLowerCase();
 
         // Remove ports we already have.
-        let newPorts = this.allPorts.filter(port => { 
+        let newPorts = this.allPorts.filter(port => {
             for (var i = 0; i < this.activePorts.length; i++) {
                 if (this.activePorts[i].portId === port.portId) {
                     return false;
@@ -277,6 +326,6 @@ export class NodeEditorDialogComponent implements OnInit {
             return true;
         });
 
-        return newPorts.filter(port => { return port.portType.toLowerCase().includes(value.toLowerCase())});
+        return newPorts.filter(port => { return port.portType.toLowerCase().includes(value.toLowerCase()) });
     }
 }

@@ -1,13 +1,3 @@
-.fill-bar {
-    display: inline-block;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: lightblue;
-    z-index: -100;
-}
-
 .music-item {
     position: relative;
     width: 100%;
@@ -58,4 +48,10 @@ input.read-write:disabled {
     margin: 1px;
     width: 70%;
     height: 100%;
+}
+
+.time-slider {
+    width: 100%;
+    margin-left: 20px;
+    margin-right: 20px;
 }

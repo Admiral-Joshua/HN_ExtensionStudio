@@ -33,6 +33,10 @@ export class HN_CompNode {
     files: HN_CompFile[]
     ports: HN_Port[]
     tracker: boolean
+    fwall_Level: number
+    fwall_solution: string
+    fwall_additional: number
+    proxyTime: number
 
     adminInfoId: number // TODO: Proper Admin Handling
     visibleAtStartup: boolean
@@ -56,4 +60,8 @@ export class HN_CompFile {
         this.contents = contents || '';
         this.fileId = fileId;
     }
+}
+
+export class HN_FileTemplate extends HN_CompFile {
+    templateId: number
 }

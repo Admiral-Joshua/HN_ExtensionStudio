@@ -1,0 +1,135 @@
+<mat-drawer-container>
+    <mat-drawer #themeDrawer mode="over" hasBackdrop="false">
+        <h3>
+            <fa-icon [icon]="editIcon"></fa-icon> Theme Settings
+        </h3>
+
+        <button mat-flat-button (click)="themeDrawer.close()">
+            <fa-icon [icon]="closeIcon"></fa-icon> Close
+        </button>
+    </mat-drawer>
+    <mat-drawer-content>
+        <div class="game-window">
+            <div class="hn-grid hn-top-bar">
+                <fa-icon class="hn-icon text-white" [icon]="closeIcon"></fa-icon>
+                <fa-icon class="hn-icon text-white" [icon]="settingsIcon"></fa-icon>
+                <fa-icon class="hn-icon text-white" [icon]="saveIcon"></fa-icon>
+                <div style="font-size: .7em; font-style: italic;"> 60</div>
+                <fa-icon class="fa-lg hn-icon text-white" [icon]="emailIcon"></fa-icon>
+            </div>
+
+            <div class="hn-grid hn-module process-manager">
+                <div class="hn-grid module-title">RAM </div>
+                <div class="hn-grid module-body">
+
+                    <div class="hn-module app-status">
+                        <div class="module-title">notes</div>
+                        <div class="module-body">test notes app</div>
+                        <div class="module-actions">
+                            <div class="btn-group">
+                                <div class="hn-button hn-button-xsm hn-button-active">
+                                    <div class="hn-button-prepend"></div>
+                                    <div class="hn-button-text">Add Note</div>
+                                </div>
+                                <div class="hn-button hn-button-xsm hn-button-danger">
+                                    <div class="hn-button-prepend"></div>
+                                    <div class="hn-button-text">Close</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hn-module app-status">
+                        <div class="module-title">app:PortHack<span style="float:right;">IP:210.23.192.113</span></div>
+                        <div class="module-body">test notes app</div>
+                        <div class="module-actions"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hn-grid hn-module hn-display">
+                <div class="hn-grid module-title">DISPLAY</div>
+                <div class="module-body">
+                    <div class="hn-display-container">
+                        <div class="hn-node-info">
+                            <img class="hn-comp-icon" src="/assets/themes/res/Sec0Computer.png" />
+                            <div class="hn-node-details">
+                                <h3 style="font-weight: normal; font-size: 1.5em;">Connected to</h3>
+                                <h2 style="font-size: 2.0em;">Test-Battlestation</h2>
+                                <h6 style="font-size: 1.1em;">@ 210.23.192.113</h6>
+                            </div>
+                        </div>
+                        <div class="hn-node-admin-pane">You are the Administrator of this system</div>
+                        <div class="hn-node-actions">
+                            <div class="hn-button hn-button-disabled">
+                                <div class="hn-button-prepend"></div>
+                                <div class="hn-button-text">Login</div>
+                            </div>
+                            <div class="hn-button hn-button-active">
+                                <div class="hn-button-prepend"></div>
+                                <div class="hn-button-text">Probe system</div>
+                            </div>
+                            <div class="hn-button hn-button-active">
+                                <div class="hn-button-prepend"></div>
+                                <div class="hn-button-text">View Filesystem</div>
+                            </div>
+                            <div class="hn-button hn-button-active">
+                                <div class="hn-button-prepend"></div>
+                                <div class="hn-button-text">View Logs</div>
+                            </div>
+                            <div class="hn-button hn-button-active">
+                                <div class="hn-button-prepend"></div>
+                                <div class="hn-button-text">Scan Network</div>
+                            </div>
+                        </div>
+                        <div class="hn-node-actions bottom-align">
+                            <div class="hn-button hn-button-sm hn-button-danger align-bottom">
+                                <div class="hn-button-prepend"></div>
+                                <div class="hn-button-text">Disconnect</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hn-grid hn-module hn-netmap">
+                <div class="hn-grid module-title">netMap v1.7</div>
+                <div class="module-body">
+                    <!--img src="/assets/themes/res/NodeCircle.png" class="hn-nmap-node node1" />
+                    <img src="/assets/themes/res/NodeCircle.png" class="hn-nmap-node node2" />
+                    <img src="/assets/themes/res/NodeCircle.png" class="hn-nmap-node node3" /-->
+
+                    <div class="hn-nmap-node node1"></div>
+                    <div class="hn-nmap-node node2"></div>
+                    <div class="hn-nmap-node node3"></div>
+
+                    <div class="hn-nmap-node mynode"></div>
+                </div>
+            </div>
+
+
+            <div class="hn-grid hn-module hn-terminal">
+                <div class="hn-grid module-title">TERMINAL</div>
+                <div class="module-body">
+                    <pre>root@localhost> echo hello world
+hello world
+
+root@localhost> connect 210.23.192.113
+Disconnected
+Scanning For 210.23.192.113
+Connection Established ::
+Connected to Test-Battlestation@210.23.192.113
+210.23.192.113>PortHack
+Porthack Initialised -- Running...
+
+--Porthack Complete---
+                    </pre>
+                </div>
+            </div>
+        </div>
+
+        <button style="position: absolute; bottom: 5px; left: 5px;" mat-fab color="accent" title="Customise"
+            (click)="themeDrawer.toggle()">
+            <fa-icon class="fa-2x" [icon]="editIcon"></fa-icon>
+        </button>
+    </mat-drawer-content>
+</mat-drawer-container>

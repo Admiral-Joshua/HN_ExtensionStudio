@@ -4,7 +4,8 @@
             Template
         </mat-label>
         <mat-select (selectionChange)="loadTemplate($event)">
-            <mat-option *ngFor="let template of fileTemplates" [value]="template.fileId">{{template.name}}</mat-option>
+            <mat-option *ngFor="let template of fileTemplates" [value]="template.templateId">{{template.name}}
+            </mat-option>
         </mat-select>
     </mat-form-field>
     <mat-form-field class="full-field">
@@ -23,7 +24,8 @@
         <mat-label>
             Contents
         </mat-label>
-        <textarea matInput rows="5" formControlName="contents" placeholder="What will it contain?" name="fileContent"></textarea>
+        <textarea matInput rows="11" formControlName="contents" placeholder="What will it contain?"
+            name="fileContent"></textarea>
     </mat-form-field>
 </form>
 <mat-dialog-actions>

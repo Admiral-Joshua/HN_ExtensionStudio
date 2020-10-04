@@ -1,0 +1,51 @@
+.hn-button {
+    border: 1px solid rgb(200, 200, 200);
+    border-left: none;
+
+    margin: 3px 2px;
+
+    height: 35px;
+
+    display: grid;
+    grid-template-columns: 12px auto;
+
+    background-color: rgba(100, 100, 100, 0.35);
+    overflow: hidden;
+}
+
+.hn-button-disabled > .hn-button-prepend {
+    background-color: rgb(100, 100, 100);
+}
+
+.hn-button-active > .hn-button-prepend {
+    background-color: rgb(0, 160, 210);
+}
+
+.hn-button-danger > .hn-button-prepend {
+    background-color: rgb(140, 0, 0);
+}
+
+.hn-button-text {
+    margin: 8px 10px;
+}
+
+.hn-button-sm {
+    height: 25px;
+}
+
+.hn-button-xsm {
+    height: 18px;
+}
+
+.hn-button-xsm > .hn-button-text {
+    margin: 1px 5px;
+}
+
+.hn-button-sm > .hn-button-text {
+    margin: 4px 10px;
+}
+
+.btn-group {
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
