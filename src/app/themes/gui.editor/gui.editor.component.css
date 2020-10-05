@@ -9,17 +9,15 @@
     --hn-panel-text-primary: #fff;
     --hn-panel-text-secondary: 200, 200, 200;
 
-    /*width: 1280px;
-    height: 720px;*/
-    width: 1920px;
-    height: 1080px;
+    width: 77.5vw;
+    height: 77.5vh;
 
     display: grid;
 
     grid-template-columns: 19% 49% 32%;
     grid-template-rows: 24px 63% 33%;
 
-    background-image: url("/assets/themes/hacknet_dlc_purple.png");
+    /*background-image: url("/assets/themes/hacknet_dlc_purple.png");*/
     background-size: cover;
 
     color: white;
@@ -109,8 +107,8 @@
 }
 
 .hn-nmap-node {
-    width: 15px;
-    height: 15px;
+    width: 12px;
+    height: 12px;
     position: absolute;
 
     --hn-node-main: 180, 180, 180;
@@ -121,40 +119,67 @@
     --hn-node-mine-shadow: 25, 100, 60;
 
 
-    border-radius: 25px;
+    border-radius: 20px;
     color: rgb(var(--hn-node-main));
-    box-shadow: 0px 0px 5px 10px rgb(var(--hn-node-shadow));
+    box-shadow: 0px 0px 6px 8px rgb(var(--hn-node-shadow));
     border: 8px solid rgb(var(--hn-node-highlight));
 }
 
 .node1 {
-    top: 50px;
-    left: 150px;
-}
-
-.node1 {
-    top: 50px;
-    left: 150px;
+    top: 42px;
+    left: 60px;
 }
 
 .node2 {
-    top: 90px;
-    left: 350px;
+    top: 62px;
+    left: 120px;
 }
 
 .node3 {
-    top: 120px;
-    left: 280px;
+    top: 90px;
+    left: 220px;
+}
+
+.node4 {
+    top: 100px;
+    left: 360px;
 }
 
 .mynode {
-    top: 200px;
-    left: 120px;
+    top: 140px;
+    left: 30px;
 
     border-color: rgb(var(--hn-node-mine));
-    box-shadow: 0px 0px 5px 10px rgb(var(--hn-node-mine-shadow));
+    box-shadow: 0px 0px 6px 8px rgb(var(--hn-node-mine-shadow));
+}
+
+.hn-nmap-tooltip {
+    width: 130px;
+    height: 36px;
+    position: absolute;
+    left: 10px;
+    top: 5px;
+
+    border-radius: 8px;
+
+    padding: 3px 5px;
+    font-size: .9em;
+}
+
+.hn-nmap-tooltip > small {
+    font-size: .72em;
 }
 
 .process-manager > .module-body {
     margin: 2px 0px;
+}
+
+.form-field-label {
+    font-size: 0.75em;
+    color: rgb(120, 120, 120);
+}
+
+.form-field-hint {
+    font-size: 0.8em;
+    color: rgb(160, 160, 160);
 }

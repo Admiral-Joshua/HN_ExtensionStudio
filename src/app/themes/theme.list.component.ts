@@ -1,9 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { HN_Theme } from './models';
 import { ThemesService } from './themes.service';
-import { CookieService } from 'ngx-cookie-service';
 import { MatDialog } from '@angular/material/dialog';
-import { ThemeEditorComponent } from './base.editor/theme.editor.component';
 import { DeleteConfirmationComponent } from '../dialogs/deleteConfirmDialog/delete.confirmation.component';
 import { ThemeGuiEditorComponent } from './gui.editor/gui.editor.component';
 
@@ -11,13 +9,12 @@ import { ThemeGuiEditorComponent } from './gui.editor/gui.editor.component';
     templateUrl: "./theme.list.component.html"
 })
 export class ThemeListComponent implements OnInit {
-    themes: HN_Theme[]
+    themes: HN_Theme[];
 
     constructor(private service: ThemesService, private dialog: MatDialog) { }
 
     ngOnInit() {
         this.fetchThemes();
-        //this.openEditor();
     }
 
     fetchThemes() {
@@ -40,7 +37,7 @@ export class ThemeListComponent implements OnInit {
                     this.fetchThemes();
                 });
             }
-        })
+        });
     }
 
     openEditor(themeId?: number) {
@@ -51,9 +48,7 @@ export class ThemeListComponent implements OnInit {
         }
 
         let dialogRef = this.dialog.open(ThemeGuiEditorComponent, {
-            data: data,
-            //width: "95%",
-            //height: "80%"
+            data: data
         });
 
         dialogRef.afterClosed().subscribe(() => {

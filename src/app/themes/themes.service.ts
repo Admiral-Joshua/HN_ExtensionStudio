@@ -30,4 +30,12 @@ export class ThemesService {
     getLayouts(): Observable<HN_Layout[]> {
         return this.http.get<HN_Layout[]>(`${this.baseUrl}/themes/layouts/list`, { withCredentials: true });
     }
+
+    uploadThemeImage(themeData: FormData) {
+        return this.http.post(`${this.baseUrl}/themes/upload`, themeData, { withCredentials: true });
+    }
+
+    getThemeImage(themeId: number) {
+        return this.http.get(`${this.baseUrl}/themes/${themeId}/bgimage`, { withCredentials: true, responseType: 'blob' });
+    }
 }

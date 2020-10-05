@@ -25,6 +25,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSliderModule } from '@angular/material/slider';
+import { ColorSketchModule } from 'ngx-color/sketch';
 
 import { JwtModule } from '@auth0/angular-jwt';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -75,7 +76,6 @@ import { ActionEditorComponent } from './actions/action.editor/action.editor.com
 import { NodeSelector } from './elems/node-selector/node.selector.component';
 import { ThemeSelectorComponent } from './elems/theme-selector/theme.selector.component';
 
-import { ThemeEditorComponent } from './themes/base.editor//theme.editor.component';
 import { ThemeGuiEditorComponent } from './themes/gui.editor/gui.editor.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -83,7 +83,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 export function getAuthToken() {
   return localStorage.getItem("auth");
-  // return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODgzNzA2MDMsInVzZXJJZCI6NSwiaWF0IjoxNTg4Mjg0MjAzfQ.kwQYZxcbLH3e3Zi0RSH2f6ezyDX8i3eF-R4QKNhOieU';
 }
 
 @NgModule({
@@ -103,7 +102,6 @@ export function getAuthToken() {
     GoalEditorDialogComponent,
     EmailDialogComponent,
     ThemeListComponent,
-    ThemeEditorComponent,
     PostingDialogComponent,
     FileEditorDialogComponent,
     HNFileSelectorComponent,
@@ -150,7 +148,8 @@ export function getAuthToken() {
     MatSnackBarModule,
     MatTooltipModule,
     MatSliderModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    ColorSketchModule
   ],
   providers: [
     { provide: 'BASE_API_URL', useValue: environment.apiUrl },
@@ -174,10 +173,10 @@ export function getAuthToken() {
     MissionEditorDialogComponent,
     GoalEditorDialogComponent,
     EmailDialogComponent,
-    ThemeEditorComponent,
     PostingDialogComponent,
     FileEditorDialogComponent,
-    ActionSetEditorComponent]
+    ActionSetEditorComponent,
+    ThemeGuiEditorComponent]
 })
 export class AppModule { }
 

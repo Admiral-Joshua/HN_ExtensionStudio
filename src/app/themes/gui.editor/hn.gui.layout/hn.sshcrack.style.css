@@ -1,0 +1,39 @@
+.ssh-crack-body {
+    display: grid;
+
+    height: 135px;
+
+    grid-template-columns: 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%;
+    grid-template-rows: 15% 15% 15% 15% 15% 25%;
+}
+
+.locked, .b-locked, .unlocked, .b-unlocked {
+    text-align: center;
+}
+
+/*.locked {
+    background-color: rgb(170, 10, 10);
+}
+
+.b-locked {
+    background-color: rgb(215, 20, 20);
+}
+
+.unlocked {
+    background-color: rgb(20, 200, 20);
+}*/
+
+.hn-progress {
+    margin: 12px 2px 3px 2px;
+
+    grid-column-start: 1;
+    grid-column-end: 9;
+
+    border: 1px solid grey;
+}
+
+.hn-progress > .hn-progress-bar {
+    background-color: rgb(0, 90, 120);
+    width: 40%;
+    height: 100%;
+}

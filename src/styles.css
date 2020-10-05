@@ -23,6 +23,11 @@ h2 {
     width: 99%;
 }
 
+.full-field > input {
+    width: 98%;
+    margin: 2px 3px;
+}
+
 .half-field {
     width: 49.5%;
 }

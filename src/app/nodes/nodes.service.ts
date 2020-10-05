@@ -67,5 +67,4 @@ export class NodesService {
     deleteFile(fileId: number) {
         return this.http.delete(`${this.baseUrl}/nodes/files/${fileId}`, { withCredentials: true });
     }
-
 }

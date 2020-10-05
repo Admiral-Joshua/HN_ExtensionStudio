@@ -1,8 +1,10 @@
 .hn-display-container {
+    width: 100%;
+    height: 100%;
     display: grid;
 
     grid-template-columns: 33% 33% 33%;
-    grid-template-rows: 125px 20px 85% 15%;
+    grid-template-rows: 125px 20px 60% 20%;
 }
 
 .hn-node-info {
@@ -40,7 +42,7 @@
 }
 
 .hn-node-actions {
-    margin: 10px 15px;
+    margin: 10px 15px 0px 15px;
     grid-column-start: 1;
     grid-column-end: 2;
 

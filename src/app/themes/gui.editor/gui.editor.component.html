@@ -1,9 +1,54 @@
-<mat-drawer-container>
-  <mat-drawer #themeDrawer mode="over" hasBackdrop="false">
+<mat-drawer-container hasBackdrop="false">
+  <mat-drawer #themeDrawer mode="over">
     <h3>
       <fa-icon [icon]="editIcon"></fa-icon>
       Theme Settings
-    </h3>
+      <span style="float: right;"><button mat-mini-fab (click)="themeDrawer.close()">
+          <fa-icon [icon]="chevronLeft"></fa-icon>
+        </button></span>
+    </h3><br />
+
+    <mat-expansion-panel expanded="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Name and Background
+        </mat-panel-title>
+        <mat-panel-description>
+          Upload a new background image, and give this theme a name.
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <mat-form-field class="full-field">
+        <mat-label>
+          Theme Name
+        </mat-label>
+        <input matInput type="text" [(ngModel)]="themeData.id" />
+        <mat-hint>A friendly identifier we can use to refer back to this theme later.</mat-hint>
+      </mat-form-field><br /><br />
+
+      <div class="full-field">
+        <label class="form-field-label">Background Image</label>
+        <input type="file" (change)="fileSelected($event)" id="bgImageSelector" accept="image/*" />
+        <label class="form-field-hint">Upload a new image to replace the background on this theme.</label>
+      </div>
+      <br />
+
+      <mat-form-field class="full-field">
+        <mat-label>
+          Base Layout
+        </mat-label>
+        <mat-select [(ngModel)]="themeData.layoutId">
+          <mat-option *ngFor="let layout of layouts" [value]="layout.layoutId">{{layout.LayoutName}}</mat-option>
+        </mat-select>
+        <mat-hint>
+          Determines what the order the modules will display in the game. (Preview currently unsupported)
+        </mat-hint>
+      </mat-form-field>
+    </mat-expansion-panel>
+
+    <mat-card>
+
+    </mat-card>
 
     <mat-expansion-panel>
       <mat-expansion-panel-header>
@@ -11,25 +56,35 @@
           Basic Configuration
         </mat-panel-title>
         <mat-panel-description>
-          A simple set of sliders and tools to help you get started.
+          Quick colour sets to get your theme started
         </mat-panel-description>
       </mat-expansion-panel-header>
 
-      <mat-form-field class="full-field">
-        <mat-label>
-          Highlight Color
-        </mat-label>
-        <input matInput type="color" [(ngModel)]="themeData.defaultHighlightColor" />
-        <mat-hint>Color shown to the side of buttons, panels, etc.</mat-hint>
-      </mat-form-field>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Highlight Color
+          </mat-panel-title>
+          <mat-panel-description>
+            Color shown to the side of buttons, panels, etc.
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <color-sketch [color]="themeData.defaultHighlightColor"
+          (onChangeComplete)="colorUpdated('defaultHighlightColor', $event, 'hex')"></color-sketch>
+      </mat-expansion-panel>
 
-      <mat-form-field class="full-field">
-        <mat-label>
-          Topbar Color
-        </mat-label>
-        <input matInput type="color" [(ngModel)]="themeData.defaultTopBarColor" />
-        <mat-hint>Color shown at the very top of the screen.</mat-hint>
-      </mat-form-field>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Topbar Color
+          </mat-panel-title>
+          <mat-panel-description>
+            Color shown at the very top of the screen.
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <color-sketch [color]="themeData.defaultTopBarColor"
+          (onChangeComplete)="colorUpdated('defaultTopBarColor', $event, 'hex')"></color-sketch>
+      </mat-expansion-panel>
 
     </mat-expansion-panel>
 
@@ -42,60 +97,290 @@
           Colors shown on each of the modules (Terminal, Display, etc.)
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <mat-form-field class="third-field">
-        <mat-label>
-          Solid Color
-        </mat-label>
-        <input matInput type="color" [(ngModel)]="themeData.moduleColorSolidDefault" />
-        <mat-hint>Outline/text colour shown at the top.</mat-hint>
-      </mat-form-field>
-      <mat-form-field class="third-field">
-        <mat-label>
-          Strong Color
-        </mat-label>
-        <input matInput type="color" [(ngModel)]="themeData.moduleColorStrong" />
-        <mat-hint>Background colour of top bar.</mat-hint>
-      </mat-form-field>
-      <mat-form-field class="third-field">
-        <mat-label>
-          Backing Color
-        </mat-label>
-        <input matInput type="color" [(ngModel)]="themeData.moduleColorBacking" />
-        <mat-hint>Background color of whole module.</mat-hint>
-      </mat-form-field>
 
-      <mat-form-field class="half-field">
-        <mat-label>
-          Outline Color
-        </mat-label>
-        <input matInput type="color" [(ngModel)]="themeData.outlineColor" />
-        <mat-hint>
-          Color used for the outlines of each module and more.
-        </mat-hint>
-      </mat-form-field>
-      <mat-form-field class="half-field">
-        <mat-label>
-          Terminal Text Color
-        </mat-label>
-        <input matInput type="color" [(ngModel)]="themeData.terminalTextColor" />
-        <mat-hint>
-          Color used on the terminal's text.
-        </mat-hint>
-      </mat-form-field>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Solid Color
+          </mat-panel-title>
+          <mat-panel-description>
+            Outline/text colour shown at the top.
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <color-sketch [color]="themeData.moduleColorSolidDefault"
+          (onChangeComplete)="colorUpdated('moduleColorSolidDefault', $event, 'hex')"></color-sketch>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Strong Color
+          </mat-panel-title>
+          <mat-panel-description>
+            Background colour of module top bar(s)
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <color-sketch [color]="themeData.moduleColorStrong"
+          (onChangeComplete)="colorUpdated('moduleColorStrong', $event, 'hex')"></color-sketch>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Backing Color
+          </mat-panel-title>
+          <mat-panel-description>
+            Background color of whole modules.
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <color-sketch [color]="themeData.moduleColorBacking"
+          (onChangeComplete)="colorUpdated('moduleColorBacking', $event)"></color-sketch>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Outline Color
+          </mat-panel-title>
+          <mat-panel-description>Color used for the outlines of each module and more.</mat-panel-description>
+        </mat-expansion-panel-header>
+        <color-sketch [color]="themeData.outlineColor" (onChangeComplete)="colorUpdated('outlineColor', $event, 'hex')">
+        </color-sketch>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Terminal Text Color
+          </mat-panel-title>
+          <mat-panel-description>Color used on the terminal's text.</mat-panel-description>
+        </mat-expansion-panel-header>
+        <color-sketch [color]="themeData.terminalTextColor"
+          (onChangeComplete)="colorUpdated('terminalTextColor', $event, 'hex')">
+        </color-sketch>
+      </mat-expansion-panel>
     </mat-expansion-panel>
 
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Exe Colors
+        </mat-panel-title>
+        <mat-panel-description>
+          Colors shown across the executables. (E.g. SSHCrack, FTPBounce, SMTPOverflow, etc.)
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Exe Top Bar
+          </mat-panel-title>
+          <mat-panel-description>
+            Fill color of the top bar of applications.
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <color-sketch [color]="themeData.exeModuleTopBar"
+          (onChangeComplete)="colorUpdated('exeModuleTopBar', $event, 'hex')"></color-sketch>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Exe Title Text
+          </mat-panel-title>
+          <mat-panel-description>
+            Color of text on top bar of applications.
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <color-sketch [color]="themeData.exeModuleTitleText"
+          (onChangeComplete)="colorUpdated('exeModuleTitleText', $event, 'hex')"></color-sketch>
+      </mat-expansion-panel>
+
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Ports and Cracks
+        </mat-panel-title>
+        <mat-panel-description>
+          Colors shown for highlighting of ports and some sections of executables.
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Locked Color
+          </mat-panel-title>
+          <mat-panel-description>
+            Color used to highlight locked ports.
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <color-sketch [color]="themeData.lockedColor" (onChangeComplete)="colorUpdated('lockedColor', $event, 'hex')">
+        </color-sketch>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Bright Locked Color
+          </mat-panel-title>
+          <mat-panel-description>
+            Brighter variation - used during lock/unlock animations.
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <color-sketch [color]="themeData.brightLockedColor"
+          (onChangeComplete)="colorUpdated('brightLockedColor', $event, 'hex')"></color-sketch>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Unlocked Color
+          </mat-panel-title>
+          <mat-panel-description>
+            Color used to highlight unlocked ports.
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <color-sketch [color]="themeData.unlockedColor"
+          (onChangeComplete)="colorUpdated('unlockedColor', $event, 'hex')"></color-sketch>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Bright Unlocked Color
+          </mat-panel-title>
+          <mat-panel-description>
+            Brighter variation - used during lock/unlock animations.
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <color-sketch [color]="themeData.brightUnlockedColor"
+          (onChangeComplete)="colorUpdated('brightUnlockedColor', $event, 'hex')"></color-sketch>
+      </mat-expansion-panel>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Netmap & Shells
+        </mat-panel-title>
+        <mat-panel-description>
+          Colors used on the netmap, and shells. (The kind you use against proxies)
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Warning Color
+          </mat-panel-title>
+          <mat-panel-description>
+            Color used to highlight warnings and/or errors.
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <color-sketch [color]="themeData.warningColor" (onChangeComplete)="colorUpdated('warningColor', $event, 'hex')">
+        </color-sketch>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Shell Color
+          </mat-panel-title>
+          <mat-panel-description>
+            Color used on Netmap to highlight computers connected as shell(s).
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <color-sketch [color]="themeData.shellColor" (onChangeComplete)="colorUpdated('shellColor', $event, 'hex')">
+        </color-sketch>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Shell Button Color
+          </mat-panel-title>
+          <mat-panel-description>
+            Color used on Netmap to highlight computers connected as shell(s).
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <color-sketch [color]="themeData.shellButtonColor"
+          (onChangeComplete)="colorUpdated('shellButtonColor', $event, 'hex')">
+        </color-sketch>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Netmap Tooltip Text Color
+          </mat-panel-title>
+          <mat-panel-description>
+            Color used on Netmap to highlight computers connected as shell(s).
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <color-sketch [color]="themeData.netmapToolTipColor"
+          (onChangeComplete)="colorUpdated('netmapToolTipColor', $event, 'hex')">
+        </color-sketch>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Netmap Tooltip Background Color
+          </mat-panel-title>
+          <mat-panel-description>
+            Background color of Netmap tooltips.
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <color-sketch [color]="themeData.netmapToolTipBackground"
+          (onChangeComplete)="colorUpdated('netmapToolTipBackground', $event, 'hex')">
+        </color-sketch>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Netmap's "This PC" Color
+          </mat-panel-title>
+          <mat-panel-description>
+            Color used to highlight the player's PC on the Netmap.
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <color-sketch [color]="themeData.thisComputerNode"
+          (onChangeComplete)="colorUpdated('thisComputerNode', $event, 'hex')">
+        </color-sketch>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Netmap's "Connected" Color
+          </mat-panel-title>
+          <mat-panel-description>
+            Color used to highlight the node you're connected to on the Netmap.
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <color-sketch [color]="themeData.connectedNodeHighlight"
+          (onChangeComplete)="colorUpdated('connectedNodeHighlight', $event, 'hex')">
+        </color-sketch>
+      </mat-expansion-panel>
+    </mat-expansion-panel>
 
     <mat-card>
       <button mat-flat-button (click)="themeDrawer.close()">
-        <fa-icon [icon]="closeIcon"></fa-icon>
-        Close
+        <fa-icon [icon]="chevronLeft"></fa-icon>
+        Hide Panel
       </button>
       <button style="float: right;" mat-flat-button (click)="saveTheme()"
         color="accent">{{themeId > 0 ? 'Save Theme' : 'Create Theme'}}</button>
     </mat-card>
   </mat-drawer>
   <mat-drawer-content>
-    <div class="game-window">
+    <div class="game-window" id="previewWindow">
       <div class="hn-grid hn-top-bar" [ngStyle]="{'background-color': themeData.defaultTopBarColor}">
         <fa-icon class="hn-icon text-white" [icon]="closeIcon"></fa-icon>
         <fa-icon class="hn-icon text-white" [icon]="settingsIcon"></fa-icon>
@@ -104,12 +389,17 @@
         <fa-icon class="fa-lg hn-icon text-white" [icon]="emailIcon"></fa-icon>
       </div>
 
-      <div class="hn-grid hn-module process-manager" [ngStyle]="{'background-color': themeData.moduleColorBacking}">
-        <div class="hn-grid module-title" [ngStyle]="{'background-color': themeData.moduleColorStrong}">RAM</div>
+      <div class="hn-grid hn-module process-manager"
+        [ngStyle]="{'background-color': getRgba(themeData.moduleColorBacking), 'border-color': themeData.outlineColor}">
+        <div class="hn-grid module-title"
+          [ngStyle]="{'color': themeData.moduleColorSolidDefault, 'background-color': themeData.moduleColorStrong}">RAM
+        </div>
         <div class="hn-grid module-body">
 
           <div class="hn-module app-status">
-            <div class="module-title">notes</div>
+            <div class="module-title"
+              [ngStyle]="{'background-color': themeData.exeModuleTopBar, 'color': themeData.exeModuleTitleText}">notes
+            </div>
             <div class="module-body">test notes app</div>
             <div class="module-actions">
               <div class="btn-group">
@@ -126,15 +416,67 @@
             </div>
           </div>
           <div class="hn-module app-status">
-            <div class="module-title">app:PortHack<span style="float:right;">IP:210.23.192.113</span></div>
-            <div class="module-body">test notes app</div>
+            <div class="module-title"
+              [ngStyle]="{'background-color': themeData.exeModuleTopBar, 'color': themeData.exeModuleTitleText}">
+              app:SSCrack v1.2<span style="float:right;">IP:210.23.192.113</span></div>
+            <div class="module-body">
+              <div class="ssh-crack-body">
+                <div class="locked" [ngStyle]="{'background-color': themeData.lockedColor}">31</div>
+                <div class="locked" [ngStyle]="{'background-color': themeData.lockedColor}">242</div>
+                <div class="locked" [ngStyle]="{'background-color': themeData.lockedColor}">72</div>
+                <div class="b-unlocked" [ngStyle]="{'background-color': themeData.brightUnlockedColor}">129</div>
+                <div class="locked" [ngStyle]="{'background-color': themeData.lockedColor}">78</div>
+                <div class="b-locked" [ngStyle]="{'background-color': themeData.brightLockedColor}">52</div>
+                <div class="locked" [ngStyle]="{'background-color': themeData.lockedColor}">31</div>
+                <div class="locked" [ngStyle]="{'background-color': themeData.lockedColor}">242</div>
+                <div class="unlocked" [ngStyle]="{'background-color': themeData.unlockedColor}">84</div>
+                <div class="unlocked" [ngStyle]="{'background-color': themeData.unlockedColor}">49</div>
+                <div class="locked" [ngStyle]="{'background-color': themeData.lockedColor}">72</div>
+                <div class="locked" [ngStyle]="{'background-color': themeData.lockedColor}">129</div>
+                <div class="unlocked" [ngStyle]="{'background-color': themeData.unlockedColor}">84</div>
+                <div class="unlocked" [ngStyle]="{'background-color': themeData.unlockedColor}">49</div>
+                <div class="locked" [ngStyle]="{'background-color': themeData.lockedColor}">78</div>
+                <div class="b-locked" [ngStyle]="{'background-color': themeData.brightLockedColor}">62</div>
+                <div class="b-locked" [ngStyle]="{'background-color': themeData.brightLockedColor}">17</div>
+                <div class="locked" [ngStyle]="{'background-color': themeData.lockedColor}">31</div>
+                <div class="locked" [ngStyle]="{'background-color': themeData.lockedColor}">242</div>
+                <div class="locked" [ngStyle]="{'background-color': themeData.lockedColor}">72</div>
+                <div class="locked" [ngStyle]="{'background-color': themeData.lockedColor}">129</div>
+                <div class="locked" [ngStyle]="{'background-color': themeData.lockedColor}">78</div>
+                <div class="unlocked" [ngStyle]="{'background-color': themeData.unlockedColor}">51</div>
+                <div class="locked" [ngStyle]="{'background-color': themeData.lockedColor}">31</div>
+                <div class="locked" [ngStyle]="{'background-color': themeData.lockedColor}">242</div>
+                <div class="b-unlocked" [ngStyle]="{'background-color': themeData.brightUnlockedColor}">72</div>
+                <div class="locked" [ngStyle]="{'background-color': themeData.lockedColor}">129</div>
+                <div class="locked" [ngStyle]="{'background-color': themeData.lockedColor}">78</div>
+                <div class="unlocked" [ngStyle]="{'background-color': themeData.unlockedColor}">84</div>
+                <div class="unlocked" [ngStyle]="{'background-color': themeData.unlockedColor}">49</div>
+                <div class="locked" [ngStyle]="{'background-color': themeData.lockedColor}">31</div>
+                <div class="locked" [ngStyle]="{'background-color': themeData.lockedColor}">242</div>
+                <div class="locked" [ngStyle]="{'background-color': themeData.lockedColor}">72</div>
+                <div class="locked" [ngStyle]="{'background-color': themeData.lockedColor}">129</div>
+                <div class="locked" [ngStyle]="{'background-color': themeData.lockedColor}">78</div>
+                <div class="unlocked" [ngStyle]="{'background-color': themeData.unlockedColor}">98</div>
+                <div class="locked" [ngStyle]="{'background-color': themeData.lockedColor}">31</div>
+                <div class="locked" [ngStyle]="{'background-color': themeData.lockedColor}">242</div>
+                <div class="locked" [ngStyle]="{'background-color': themeData.lockedColor}">72</div>
+                <div class="unlocked" [ngStyle]="{'background-color': themeData.unlockedColor}">84</div>
+
+                <div class="hn-progress">
+                  <div class="hn-progress-bar" [ngStyle]="{'background-color': themeData.defaultHighlightColor}"></div>
+                </div>
+              </div>
+            </div>
             <div class="module-actions"></div>
           </div>
         </div>
       </div>
 
-      <div class="hn-grid hn-module hn-display" [ngStyle]="{'background-color': themeData.moduleColorBacking}">
-        <div class="hn-grid module-title" [ngStyle]="{'background-color': themeData.moduleColorStrong}">DISPLAY</div>
+      <div class="hn-grid hn-module hn-display"
+        [ngStyle]="{'background-color': getRgba(themeData.moduleColorBacking), 'border-color': themeData.outlineColor}">
+        <div class="hn-grid module-title"
+          [ngStyle]="{'color': themeData.moduleColorSolidDefault, 'background-color': themeData.moduleColorStrong}">
+          DISPLAY</div>
         <div class="module-body">
           <div class="hn-display-container">
             <div class="hn-node-info">
@@ -179,25 +521,50 @@
         </div>
       </div>
 
-      <div class="hn-grid hn-module hn-netmap" [ngStyle]="{'background-color': themeData.moduleColorBacking}">
-        <div class="hn-grid module-title" [ngStyle]="{'background-color': themeData.moduleColorStrong}">netMap v1.7
+      <div class="hn-grid hn-module hn-netmap"
+        [ngStyle]="{'background-color': getRgba(themeData.moduleColorBacking), 'border-color': themeData.outlineColor}">
+        <div class="hn-grid module-title"
+          [ngStyle]="{'color': themeData.moduleColorSolidDefault, 'background-color': themeData.moduleColorStrong}">
+          netMap v1.7
         </div>
         <div class="module-body">
           <!--img src="/assets/themes/res/NodeCircle.png" class="hn-nmap-node node1" />
           <img src="/assets/themes/res/NodeCircle.png" class="hn-nmap-node node2" />
           <img src="/assets/themes/res/NodeCircle.png" class="hn-nmap-node node3" /-->
 
-          <div class="hn-nmap-node node1"></div>
-          <div class="hn-nmap-node node2"></div>
+          <div class="hn-nmap-node node1 shell-node"
+            [ngStyle]="{'border-color': themeData.shellColor, 'box-shadow': '0px 0px 6px 8px ' + themeData.shellColor}">
+          </div>
+          <div class="hn-nmap-node node2">
+          </div>
           <div class="hn-nmap-node node3"></div>
+          <div class="hn-nmap-node node4 connected-node"
+            [ngStyle]="{'border-color': themeData.connectedNodeHighlight, 'box-shadow': '0px 0px 6px 8px ' + themeData.connectedNodeHighlight}">
+            <div class="hn-nmap-tooltip"
+              [ngStyle]="{'color': themeData.netmapToolTipColor, 'background-color': themeData.netmapToolTipBackground}">
+              Test-Battlestation
+              <small>@210.23.192.113</small>
+            </div>
+          </div>
 
-          <div class="hn-nmap-node mynode"></div>
+          <!--box-shadow: 0px 0px 5px 10px rgb(var(--hn-node-mine-shadow));-->
+          <div class="hn-nmap-node mynode"
+            [ngStyle]="{'border-color': themeData.thisComputerNode, 'box-shadow': '0px 0px 5px 8px ' + themeData.thisComputerNode}">
+            <div class="hn-nmap-tooltip"
+              [ngStyle]="{'color': themeData.netmapToolTipColor, 'background-color': themeData.netmapToolTipBackground}">
+              Your Example PC
+              <small>@127.0.0.1</small>
+            </div>
+          </div>
         </div>
       </div>
 
 
-      <div class="hn-grid hn-module hn-terminal" [ngStyle]="{'background-color': themeData.moduleColorBacking}">
-        <div class="hn-grid module-title" [ngStyle]="{'background-color': themeData.moduleColorStrong}">TERMINAL</div>
+      <div class="hn-grid hn-module hn-terminal"
+        [ngStyle]="{'background-color': getRgba(themeData.moduleColorBacking), 'border-color': themeData.outlineColor}">
+        <div class="hn-grid module-title"
+          [ngStyle]="{'color': themeData.moduleColorSolidDefault, 'background-color': themeData.moduleColorStrong}">
+          TERMINAL</div>
         <div class="module-body" [ngStyle]="{'color': themeData.terminalTextColor}">
           <pre [ngStyle]="{'color': themeData.terminalTextColor}">root@localhost> echo hello world
 hello world

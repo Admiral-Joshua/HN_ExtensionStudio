@@ -1,49 +1,55 @@
 export class HN_Theme {
-    themeId: number
-    id: string = ''
-    layoutId: number = 4
-    LayoutName: string
-    BackgroundImagePath: string
+    themeId: number;
+    id = '';
+    layoutId = 4;
+    LayoutName: string;
+    BackgroundImagePath: string;
 
-    defaultHighlightColor: string = '#FF293F'
-    defaultTopBarColor: string = '#4A070E'
+    defaultHighlightColor = '#FF293F';
+    defaultTopBarColor = '#4A070E';
 
-    moduleColorSolidDefault: string = '#00CC84'
-    moduleColorStrong: string = '#0E2819'
-    moduleColorBacking: string = '#050706'
+    moduleColorSolidDefault = '#00CC84';
+    moduleColorStrong = '#0E2819';
+    //moduleColorBacking = 'rgba(5,7,6,0.30)';
+    moduleColorBacking = {
+        r: 5,
+        g: 7,
+        b: 6,
+        a: 0.3
+    };
 
-    exeModuleTopBar: string = '#82411B'
-    exeModuleTitleText: string = '#9B5525'
+    exeModuleTopBar = '#82411B';
+    exeModuleTitleText = '#9B5525';
 
-    warningColor: string = '#FF0000'
-    subtleTextColor: string = '#5A5A5A'
-    darkBackgroundColor: string = '#080808'
-    indentBackgroundColor: string = '#0C0C0C'
-    outlineColor: string = '#444444'
+    warningColor = '#FF0000';
+    subtleTextColor = '#5A5A5A';
+    darkBackgroundColor = '#080808';
+    indentBackgroundColor = '#0C0C0C';
+    outlineColor = '#444444';
 
-    lockedColor: string = '#411010'
-    brightLockedColor: string = '#A00000'
-    brightUnlockedColor: string = '#00A000'
-    unlockedColor: string = '#274124'
+    lockedColor = '#411010';
+    brightLockedColor = '#A00000';
+    brightUnlockedColor = '#00A000';
+    unlockedColor = '#274124';
 
-    lightGray: string = '#274124'
-    shellColor: string = '#DEC918'
-    shellButtonColor: string = '#69BC18'
-    semiTransText: string = '#787878'
-    terminalTextColor: string = '#D5F5FF'
-    topBarTextColor: string = '#7E7E7E'
-    superLightWhite: string = '#020202'
-    connectedNodeHighlight: string = '#DE0000'
-    netmapToolTipColor: string = '#D5F5FF'
-    netmapToolTipBackground: string = '#000000'
-    topBarIconsColor: string = '#FFFFFF'
-    thisComputerNode: string = '#5FDC53'
-    scanlinesColor: string = '#FFFFFF'
+    lightGray = '#274124';
+    shellColor = '#DEC918';
+    shellButtonColor = '#69BC18';
+    semiTransText = '#787878';
+    terminalTextColor = '#D5F5FF';
+    topBarTextColor = '#7E7E7E';
+    superLightWhite = '#020202';
+    connectedNodeHighlight = '#DE0000';
+    netmapToolTipColor = '#D5F5FF';
+    netmapToolTipBackground = '#000000';
+    topBarIconsColor = '#FFFFFF';
+    thisComputerNode = '#5FDC53';
+    scanlinesColor = '#FFFFFF';
 }
 
 export class HN_Layout {
-    layoutId: number
-    layout: string
+    layoutId: number;
+    layout: string;
 
     constructor(layoutId: number, layout: string) {
         this.layoutId = layoutId;

@@ -6,7 +6,7 @@
     <mat-list-item *ngFor="let theme of themes">
         <mat-icon mat-list-icon>format_paint</mat-icon>
         <div mat-line>{{theme.id}}</div>
-        <div mat-line> {{theme.LayoutName}} </div>
+        <div mat-line style="font-style: italic;">Base Layout: {{theme.LayoutName}} </div>
         <div mat-line><button mat-button color="accent" (click)="openEditor(theme.themeId)">Edit</button> <button
                 mat-button color="warn" (click)="deleteTheme(theme.themeId)">Delete</button>
         </div>

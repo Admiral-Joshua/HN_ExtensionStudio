@@ -11,10 +11,11 @@
         <div matRipple *ngFor="let music of musicList" class="music-item" (click)="loadTrack(music)">
 
             <mat-icon>music_note</mat-icon> <input class="music-title read-write" [(ngModel)]="music.title"
-                [disabled]="music.ownerId === 0" (blur)="renameTrack(music)">
+                [disabled]="music.ownerId === 0" (blur)="renameTrack(music)" (click)="$event.stopPropagation();">
 
             <div class="button-group">
-                <button mat-button color="warn" *ngIf="music.ownerId > 0" (click)="deleteTrack(music.musicId)">
+                <button mat-button color="warn" *ngIf="music.ownerId > 0"
+                    (click)="deleteTrack(music.musicId); $event.stopPropagation();">
                     <mat-icon>delete</mat-icon> Delete
                 </button>
             </div>
