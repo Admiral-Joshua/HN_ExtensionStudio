@@ -44,7 +44,12 @@ export class HN_Theme {
     netmapToolTipBackground = '#000000';
     topBarIconsColor = '#FFFFFF';
     thisComputerNode = '#5FDC53';
-    scanlinesColor = '#FFFFFF';
+    scanlinesColor = {
+        r: 255,
+        g: 255,
+        b: 255,
+        a: 0.15
+    };
 }
 
 export class HN_Layout {

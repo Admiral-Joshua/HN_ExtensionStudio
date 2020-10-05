@@ -86,6 +86,18 @@
           (onChangeComplete)="colorUpdated('defaultTopBarColor', $event, 'hex')"></color-sketch>
       </mat-expansion-panel>
 
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            ScanLines Color
+          </mat-panel-title>
+          <mat-panel-description>
+            The color of, and how visible scan lines are going to be over your entire display. (Preview unsupported)
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <color-sketch [color]="themeData.scanlinesColor" (onChangeComplete)="colorUpdated('scanlinesColor', $event)">
+        </color-sketch>
+      </mat-expansion-panel>
     </mat-expansion-panel>
 
     <mat-expansion-panel>
