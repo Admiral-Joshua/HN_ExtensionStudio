@@ -25,6 +25,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSliderModule } from '@angular/material/slider';
+import { MatRadioModule } from "@angular/material/radio";
 import { ColorSketchModule } from 'ngx-color/sketch';
 
 import { JwtModule } from '@auth0/angular-jwt';
@@ -79,6 +80,8 @@ import { ThemeSelectorComponent } from './elems/theme-selector/theme.selector.co
 import { ThemeGuiEditorComponent } from './themes/gui.editor/gui.editor.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { BuilderService } from './builder/builder.service';
+import { BuilderComponent } from './builder/builder.component';
 
 
 export function getAuthToken() {
@@ -113,7 +116,8 @@ export function getAuthToken() {
     RegisterComponent,
     NodeSelector,
     ThemeSelectorComponent,
-    ThemeGuiEditorComponent
+    ThemeGuiEditorComponent,
+    BuilderComponent
   ],
   imports: [
     BrowserModule,
@@ -149,7 +153,8 @@ export function getAuthToken() {
     MatTooltipModule,
     MatSliderModule,
     FontAwesomeModule,
-    ColorSketchModule
+    ColorSketchModule,
+    MatRadioModule
   ],
   providers: [
     { provide: 'BASE_API_URL', useValue: environment.apiUrl },
@@ -164,7 +169,8 @@ export function getAuthToken() {
     ThemesService,
     BoardPostingService,
     ActionsService,
-    AuthService
+    AuthService,
+    BuilderService
   ],
   bootstrap: [AppComponent],
   entryComponents: [DeleteConfirmationComponent,

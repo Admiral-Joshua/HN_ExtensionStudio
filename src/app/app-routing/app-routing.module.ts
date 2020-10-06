@@ -13,6 +13,7 @@ import { ActionSetListComponent } from '../actions/actionset.list.component';
 import { LoginComponent } from '../auth/login/login.component';
 import { RegisterComponent } from '../auth/register/register.component';
 import { DocumentationComponent } from '../docs.component/docs.component';
+import { BuilderComponent } from '../builder/builder.component';
 
 const routes: Routes = [
   {
@@ -58,6 +59,10 @@ const routes: Routes = [
   {
     path: "actions",
     component: ActionSetListComponent
+  },
+  {
+    path: 'build',
+    component: BuilderComponent
   },
   {
     path: "**",

@@ -1,0 +1,69 @@
+<div class="page-container">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Build your Extension</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-radio-group aria-label="Select whether to build incrementally, or rebuild the entire the extension."
+                [(ngModel)]="isRebuild">
+                <h3>Build Type</h3>
+                <mat-radio-button [value]="false" [disabled]="!canIncremental">
+                    <h4>Incremental Update</h4>Faster - Find previous successful job, detect changed files and update
+                    them, allowing you to re-download the entire extension.
+                </mat-radio-button><br />
+                <mat-radio-button [value]="true">
+                    <h4>Full Build</h4>Slower & limited - Only really useful for when you're experiencing issues with
+                    the state of the extension.
+                </mat-radio-button>
+            </mat-radio-group>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-flat-button color="accent" (click)="submitJob()">Submit</button>
+        </mat-card-actions>
+    </mat-card>
+
+    <table mat-table [dataSource]="jobs" style="width: 100%;">
+        <ng-container matColumnDef="job_id">
+            <th mat-header-cell *matHeaderCellDef>#</th>
+            <td mat-cell *matCellDef="let job; let i = index">{{job.job_id}}<br /><i *ngIf="i === 0"
+                    style="font-size: .8em; color: gray;">Latest</i></td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let job">
+                <fa-icon [ngClass]="getStatusClass(job.job_status)" [icon]="getStatusIcon(job.job_status)"></fa-icon>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="submission">
+            <th mat-header-cell *matHeaderCellDef>Submitted @</th>
+            <td mat-cell *matCellDef="let job">{{job.time_submitted}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="started">
+            <th mat-header-cell *matHeaderCellDef>Started @</th>
+            <td mat-cell *matCellDef="let job">{{job.time_started}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="completed">
+            <th mat-header-cell *matHeaderCellDef>Completed @</th>
+            <td mat-cell *matCellDef="let job">{{job.time_completed || "N/A"}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let job">
+                <button mat-flat-button *ngIf="job.job_status === 3" color="primary" (click)="downloadJob(job.job_id)">
+                    <fa-icon [icon]="downloadIcon"></fa-icon> Download
+                </button>
+                <button mat-flat-button *ngIf="job.job_status === 1" color="warn">
+                    <fa-icon [icon]="cancelIcon"></fa-icon> Cancel
+                </button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+</div>
