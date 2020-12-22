@@ -22,7 +22,7 @@
 
     <!-- check email -->
     <ng-container matColumnDef="hasEmail">
-        <th mat-header-cell *matHeaderCellDef> Has<br/>Email </th>
+        <th mat-header-cell *matHeaderCellDef> Has<br />Email </th>
         <td mat-cell *matCellDef="let element">
             <mat-icon *ngIf="element.emailId > 0">done</mat-icon>
             <mat-icon *ngIf="element.emailId < 1">clear</mat-icon>
@@ -31,7 +31,7 @@
 
     <!-- check posting -->
     <ng-container matColumnDef="hasPosting">
-        <th mat-header-cell *matHeaderCellDef> Has<br/>Board Post </th>
+        <th mat-header-cell *matHeaderCellDef> Has<br />Board Post </th>
         <td mat-cell *matCellDef="let element">
             <mat-icon *ngIf="element.postingId > 0">done</mat-icon>
             <mat-icon *ngIf="element.postingId < 1">clear</mat-icon>
@@ -52,7 +52,8 @@
         <th mat-header-cell *matHeaderCellDef style="width: 20%;"> MissionStart </th>
         <td mat-cell *matCellDef="let element">
             <mat-chip-list>
-                <mat-chip selected color="accent" *ngIf="element.missionStart.length > 0">{{element.missionStart}}</mat-chip>
+                <mat-chip selected color="accent" *ngIf="element.missionStart && element.missionStart.length > 0">
+                    {{element.missionStart}}</mat-chip>
             </mat-chip-list>
         </td>
     </ng-container>
@@ -62,7 +63,8 @@
         <th mat-header-cell *matHeaderCellDef style="width: 20%;"> MissionEnd </th>
         <td mat-cell *matCellDef="let element">
             <mat-chip-list>
-                <mat-chip selected color="accent" *ngIf="element.missionEnd.length > 0">{{element.missionEnd}}</mat-chip>
+                <mat-chip selected color="accent" *ngIf="element.missionEnd && element.missionEnd.length > 0">
+                    {{element.missionEnd}}</mat-chip>
             </mat-chip-list>
         </td>
     </ng-container>
@@ -71,8 +73,12 @@
         <th mat-header-cell *matHeaderCellDef>Actions</th>
         <td mat-cell *matCellDef="let element" style="width: 360px;">
             <button mat-button color="primary" (click)="openEditor(element.missionId)"> <b>Edit</b> </button>
-            <button mat-button color="accent" (click)="configureEmail(element)"><mat-icon>email</mat-icon> Email</button>
-            <button mat-button color="accent" (click)="configurePosting(element)"><mat-icon>attachment</mat-icon> Board Post</button>
+            <button mat-button color="accent" (click)="configureEmail(element)">
+                <mat-icon>email</mat-icon> Email
+            </button>
+            <button mat-button color="accent" (click)="configurePosting(element)">
+                <mat-icon>attachment</mat-icon> Board Post
+            </button>
             <button mat-button color="warn">Delete</button>
         </td>
     </ng-container>
