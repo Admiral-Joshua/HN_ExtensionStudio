@@ -17,19 +17,16 @@
         <mat-checkbox formControlName="IsSilent">Is Silent?</mat-checkbox>
         <mat-checkbox formControlName="activeCheck">Active Check</mat-checkbox>
         <mat-checkbox formControlName="shouldIgnoreSenderVerification">Ignore Sender Verification</mat-checkbox>
+
+        <h5 style="margin-bottom: 1px;">Mission Start</h5>
+        <function-builder [(funcId)]="missionStart.functionId" [(funcMeta)]="missionStart.meta" [(funcVal)]="missionStart.value" [(funcSuppress)]="missionStart.suppress"></function-builder>
+
+
+        <h5 style="margin-bottom: 1px;">Mission End</h5>
+        <function-builder [(funcId)]="missionEnd.functionId" [(funcMeta)]="missionEnd.meta" [(funcVal)]="missionEnd.value" [(funcSuppress)]="missionEnd.suppress"></function-builder>
+
+        <br/> <br/>
         <mat-form-field class="full-field">
-            <mat-label>
-                Mission Start
-            </mat-label>
-            <input matInput formControlName="missionStart" placeholder="Special Hacknet Functions to run at mission start..." />
-        </mat-form-field>
-        <mat-form-field class="full-field">
-            <mat-label>
-                Mission End
-            </mat-label>
-            <input matInput formControlName="missionEnd" placeholder="Special Hacknet Functions to run at mission end..." />
-        </mat-form-field>
-        <mat-form-field>
             <mat-label>Next Mission</mat-label>
             <mat-select formControlName="nextMission" required>
                 <mat-option [value]="0">NONE</mat-option>

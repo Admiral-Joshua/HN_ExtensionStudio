@@ -1,4 +1,4 @@
-<mat-form-field class="half-field">
+<mat-form-field class="third-field">
     <mat-label>
         Function Name
     </mat-label>
@@ -8,9 +8,19 @@
         </mat-option>
     </mat-select>
 </mat-form-field>
-<mat-form-field class="half-field">
+<mat-form-field class="third-field">
+  <mat-label>
+    Function Additional
+  </mat-label>
+  <input matInput type="text" placeholder="NONE" [value]="funcMeta" (change)="changeMeta($event)" [disabled]="funcId < 1"/>
+</mat-form-field>
+<mat-form-field class="third-field">
     <mat-label>
         Function Value
     </mat-label>
-    <input matInput type="text" placeholder="E.g. 5" [value]="funcVal" (change)="changeValue($event)" />
+    <input matInput type="number" placeholder="E.g. 5" [value]="funcVal" (change)="changeValue($event)" [disabled]="funcId < 1"/>
 </mat-form-field>
+<mat-label>
+  Suppress Email?
+</mat-label>
+<mat-checkbox [value]="funcSuppress" (change)="changeSuppress($event)" [disabled]="funcId < 1"></mat-checkbox>

@@ -34,7 +34,8 @@ export class MissionListComponent implements OnInit {
         }
 
         let dialogRef = this.dialog.open(MissionEditorDialogComponent, {
-            data: data
+            data: data,
+            width: '80%'
         });
 
         dialogRef.afterClosed().subscribe(() => {

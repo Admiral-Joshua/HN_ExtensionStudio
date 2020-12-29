@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MissionService } from '../missions.service';
-import { HN_Mission, HN_MissionGoal, HN_MissionBranch } from '../models';
+import {HN_Mission, HN_MissionGoal, HN_MissionBranch, MissionFunction} from '../models';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from "@angular/material/dialog";
 import { GoalEditorDialogComponent } from '../goal.editor/goal.editor.dialog';
 import { DeleteConfirmationComponent } from 'src/app/dialogs/deleteConfirmDialog/delete.confirmation.component';
@@ -9,21 +9,31 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSelectChange } from '@angular/material/select';
 
 @Component({
-    templateUrl: "mission.editor.dialog.html"
+    templateUrl: 'mission.editor.dialog.html'
 })
 export class MissionEditorDialogComponent implements OnInit {
-    goalsDisplayedColumns: string[] = ['id', 'type', 'actions']
-    missionId: number = 0
+    missionStart = new MissionFunction();
+
+    missionEnd = new MissionFunction();
+
+    goalsDisplayedColumns: string[] = ['id', 'type', 'actions'];
+    missionId = 0;
 
     missionForm = new FormGroup({
         id: new FormControl(''),
         activeCheck: new FormControl(false),
         shouldIgnoreSenderVerification: new FormControl(false),
-        missionStart: new FormControl(''),
-        missionEnd: new FormControl(''),
         nextMission: new FormControl(0),
-        IsSilent: new FormControl(false)
-    })
+        IsSilent: new FormControl(false),
+
+        missionStart_function: new FormControl(''),
+        missionStart_value: new FormControl(0),
+        missionStart_suppress: new FormControl(false),
+
+        missionEnd_function: new FormControl(''),
+        missionEnd_value: new FormControl(0),
+        missionEnd_suppress: new FormControl(false)
+    });
 
     emailForm = new FormGroup({
         sender: new FormControl(''),
@@ -116,8 +126,11 @@ export class MissionEditorDialogComponent implements OnInit {
         retVal.id = this.missionForm.get('id').value;
         retVal.activeCheck = this.missionForm.get('activeCheck').value;
         retVal.shouldIgnoreSenderVerification = this.missionForm.get('shouldIgnoreSenderVerification').value;
-        retVal.missionStart = this.missionForm.get('missionStart').value;
-        retVal.missionEnd = this.missionForm.get('missionEnd').value;
+
+        retVal.missionStart = this.missionStart;
+
+        retVal.missionEnd = this.missionEnd;
+
         retVal.nextMission = parseInt(this.missionForm.get('nextMission').value);
         retVal.IsSilent = this.missionForm.get('IsSilent').value;
 
@@ -131,11 +144,11 @@ export class MissionEditorDialogComponent implements OnInit {
         this.missionForm.get('id').setValue(mission.id);
         this.missionForm.get('activeCheck').setValue(mission.activeCheck);
         this.missionForm.get('shouldIgnoreSenderVerification').setValue(mission.shouldIgnoreSenderVerification);
-        this.missionForm.get('missionStart').setValue(mission.missionStart);
-        this.missionForm.get('missionEnd').setValue(mission.missionEnd);
         this.missionForm.get('nextMission').setValue(mission.nextMission);
         this.missionForm.get('IsSilent').setValue(mission.IsSilent);
 
+        this.missionStart = mission.missionStart;
+        this.missionEnd = mission.missionEnd;
     }
 
     saveMission() {
