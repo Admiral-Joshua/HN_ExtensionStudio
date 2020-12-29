@@ -14,6 +14,7 @@ import { LoginComponent } from '../auth/login/login.component';
 import { RegisterComponent } from '../auth/register/register.component';
 import { DocumentationComponent } from '../docs.component/docs.component';
 import { BuilderComponent } from '../builder/builder.component';
+import {StoryboardComponent} from '../missions/storyboard.editor/storyboard.component';
 
 const routes: Routes = [
   {
@@ -63,6 +64,10 @@ const routes: Routes = [
   {
     path: 'build',
     component: BuilderComponent
+  },
+  {
+    path: 'storyboard',
+    component: StoryboardComponent
   },
   {
     path: "**",

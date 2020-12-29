@@ -1,0 +1,15 @@
+<h2>Missions: Storyboard</h2>
+<mat-drawer-container>
+  <mat-drawer #missionDrawer mode="side" position="end" style="min-width: 19%;">
+    <div style="margin: 5px 15px;" *ngIf="selectedMission">
+      <h3>Mission: &nbsp; {{selectedMission.id}}</h3>
+
+      <p>Active Check: <fa-icon [icon]="selectedMission.activeCheck ? checkIcon : timesIcon"></fa-icon></p>
+    </div>
+
+  </mat-drawer>
+
+  <mat-drawer-content>
+    <div id="storyboard" style="height: 900px;"></div>
+  </mat-drawer-content>
+</mat-drawer-container>

@@ -82,6 +82,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BuilderService } from './builder/builder.service';
 import { BuilderComponent } from './builder/builder.component';
+import {StoryboardComponent} from './missions/storyboard.editor/storyboard.component';
 
 
 export function getAuthToken() {
@@ -117,7 +118,8 @@ export function getAuthToken() {
     NodeSelector,
     ThemeSelectorComponent,
     ThemeGuiEditorComponent,
-    BuilderComponent
+    BuilderComponent,
+    StoryboardComponent
   ],
   imports: [
     BrowserModule,
