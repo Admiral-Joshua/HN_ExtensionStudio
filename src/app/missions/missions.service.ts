@@ -2,10 +2,26 @@ import { Injectable, Inject } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import {HN_Mission, HN_MissionGoal, HN_MGoalType, HN_MissionBranch, HN_MissionFunction } from './models';
 import { HN_Email } from "./email.dialog/models";
-import { Observable } from 'rxjs';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 
 @Injectable()
 export class MissionService {
+    // FUNCTIONS CACHE
+    private functionsCache = new BehaviorSubject<HN_MissionFunction[]>([]);
+
+    private updateFunctionList(): void {
+      this.http.get<HN_MissionFunction[]>(`${this.baseUrl}/missions/functions/list`, {withCredentials: true}).subscribe((functions) => {
+        this.functionsCache.next(functions);
+      });
+    }
+
+    getFunctionsList(): Observable<HN_MissionFunction[]> {
+      if (this.functionsCache.value.length < 1) {
+        this.updateFunctionList();
+      }
+      return this.functionsCache.asObservable();
+    }
+
     constructor(private http: HttpClient, @Inject("BASE_API_URL") private baseUrl: string) {}
 
     // MISSIONS API
@@ -16,7 +32,7 @@ export class MissionService {
 
     getMissionList(excludeId?: number) : Observable<HN_Mission[]> {
         return this.http.get<HN_Mission[]>(`${this.baseUrl}/missions/list${excludeId > 0 ? `/${excludeId}` : ''}`, {withCredentials: true});
-    }    
+    }
 
     createMission(missionData: HN_Mission) {
         return this.http.post<HN_Mission>(`${this.baseUrl}/missions/new`, missionData, {withCredentials: true});
@@ -44,10 +60,6 @@ export class MissionService {
 
     getBranches(missionId: number) : Observable<HN_MissionBranch[]> {
         return this.http.get<HN_MissionBranch[]>(`${this.baseUrl}/missions/branch/list/${missionId}`, {withCredentials: true});
-    }
-
-    getFunctionsList() : Observable<HN_MissionFunction[]> {
-        return this.http.get<HN_MissionFunction[]>(`${this.baseUrl}/missions/functions/list`, {withCredentials: true});
     }
 
     // GOALS API
