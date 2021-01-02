@@ -82,7 +82,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BuilderService } from './builder/builder.service';
 import { BuilderComponent } from './builder/builder.component';
-import {StoryboardComponent} from './missions/storyboard.editor/storyboard.component';
+import { StoryboardComponent } from './missions/storyboard.editor/storyboard.component';
+import { Router } from '@angular/router';
+import { MusicExtSelectorComponent } from './musics/music.ext.selector/music.ext.selector.component';
+import { NodeNetmapEditorComponent } from './nodes/node.netmap.editor/node.netmap.editor';
 
 
 export function getAuthToken() {
@@ -119,7 +122,9 @@ export function getAuthToken() {
     ThemeSelectorComponent,
     ThemeGuiEditorComponent,
     BuilderComponent,
-    StoryboardComponent
+    StoryboardComponent,
+    MusicExtSelectorComponent,
+    NodeNetmapEditorComponent
   ],
   imports: [
     BrowserModule,
@@ -187,5 +192,6 @@ export function getAuthToken() {
     ActionSetEditorComponent,
     ThemeGuiEditorComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
 

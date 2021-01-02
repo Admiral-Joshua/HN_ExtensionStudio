@@ -1,9 +1,23 @@
-<form [formGroup]="musicForm">
-    <mat-form-field class="full-field">
+<mat-card>
+  <mat-card-header>
+    <h2 mat-card-title>Upload a new Track</h2>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form [formGroup]="musicForm">
+      <mat-form-field class="full-field">
         <mat-label>Title:</mat-label>
         <input matInput formControlName="title" type="text" id="name" placeholder="A short name for this music track" />
-    </mat-form-field>
-    <input formControlName="file" id="file" type="file" (change)="fileSelected($event)" accept="audio/ogg" />
+      </mat-form-field>
 
-    <button mat-button color="primary" (click)="startUpload()" (disabled)="!musicForm.valid">Upload</button>
-</form>
+      <input style="display: none;" formControlName="file" id="file" type="file" (change)="fileSelected($event)" accept="audio/ogg" #fileInput/>
+      <label for="file"><span class="mat-button-base mat-primary mat-button">Choose File...</span>Selected: <em>{{selectedFileName || 'NONE'}}</em></label>
+    </form>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <div align="end">
+      <button mat-flat-button color="accent" (click)="startUpload()" [disabled]="!musicForm.valid">Upload</button>
+    </div>
+  </mat-card-actions>
+</mat-card>

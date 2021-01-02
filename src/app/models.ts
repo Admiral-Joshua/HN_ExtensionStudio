@@ -5,7 +5,15 @@ export class HN_MusicTrack {
     ownerId: number
     title: string
     track: File
+    selected: boolean
     player: HTMLAudioElement
+}
+
+export enum HN_MusicFilter {
+    ALL,
+    DEFAULT,
+    CUSTOM,
+    EXTENSION
 }
 
 export class HN_CompType {

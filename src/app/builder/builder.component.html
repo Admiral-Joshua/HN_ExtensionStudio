@@ -24,7 +24,7 @@
 
     <table mat-table [dataSource]="jobs" style="width: 100%;">
         <ng-container matColumnDef="job_id">
-            <th mat-header-cell *matHeaderCellDef>#</th>
+            <th mat-header-cell *matHeaderCellDef>Build #</th>
             <td mat-cell *matCellDef="let job; let i = index">{{job.job_id}}<br /><i *ngIf="i === 0"
                     style="font-size: .8em; color: gray;">Latest</i></td>
         </ng-container>

@@ -7,12 +7,12 @@
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
-    "module": "esnext",
+    "module": "ES2015",
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es2015",
+    "target": "ES2015",
     "lib": [
-      "es2018",
+      "ES2015",
       "dom"
     ]
   },

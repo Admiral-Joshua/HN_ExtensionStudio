@@ -1,0 +1,20 @@
+<div class="page-filler">
+<mat-card>
+  <mat-card-header>
+    <h1 mat-card-title>Include Custom Music</h1>
+    <h3 mat-card-subtitle>Select from your uploaded tracks, which you'd like to be included in this Hacknet extension.</h3>
+  </mat-card-header>
+
+  <mat-card-content>
+  <mat-selection-list>
+    <mat-list-option *ngFor="let track of music" checkboxPosition="before" [selected]="track.selected" (click)="track.selected ? exclude(track) : include(track)" >
+      {{track.title}}
+    </mat-list-option>
+  </mat-selection-list>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <p style="margin: 4px 10px;" class="mat-h3">Your music isn't here yet? Click <a [routerLink]="'/account/music'">here</a> to jump to the upload center for music uploads to your account.</p>
+  </mat-card-actions>
+</mat-card>
+</div>

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -8,19 +8,26 @@ import {Router} from '@angular/router';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  constructor(private cookies: CookieService, private router: Router) {}
+  constructor(private cookies: CookieService) { }
 
   title = 'Hacknet: Extension Studio';
 
   opened: boolean = false;
+  //isAuthenticated = false;
+
+  isAuthenticated(): boolean {
+    const token = localStorage.getItem('auth');
+    return (token !== null && token !== '');
+  }
 
   isExtensionSelected() {
     return this.cookies.check('extId');
   }
 
   logout() {
+    this.cookies.delete('extId');
     localStorage.clear();
-    this.router.navigateByUrl('/home');
+
     window.location.reload();
   }
 }

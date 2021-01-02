@@ -7,7 +7,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 
 import { MatChipInputEvent } from "@angular/material/chips";
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { HN_MusicTrack, HN_CompNode } from 'src/app/models';
+import { HN_MusicTrack, HN_CompNode, HN_MusicFilter } from 'src/app/models';
 import { MusicService } from 'src/app/musics/music.service';
 import { HN_Mission } from 'src/app/missions/models';
 import { MissionService } from 'src/app/missions/missions.service';
@@ -22,7 +22,9 @@ export class ExtensionInfoComponent implements OnInit {
     @ViewChild("visibleNodes") private visibleNodes: MatSelectionList
     public extensionId: number = 0
     supportedLanguages: ExtensionLanguage[]
-    musicTracks: HN_MusicTrack[]
+
+    customMusic: HN_MusicTrack[]
+    defaultMusic: HN_MusicTrack[]
 
     readonly chipAddKeyCodes: number[] = [COMMA, ENTER];
 
@@ -70,8 +72,12 @@ export class ExtensionInfoComponent implements OnInit {
             this.supportedLanguages = languages;
         });
 
-        this.musicService.listMyMusic().subscribe(tracks => {
-            this.musicTracks = tracks;
+        this.musicService.listMusic(HN_MusicFilter.CUSTOM).subscribe(tracks => {
+            this.customMusic = tracks;
+        });
+
+        this.musicService.listMusic(HN_MusicFilter.DEFAULT).subscribe(tracks => {
+            this.defaultMusic = tracks;
         });
 
         this.missionService.getMissionList().subscribe(missions => {

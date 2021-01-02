@@ -25,7 +25,8 @@
                 </mat-expansion-panel-header>
                 <mat-form-field appearance="fill">
                     <mat-label>Extension Name</mat-label>
-                    <input matInput placeholder="Test Extension 1" formControlName="extensionName" required minlength="5" />
+                    <input matInput placeholder="Test Extension 1" formControlName="extensionName" required
+                        minlength="5" />
                 </mat-form-field>
                 <mat-form-field appearance="fill">
                     <mat-label>Language</mat-label>
@@ -38,14 +39,23 @@
                 <mat-checkbox formControlName="allowSaves">Allow Saves?</mat-checkbox>
                 <mat-form-field appearance="fill">
                     <mat-label>Description</mat-label>
-                    <textarea rows="5" matInput placeholder="Write an introduction or some information about your extension here..." formControlName="description" required></textarea>
+                    <textarea rows="5" matInput
+                        placeholder="Write an introduction or some information about your extension here..."
+                        formControlName="description" required></textarea>
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Starting Music</mat-label>
                     <mat-select required formControlName="startingMusicId">
-                        <mat-option *ngFor="let music of musicTracks" [value]="music.musicId">
-                            {{music.title}}
-                        </mat-option>
+                        <mat-optgroup label="Your Custom Tracks">
+                            <mat-option *ngFor="let music of customMusic" [value]="music.musicId">
+                                {{music.title}}
+                            </mat-option>
+                        </mat-optgroup>
+                        <mat-optgroup label="HN: Default Music">
+                            <mat-option *ngFor="let music of defaultMusic" [value]="music.musicId">
+                                {{music.title}}
+                            </mat-option>
+                        </mat-optgroup>
                     </mat-select>
                 </mat-form-field>
                 <mat-form-field>
@@ -53,7 +63,9 @@
                         Starting Mission
                     </mat-label>
                     <mat-select formControlName="startingMissionId">
-                        <mat-option *ngFor="let mission of possibleMissions" [value]="mission.missionId">{{mission.id}}</mat-option>
+                        <mat-option [value]="0">NONE</mat-option>
+                        <mat-option *ngFor="let mission of possibleMissions" [value]="mission.missionId">{{mission.id}}
+                        </mat-option>
                     </mat-select>
                 </mat-form-field>
             </mat-expansion-panel>
@@ -66,12 +78,12 @@
                         Describe which computers are going to be visible at the beginning of the extension
                     </mat-panel-description>
                 </mat-expansion-panel-header>
-                <mat-selection-list style="max-height: 150px; overflow-y: auto;" #visibleNodes [(ngModel)]="startingVisibleNodes" [ngModelOptions]="{standalone: true}">
+                <mat-selection-list style="max-height: 150px; overflow-y: auto;" #visibleNodes
+                    [(ngModel)]="startingVisibleNodes" [ngModelOptions]="{standalone: true}">
                     <mat-list-option *ngFor="let node of extensionNodes" [value]="node.nodeId">
                         {{node.id}}
                     </mat-list-option>
                 </mat-selection-list>
-
             </mat-expansion-panel>
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
@@ -84,22 +96,28 @@
                 </mat-expansion-panel-header>
                 <mat-form-field appearance="fill" aria-label="Workshop Tags">
                     <mat-chip-list #chipList>
-                        <mat-chip *ngFor="let tag of workshop_tags" selectable="false" removable="true" (removed)="removeTag(tag)" color="primary">
+                        <mat-chip *ngFor="let tag of workshop_tags" selectable="false" removable="true"
+                            (removed)="removeTag(tag)" color="primary">
                             {{tag}}
                             <mat-icon matChipRemove>cancel</mat-icon>
                         </mat-chip>
                     </mat-chip-list>
-                    <input placeholder="Add tags..." [matChipInputSeparatorKeyCodes]="chipAddKeyCodes" [matChipInputFor]="chipList" (matChipInputTokenEnd)="addTag($event)">
+                    <input placeholder="Add tags..." [matChipInputSeparatorKeyCodes]="chipAddKeyCodes"
+                        [matChipInputFor]="chipList" (matChipInputTokenEnd)="addTag($event)">
                 </mat-form-field>
-                <mat-checkbox formControlName="wDescriptionIsSameAsExt">Workshop Description is the same as Extension's</mat-checkbox>
+                <mat-checkbox formControlName="wDescriptionIsSameAsExt">Workshop Description is the same as Extension's
+                </mat-checkbox>
                 <mat-form-field>
                     <mat-label>Workshop Description:</mat-label>
-                    <textarea rows="6" matInput placeholder="Start with something short and snappy to get people's attention.\nThen write more information, perhaps with some hints about what might happen during it..." formControlName="workshop_description"></textarea>
+                    <textarea rows="6" matInput
+                        placeholder="Start with something short and snappy to get people's attention.\nThen write more information, perhaps with some hints about what might happen during it..."
+                        formControlName="workshop_description"></textarea>
                 </mat-form-field>
             </mat-expansion-panel>
-            <br/>
+            <br />
             <button mat-raised-button color="primary" routerLink="/selector">Go Back</button>
-            <button mat-raised-button color="accent" style="float: right;" [disabled]="!infoForm.valid">{{extensionId > 0 ? 'Save' : 'Create'}}</button>
+            <button mat-raised-button color="accent" style="float: right;"
+                [disabled]="!infoForm.valid">{{extensionId > 0 ? 'Save' : 'Create'}}</button>
         </form>
     </mat-card-content>
 </mat-card>

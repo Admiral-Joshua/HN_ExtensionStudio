@@ -70,6 +70,16 @@ export class BuilderComponent {
         const jobReq = new BuildJob(this.extensionId, this.isRebuild);
 
         if (this.isRebuild) {
+            this.service.submitJob(jobReq).subscribe((job) => {
+                this.snackbar.open('Build job submitted successfully!', '', {
+                    duration: 800
+                });
+
+                this.updateJobsList();
+
+                console.log('Job Submitted:', job);
+            });
+        } else {
             const latest = this.findLatestSuccess();
 
             if (latest) {
@@ -83,19 +93,7 @@ export class BuilderComponent {
                     console.log('Job Submitted:', job);
                 });
             }
-        } else {
-            this.service.submitJob(jobReq).subscribe((job) => {
-                this.snackbar.open('Build job submitted successfully!', '', {
-                    duration: 800
-                });
-
-                this.updateJobsList();
-
-                console.log('Job Submitted:', job);
-            });
         }
-
-
     }
 
     updateJobsList() {

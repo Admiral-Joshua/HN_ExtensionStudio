@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Inject } from "@angular/core";
 import { CookieService } from 'ngx-cookie-service';
-import { HN_MusicTrack } from 'src/app/models';
+import { HN_MusicTrack, HN_MusicFilter } from 'src/app/models';
 import { MusicService } from '../music.service';
 import { MusicUploadDialogComponent } from './upload-dialog/music.upload.dialog';
 import { MatDialog } from '@angular/material/dialog';
@@ -45,9 +45,9 @@ export class MusicManagerComponent implements OnInit, OnDestroy {
     }
 
     fetchMusicList() {
-        this.service.listMyMusic().subscribe(tracks => {
+        this.service.listMusic(HN_MusicFilter.CUSTOM).subscribe(tracks => {
             this.musicList = tracks;
-        })
+        });
     }
 
     seekTo(e: MatSliderChange) {

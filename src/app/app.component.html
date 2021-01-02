@@ -1,37 +1,42 @@
 <mat-sidenav-container style="width: 100vw; min-height: 100vh;">
-    <mat-sidenav style="width: 320px;" #sidenav mode="push" [(opened)]="opened">
-        <h2 style="margin: 5px auto; text-align: center;">HN: Extension Studio</h2>
+  <mat-sidenav style="width: 320px;" #sidenav mode="push" [(opened)]="opened">
+    <h2 style="margin: 5px auto; text-align: center;">HN: Extension Studio</h2>
 
-        <mat-action-list>
-            <!--button mat-list-item routerLink="/selector" routerLinkActive="is-active">Select an Extension</button-->
-            <button mat-list-item routerLink="/home" routerLinkActive="is-active"
-                [routerLinkActiveOptions]="{exact: true}">Home</button>
-            <button mat-list-item routerLink="/selector" routerLinkActive="is-active">Select An Extension</button>
-        </mat-action-list>
-        <div *ngIf="isExtensionSelected()">
-            <h4 style="margin: 12px auto 2px; text-align: center;">Current Extension</h4>
-            <mat-action-list>
-                <button mat-list-item routerLink="/extInfo" routerLinkActive="is-active">Extension Info</button>
-                <!--button mat-list-item routerLink="/storyboard" routerLinkActive="is-active">Missions</button-->
-                <button mat-list-item routerLink="/nodes" routerLinkActive="is-active">Nodes</button>
-                <button mat-list-item routerLink="/missions" routerLinkActive="is-active">Missions</button>
-                <button mat-list-item routerLink="/storyboard" routerLinkActive="is-active">Mission Storyboard</button>
-                <button mat-list-item routerLink="/music" routerLinkActive="is-active">Music</button>
-                <button mat-list-item routerLink="/actions" routerLinkActive="is-active">Action Scripts</button>
-                <button mat-list-item routerLink="/themes" routerLinkActive="is-active">Custom Themes</button>
-                <button mat-list-item routerLink="/build" routerLinkActive="is-active">Download Extension</button>
-            </mat-action-list>
-        </div>
-        <mat-action-list>
-            <h4 style="margin: 12px auto 2px; text-align: center;">For Developers</h4>
-            <button mat-list-item routerLink="/docs" routerLinkActive="is-active">Build Your Own (API
-                Documentation)</button>
-            <button mat-list-item (click)="logout()"><b style="color: red;">Logout</b></button>
-        </mat-action-list>
-    </mat-sidenav>
+    <mat-action-list>
+      <!--button mat-list-item routerLink="/selector" routerLinkActive="is-active">Select an Extension</button-->
+      <button mat-list-item routerLink="/home" routerLinkActive="is-active"
+              [routerLinkActiveOptions]="{exact: true}">Home</button>
+      <button mat-list-item routerLink="/selector" routerLinkActive="is-active">Select An Extension</button>
+    </mat-action-list>
+    <div *ngIf="isExtensionSelected()">
+      <h4 style="margin: 12px auto 2px; text-align: center;">Current Extension</h4>
+      <mat-action-list>
+        <button mat-list-item routerLink="/extInfo" routerLinkActive="is-active">Extension Info</button>
+        <button mat-list-item routerLink="/music" routerLinkActive="is-active">Music</button>
+        <!--button mat-list-item routerLink="/storyboard" routerLinkActive="is-active">Missions</button-->
+        <button mat-list-item routerLink="/nodes" routerLinkActive="is-active">Nodes</button>
+        <button mat-list-item routerLink="/missions" routerLinkActive="is-active">Missions</button>
+        <button mat-list-item routerLink="/storyboard" routerLinkActive="is-active">Mission Storyboard</button>
+        <button mat-list-item routerLink="/actions" routerLinkActive="is-active">Action Scripts</button>
+        <button mat-list-item routerLink="/themes" routerLinkActive="is-active">Custom Themes</button>
+        <button mat-list-item routerLink="/build" routerLinkActive="is-active">Download Extension</button>
+      </mat-action-list>
+    </div>
+    <mat-action-list>
+      <h4 style="margin: 12px auto 2px; text-align: center;">For Developers</h4>
+      <button mat-list-item routerLink="/docs" routerLinkActive="is-active">Build Your Own (API
+        Documentation)</button>
+    </mat-action-list>
+    <mat-action-list *ngIf="isAuthenticated()">
+      <h4 style="margin: 12px auto 2px; text-align: center;">My Account</h4>
+      <button mat-list-item routerLink="/account/music" routerLinkActive="is-active">Music Library</button>
+      <button mat-list-item style="color: red;" (click)="logout()"><b
+        style="text-align: center;">Logout</b></button>
+    </mat-action-list>
+  </mat-sidenav>
 
-    <mat-sidenav-content style="background: white;">
-        <button mat-flat-button (click)="opened = !opened" color="accent">STUDIO</button>
-        <router-outlet></router-outlet>
-    </mat-sidenav-content>
+  <mat-sidenav-content style="background: white;">
+    <button mat-flat-button (click)="opened = !opened" color="accent">STUDIO</button>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
 </mat-sidenav-container>

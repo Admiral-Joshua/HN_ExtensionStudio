@@ -14,7 +14,9 @@ import { LoginComponent } from '../auth/login/login.component';
 import { RegisterComponent } from '../auth/register/register.component';
 import { DocumentationComponent } from '../docs.component/docs.component';
 import { BuilderComponent } from '../builder/builder.component';
-import {StoryboardComponent} from '../missions/storyboard.editor/storyboard.component';
+import { StoryboardComponent } from '../missions/storyboard.editor/storyboard.component';
+import { MusicExtSelectorComponent } from '../musics/music.ext.selector/music.ext.selector.component';
+import { NodeNetmapEditorComponent } from '../nodes/node.netmap.editor/node.netmap.editor';
 
 const routes: Routes = [
   {
@@ -46,8 +48,16 @@ const routes: Routes = [
     component: NodeMapComponent
   },
   {
-    path: "music",
+    path: 'netmap',
+    component: NodeNetmapEditorComponent
+  },
+  {
+    path: 'account/music',
     component: MusicManagerComponent
+  },
+  {
+    path: 'music',
+    component: MusicExtSelectorComponent
   },
   {
     path: "missions",
