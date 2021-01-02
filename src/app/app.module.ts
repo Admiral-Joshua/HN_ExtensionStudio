@@ -160,6 +160,7 @@ export function getAuthToken() {
   ],
   providers: [
     { provide: 'BASE_API_URL', useValue: environment.apiUrl },
+    { provide: 'LUNA_BASE', useValue: environment.lunaUrl },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     ExtensionsService,
     MusicService,

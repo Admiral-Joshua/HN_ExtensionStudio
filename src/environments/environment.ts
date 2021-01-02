@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: "http://dev.lunasphere.co.uk/api"
+  apiUrl: "http://dev.lunasphere.co.uk/api",
+  lunaUrl: "http://dev.lunasphere.co.uk:4000/api"
 };
 
 /*
