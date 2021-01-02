@@ -14,6 +14,8 @@ export class HN_Mission {
     postingId: number;
 
     goals: HN_MissionGoal[];
+
+    branches: number[];
 }
 
 export class MissionFunction {

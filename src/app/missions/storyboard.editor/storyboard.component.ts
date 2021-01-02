@@ -133,6 +133,17 @@ export class StoryboardComponent implements OnInit {
           }
         });
       }
+
+      if (mission.branches && mission.branches.length > 0) {
+        mission.branches.forEach((branchedMissionId) => {
+          this.graphData.edges.push({
+            data: {
+              source: mission.missionId,
+              target: branchedMissionId
+            }
+          });
+        });
+      }
     });
   }
 
